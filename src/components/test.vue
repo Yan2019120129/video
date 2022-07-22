@@ -12,7 +12,7 @@
 		data() {
 			return {
 				name:'尚硅谷',
-				address:'北京',
+				address:'广西',
 			}
 		},
 		props:['setSchoolName'],
