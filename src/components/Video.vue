@@ -1,22 +1,24 @@
 <template>
     <div class="play_body">
-        <video id="video">
-            <!--controls提供视频播放的插件 -->
-            <source src="../assets/video/videoOne.mp4" type="video/mp4">
+        <video id="video" ref="v" controls>
+            <source
+                src="https://aliyun.oss.careyshop.cn/uploads/files/20191113/9bbf7ac9-a452-445b-8152-4443bc3505e8.mp4?type=aliyun"
+                type="video/mp4">
+            <source :src="videoSrc" type="video/mp4">
             您的浏览器不支持 HTML5 video 标签。
         </video>
-        <div id="play_menu">
+        <!-- <div id="play_menu">
             <div class="play_menu_top"></div>
             <div class="play_menu_end">
                 <div class="menu_bar">
                     <div class="bar">
                         <a></a>
                         <div class="barInside"></div>
-                        <img src="img/tv.png" alt="">
+                        <img src="../assets/img/tv.png" alt="">
                     </div>
                 </div>
                 <div class="menu_bottom">
-                    <button class="menu_play"><img src="../assets/img/startVideo.png"></button>
+                    <button class="menu_play" @click="menuPlay"><img src="../assets/img/startVideo.png"></button>
                     <button class="menu_time">00:00/00:00</button>
                     <button class="menu_aut"><b>自动</b></button>
                     <button class="menu_speed"><b>倍速</b></button>
@@ -24,10 +26,9 @@
                         <b>字幕</b>
                         <div class="barrage"></div>
                     </button>
-                    <!-- <button class="menu_voice" ><img src="img/voice.png"></button> -->
                     <button class="menu_voice">
                         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="videoSvg" viewBox="0 0 100 79">
-                                <title>setting</title>
+                            <title>setting</title>
                             <path
                                 d="m60.60481,10.6048a3.67691,3.67691 0 1 0 0,7.39752a31.99766,31.99766 0 0 1 0,64.03911a3.67691,3.67691 0 1 0 0,7.35374a39.39519,39.39519 0 0 0 0,-78.79037z"
                                 id="svg_1" p-id="1367" />
@@ -54,7 +55,7 @@
                     <button class="menu_pip">
                         <svg id="inPicture" viewBox="0 0 275 275" xmlns="http://www.w3.org/2000/svg" p-id="1406"
                             version="1.1" class="icon" t="1658316973927">
-                                <title>setting</title>
+                            <title>setting</title>
                             <path stroke="null" id="inPictureSvg_1" p-id="1407"
                                 d="m261.02121,0a13.73796,13.73796 0 0 1 13.73796,13.73796l0,96.16571l-27.47592,0l0,-82.42775l-219.80733,0l0,192.33142l82.42775,0l0,27.47592l-96.16571,0a13.73796,13.73796 0 0 1 -13.73796,-13.73796l0,-219.80733a13.73796,13.73796 0 0 1 13.73796,-13.73796l247.28325,0zm0,137.37958a13.73796,13.73796 0 0 1 13.73796,13.73796l0,82.42775a13.73796,13.73796 0 0 1 -13.73796,13.73796l-109.90367,0a13.73796,13.73796 0 0 1 -13.73796,-13.73796l0,-82.42775a13.73796,13.73796 0 0 1 13.73796,-13.73796l109.90367,0z" />
                             <path stroke="null" id="inPictureSvg_2" p-id="1407"
@@ -65,7 +66,7 @@
                         <svg id="widescreen" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg" t="1658316973927"
                             class="icon" version="1.1" p-id="1406">
                             <rect rx="50" id="svg_8" height="500" width="800" y="0" x="0" />
-                                <title>setting</title>
+                            <title>setting</title>
                             <path id="widescreenSvg_1"
                                 d="m523,331.96376l96.42799,-81.65033l-96.42799,-81.65091l55.11348,-46.66252l151.55317,128.31343l-151.55317,128.35324l-55.11348,-46.70291z"
                                 stroke="#000" fill="#000000" />
@@ -77,7 +78,7 @@
                     <button class="menu_tmlfull">
                         <svg id="fullScreen" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" p-id="2261"
                             version="1.1" class="icon" t="1658326893246">
-                                <title>setting</title>
+                            <title>setting</title>
                             <rect rx="100" id="svg_5" height="600" width="700" y="0" x="0" />
                             <path stroke="#000" fill="#000000" id="fullScreenSvg_1" p-id="2262"
                                 d="m234.48725,516.38469l-127.5898,0c-19.13847,0 -31.89745,-12.75898 -31.89745,-31.89745l0,-127.5898c0,-19.13847 12.75898,-31.89745 31.89745,-31.89745s31.89745,12.75898 31.89745,31.89745l0,95.69235l95.69235,0c19.13847,0 31.89745,12.75898 31.89745,31.89745s-12.75898,31.89745 -31.89745,31.89745z" />
@@ -93,513 +94,532 @@
                 </div>
             </div>
         </div>
-
         <div id="bar1">
             <div class="bar1Inside"></div>
-        </div>
+        </div> -->
     </div>
 </template>
 
 <script>
 export default {
-  name: 'Video',
-  data() {
-    return {
-      hello: "你好！！！"
+    name: 'Video',
+    props: [
+        'videoSrc'
+    ],
+    data() {
+        return {
+            video: null,
+            isPlay: true,
+            hello: "你好！！！"
+        }
+    },
+    mounted() {
+        this.video = this.$refs.v;
+        // console.log(this.video);
+        console.log(this.videoSrc);
+    },
+    methods: {
+        menuPlay() {
+            if (this.video.paused) {
+                this.video.play()
+                console.log("开始");
+            } else {
+                this.video.pause()
+                console.log("暂停");
+            }
+        }
     }
-  }
 }
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    body {
-        background-color: black;
-    }
+body {
+    background-color: black;
+}
 
-    .play_body {
-        position: relative;
-        margin: 100px auto;
-        width: 1200px;
-        align-content: center;
-    }
+.play_body {
+    position: relative;
+    margin: 100px auto;
+    width: 1200px;
+    align-content: center;
+}
 
-    #video {
-        width: 100%;
-    }
+#video {
+    width: 100%;
+}
 
-    #play_menu {
-        position: absolute;
-        height: 100%;
-        top: 0px;
-        padding: auto;
-        transition: .5s .1s;
-        /* opacity: 0; */
-    }
+#play_menu {
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    padding: auto;
+    transition: .5s .1s;
+    /* opacity: 0; */
+}
 
-    .play_menu_top {
-        width: 1200px;
-        height: 88%;
-        /* background-color: aqua; */
-    }
+.play_menu_top {
+    width: 1200px;
+    height: 88%;
+    /* background-color: aqua; */
+}
 
-    .play_menu_end {
-        width: 100%;
-        height: 12%;
-        /* opacity: 0; */
-        transition: .2s .1s;
-        background: -webkit-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
-        background: -o-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
-        background: -moz-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
-        background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
-        /* background-color: black; */
-    }
+.play_menu_end {
+    width: 100%;
+    height: 12%;
+    /* opacity: 0; */
+    transition: .2s .1s;
+    background: -webkit-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
+    background: -o-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
+    background: -moz-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
+    /* background-color: black; */
+}
 
-    .menu_bar {
-        height: 20%;
-        background-color: rgba(0, 0, 0, 0.1);
-        position: relative;
-    }
+.menu_bar {
+    height: 20%;
+    background-color: rgba(0, 0, 0, 0.1);
+    position: relative;
+}
 
-    .bar {
-        position: absolute;
-        bottom: 30%;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        height: 3px;
-        background-color: rgba(255, 255, 255, 0.3);
-    }
+.bar {
+    position: absolute;
+    bottom: 30%;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.3);
+}
 
-    .bar .barInside {
-        height: 3px;
-        background-color: aqua;
-        transition: .1s .1s;
-    }
+.bar .barInside {
+    height: 3px;
+    background-color: aqua;
+    transition: .1s .1s;
+}
 
 
-    .bar img {
-        opacity: 0;
-        width: 10px;
-        height: 10px;
-        transition: .2s .1s;
-    }
+.bar img {
+    opacity: 0;
+    width: 10px;
+    height: 10px;
+    transition: .2s .1s;
+}
 
-    .menu_bar:hover img {
-        opacity: 1;
-        transform: scale(1.5, 1.5);
-    }
+.menu_bar:hover img {
+    opacity: 1;
+    transform: scale(1.5, 1.5);
+}
 
-    .bar a {
-        width: 0px;
-        height: 4px;
-        border: 6px solid red;
-        border-top-color: rgb(0, 119, 255);
-        border-bottom-color: rgb(0, 119, 255);
-        border-left-color: transparent;
-        border-right-color: transparent;
-        opacity: 0;
-        position: absolute;
-    }
+.bar a {
+    width: 0px;
+    height: 4px;
+    border: 6px solid red;
+    border-top-color: rgb(0, 119, 255);
+    border-bottom-color: rgb(0, 119, 255);
+    border-left-color: transparent;
+    border-right-color: transparent;
+    opacity: 0;
+    position: absolute;
+}
 
-    .menu_bar:hover a {
-        opacity: 1;
-    }
+.menu_bar:hover a {
+    opacity: 1;
+}
 
-    .menu_bottom {
-        background: transparent;
-        height: 80%;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-    }
+.menu_bottom {
+    background: transparent;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
 
-    div>button {
-        border: none;
-        color: white;
-        font-size: 15px;
-        background-color: transparent;
-    }
+div>button {
+    border: none;
+    color: white;
+    font-size: 15px;
+    background-color: transparent;
+}
 
-    .menu_play {
-        /* background-color: aqua; */
-    }
+.menu_play {
+    /* background-color: aqua; */
+}
 
-    .menu_play img {
-        width: 25px;
-        height: 25px;
-        transition: .5s .1s;
-    }
+.menu_play img {
+    width: 25px;
+    height: 25px;
+    transition: .5s .1s;
+}
 
-    .menu_time {
-        margin-right: 45%;
-        color: rgb(255, 255, 255);
-    }
+.menu_time {
+    margin-right: 45%;
+    color: rgb(255, 255, 255);
+}
 
-    .menu_srt {
-        /* height: 20px;
+.menu_srt {
+    /* height: 20px;
         background-color: black; */
-        position: relative;
-    }
+    position: relative;
+}
 
-    .barrage {
-        position: absolute;
-        top: 50%;
-        border-radius: 2px;
-        height: 3px;
-        width: 30px;
-        background-color: rgb(255, 255, 255);
-        transform: rotate(45deg);
-        box-shadow: 1.5px -1.5px 0px black;
-    }
+.barrage {
+    position: absolute;
+    top: 50%;
+    border-radius: 2px;
+    height: 3px;
+    width: 30px;
+    background-color: rgb(255, 255, 255);
+    transform: rotate(45deg);
+    box-shadow: 1.5px -1.5px 0px black;
+}
 
-    .menu_srt b {
-        font-size: 10px;
-        padding: 2px;
-        border-radius: 2px;
-        color: white;
-        background-color: black;
-    }
+.menu_srt b {
+    font-size: 10px;
+    padding: 2px;
+    border-radius: 2px;
+    color: white;
+    background-color: black;
+}
 
-    .menu_voice {
-        /* background-color: aqua; */
-    }
+.menu_voice {
+    /* background-color: aqua; */
+}
 
-    .menu_voice img {
-        /* vertical-align: middle;
+.menu_voice img {
+    /* vertical-align: middle;
         width: 17px;
         margin: 0 auto;
         height: 17px;
         transition: .5s .1s; */
-        /* background-color: black; */
+    /* background-color: black; */
+}
+
+#videoSvg {
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+
+#videoSvg:hover {
+    animation-name: buttonScale;
+    animation-duration: .5s;
+    transform-origin: center;
+}
+
+#videoSvg:hover>#svg_1 {
+    animation-iteration-count: 2;
+    animation-name: videoOpacity;
+    animation-delay: .4;
+    animation-duration: .6s;
+}
+
+#videoSvg:hover>#svg_3 {
+    animation-iteration-count: 2;
+    animation-duration: .4s;
+    animation-name: videoOpacity;
+}
+
+@keyframes videoOpacity {
+    0% {
+        opacity: 1;
     }
 
-    #videoSvg {
-        width: 20px;
-        height: 20px;
-        fill: white;
-    }
-
-
-    #videoSvg:hover {
-        animation-name: buttonScale;
-        animation-duration: .5s;
-        transform-origin: center;
-    }
-
-    #videoSvg:hover>#svg_1 {
-        animation-iteration-count: 2;
-        animation-name: videoOpacity;
-        animation-delay: .4;
-        animation-duration: .6s;
-    }
-
-    #videoSvg:hover>#svg_3 {
-        animation-iteration-count: 2;
-        animation-duration: .4s;
-        animation-name: videoOpacity;
-    }
-
-    @keyframes videoOpacity {
-        0% {
-            opacity: 1;
-        }
-
-        50% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    #setting {
-        vertical-align: middle;
-        width: 25px;
-        height: 25px;
-        fill: white;
-    }
-
-    #setting:hover {
-        animation: buttonScale .5s linear;
-    }
-
-    #setting:hover>#settingSvg_1 {
-        transform-origin: center;
-        animation: settingRotate .5s linear;
-    }
-
-    @keyframes settingRotate {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        50% {
-            transform: rotate(90deg);
-        }
-
-        100% {
-            transform: rotate(180deg);
-        }
-    }
-
-    #inPicture {
-        vertical-align:middle;
-        width: 15px;
-        height: 15px;
-        fill: white;
-    }
-
-    #inPictureSvg_2 {
+    50% {
         opacity: 0;
     }
 
-    #inPicture:hover {
-        transform-origin: 110% 110%;
-        animation: buttonScale .3s linear;
+    100% {
+        opacity: 1;
+    }
+}
+
+#setting {
+    vertical-align: middle;
+    width: 25px;
+    height: 25px;
+    fill: white;
+}
+
+#setting:hover {
+    animation: buttonScale .5s linear;
+}
+
+#setting:hover>#settingSvg_1 {
+    transform-origin: center;
+    animation: settingRotate .5s linear;
+}
+
+@keyframes settingRotate {
+    0% {
+        transform: rotate(0deg);
     }
 
-    #inPicture:hover>#inPictureSvg_2 {
-        animation: inPictureXY .3s linear;
+    50% {
+        transform: rotate(90deg);
     }
 
-    @keyframes inPictureXY {
-        0% {
-            opacity: 0;
-        }
+    100% {
+        transform: rotate(180deg);
+    }
+}
 
-        25% {
-            opacity: .5;
+#inPicture {
+    vertical-align: middle;
+    width: 15px;
+    height: 15px;
+    fill: white;
+}
 
-        }
+#inPictureSvg_2 {
+    opacity: 0;
+}
 
-        50% {
-            opacity: 1;
+#inPicture:hover {
+    transform-origin: 110% 110%;
+    animation: buttonScale .3s linear;
+}
 
-        }
+#inPicture:hover>#inPictureSvg_2 {
+    animation: inPictureXY .3s linear;
+}
 
-        75% {
-            opacity: .5;
-
-        }
-
-        100% {
-            opacity: 0;
-        }
+@keyframes inPictureXY {
+    0% {
+        opacity: 0;
     }
 
+    25% {
+        opacity: .5;
 
-    @keyframes buttonScale {
-        0% {
-            transform: scale(1, 1);
-            /* opacity: 1; */
-        }
-
-        50% {
-            transform: scale(.8, .8);
-            /* opacity: 0; */
-        }
-
-        100% {
-            transform: scale(1, 1);
-            /* opacity: 1; */
-        }
     }
 
-    
-    #widescreen {
-        vertical-align: middle;
-        width: 20px;
-        height: 20px;
-        fill: white;
+    50% {
+        opacity: 1;
+
     }
 
-    #widescreen:hover {
-        transform-origin: center;
-        animation-duration: .3s;
-        animation-iteration-count: 2;
-        animation-name: widescreenScaleX;
+    75% {
+        opacity: .5;
+
     }
 
-    #widescreen:hover>#widescreenSvg_2 {
-        animation-duration: .3s;
-        animation-iteration-count: 2;
-        animation-name: widescreeMobileX;
+    100% {
+        opacity: 0;
+    }
+}
+
+
+@keyframes buttonScale {
+    0% {
+        transform: scale(1, 1);
+        /* opacity: 1; */
     }
 
-    #widescreen:hover>#widescreenSvg_1 {
-        animation-duration: .3s;
-        animation-iteration-count: 2;
-        animation-name: widescreeMobile-X;
+    50% {
+        transform: scale(.8, .8);
+        /* opacity: 0; */
     }
 
-    @keyframes widescreenScaleX {
-        0% {
-            transform: scaleX(1);
-        }
+    100% {
+        transform: scale(1, 1);
+        /* opacity: 1; */
+    }
+}
 
-        50% {
-            transform: scaleX(.8);
-        }
 
-        100% {
-            transform: scaleX(1);
-        }
+#widescreen {
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    fill: white;
+}
+
+#widescreen:hover {
+    transform-origin: center;
+    animation-duration: .3s;
+    animation-iteration-count: 2;
+    animation-name: widescreenScaleX;
+}
+
+#widescreen:hover>#widescreenSvg_2 {
+    animation-duration: .3s;
+    animation-iteration-count: 2;
+    animation-name: widescreeMobileX;
+}
+
+#widescreen:hover>#widescreenSvg_1 {
+    animation-duration: .3s;
+    animation-iteration-count: 2;
+    animation-name: widescreeMobile-X;
+}
+
+@keyframes widescreenScaleX {
+    0% {
+        transform: scaleX(1);
     }
 
-    @keyframes widescreeMobileX {
-        0% {
-            transform: translateX(0px)
-        }
-
-        50% {
-            transform: translateX(50px)
-        }
-
-        100% {
-            transform: translateX(0px)
-        }
+    50% {
+        transform: scaleX(.8);
     }
 
-    @keyframes widescreeMobile-X {
-        0% {
-            transform: translateX(0px)
-        }
+    100% {
+        transform: scaleX(1);
+    }
+}
 
-        50% {
-            transform: translateX(-50px)
-        }
-
-        100% {
-            transform: translateX(0px)
-        }
+@keyframes widescreeMobileX {
+    0% {
+        transform: translateX(0px)
     }
 
-    #fullScreen {
-        vertical-align: middle;
-        width: 20px;
-        height: 20px;
-        fill: rgb(255, 255, 255);
+    50% {
+        transform: translateX(50px)
     }
 
-    #fullScreen:hover {
-        animation-delay: .2;
-        transform-origin: center;
-        animation-duration: .3s;
-        animation-iteration-count: 2;
-        animation-name: fullScreenScaleX;
+    100% {
+        transform: translateX(0px)
+    }
+}
+
+@keyframes widescreeMobile-X {
+    0% {
+        transform: translateX(0px)
     }
 
-    #fullScreen:hover>#fullScreenSvg_1 {
-        animation-duration: .3s;
-        animation-iteration-count: 2;
-        animation-name: fullScreenMobileX-Y;
+    50% {
+        transform: translateX(-50px)
     }
 
-    #fullScreen:hover>#fullScreenSvg_2 {
-        animation-duration: .3s;
-        animation-iteration-count: 2;
-        animation-name: fullScreenMobileXY;
+    100% {
+        transform: translateX(0px)
+    }
+}
+
+#fullScreen {
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    fill: rgb(255, 255, 255);
+}
+
+#fullScreen:hover {
+    animation-delay: .2;
+    transform-origin: center;
+    animation-duration: .3s;
+    animation-iteration-count: 2;
+    animation-name: fullScreenScaleX;
+}
+
+#fullScreen:hover>#fullScreenSvg_1 {
+    animation-duration: .3s;
+    animation-iteration-count: 2;
+    animation-name: fullScreenMobileX-Y;
+}
+
+#fullScreen:hover>#fullScreenSvg_2 {
+    animation-duration: .3s;
+    animation-iteration-count: 2;
+    animation-name: fullScreenMobileXY;
+}
+
+#fullScreen:hover>#fullScreenSvg_3 {
+    animation-duration: .3s;
+    animation-iteration-count: 2;
+    animation-name: fullScreenMobile-X-Y;
+}
+
+#fullScreen:hover>#fullScreenSvg_4 {
+    animation-duration: .3s;
+    animation-iteration-count: 2;
+    animation-name: fullScreenMobile-XY;
+}
+
+@keyframes fullScreenScaleX {
+    0% {
+        transform: scale(1, 1);
     }
 
-    #fullScreen:hover>#fullScreenSvg_3 {
-        animation-duration: .3s;
-        animation-iteration-count: 2;
-        animation-name: fullScreenMobile-X-Y;
+    50% {
+        transform: scale(.8, .8);
     }
 
-    #fullScreen:hover>#fullScreenSvg_4 {
-        animation-duration: .3s;
-        animation-iteration-count: 2;
-        animation-name: fullScreenMobile-XY;
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+@keyframes fullScreenMobileXY {
+    0% {
+        transform: translate(0px)
     }
 
-    @keyframes fullScreenScaleX {
-        0% {
-            transform: scale(1,1);
-        }
-
-        50% {
-            transform: scale(.8,.8);
-        }
-
-        100% {
-            transform: scale(1,1);
-        }
-    }
-    
-    @keyframes fullScreenMobileXY {
-        0% {
-            transform: translate(0px)
-        }
-
-        50% {
-            transform: translate(50px,20px)
-        }
-
-        100% {
-            transform: translate(0px)
-        }
+    50% {
+        transform: translate(50px, 20px)
     }
 
-    @keyframes fullScreenMobileX-Y {
-        0% {
-            transform: translate(0px)
-        }
+    100% {
+        transform: translate(0px)
+    }
+}
 
-        50% {
-            transform: translate(50px,-20px)
-        }
-
-        100% {
-            transform: translate(0px)
-        }
+@keyframes fullScreenMobileX-Y {
+    0% {
+        transform: translate(0px)
     }
 
-    @keyframes fullScreenMobile-XY {
-        0% {
-            transform: translate(0px)
-        }
-
-        50% {
-            transform: translate(-50px,20px)
-        }
-
-        100% {
-            transform: translate(0px)
-        }
+    50% {
+        transform: translate(50px, -20px)
     }
 
-    @keyframes fullScreenMobile-X-Y {
-        0% {
-            transform: translate(0px)
-        }
+    100% {
+        transform: translate(0px)
+    }
+}
 
-        50% {
-            transform: translate(-50px,-20px)
-        }
-
-        100% {
-            transform: translate(0px)
-        }
+@keyframes fullScreenMobile-XY {
+    0% {
+        transform: translate(0px)
     }
 
-    #bar1 {
-        position: absolute;
-        bottom: 0px;
-        width: 100%;
-        outline: none;
-        height: 2px;
-        transition: .5s .1s;
-        background-color: rgb(255, 255, 255);
-        /* opacity:0; */
+    50% {
+        transform: translate(-50px, 20px)
     }
 
-    #bar1 .bar1Inside {
-        height: 100%;
-        background-color: aqua;
-        transition: .1s .1s;
+    100% {
+        transform: translate(0px)
     }
+}
+
+@keyframes fullScreenMobile-X-Y {
+    0% {
+        transform: translate(0px)
+    }
+
+    50% {
+        transform: translate(-50px, -20px)
+    }
+
+    100% {
+        transform: translate(0px)
+    }
+}
+
+#bar1 {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    outline: none;
+    height: 2px;
+    transition: .5s .1s;
+    background-color: rgb(255, 255, 255);
+    /* opacity:0; */
+}
+
+#bar1 .bar1Inside {
+    height: 100%;
+    background-color: aqua;
+    transition: .1s .1s;
+}
 </style>
