@@ -1,13 +1,14 @@
 <template>
-    <div class="play_body">
-        <h1>video</h1>
-        <!-- <video id="video" ref="v" controls>
-            <source
+    <div>
+        <!-- <h1>Video</h1> -->
+        <video id="video" ref="v" controls>
+            <!-- <source
                 src="https://aliyun.oss.careyshop.cn/uploads/files/20191113/9bbf7ac9-a452-445b-8152-4443bc3505e8.mp4?type=aliyun"
-                type="video/mp4" >
+                type="video/mp4" > -->
+                <source :src="$route.query.url">
             您的浏览器不支持 HTML5 video 标签。
         </video>
-        <div id="play_menu">
+        <!-- <div id="play_menu">
             <div class="play_menu_top"></div>
             <div class="play_menu_end">
                 <div class="menu_bar">
@@ -102,7 +103,7 @@
 
 <script>
 export default {
-    name: 'Video',
+    name: 'videoPlay',
     props: [
         'videoSrc'
     ],
@@ -115,8 +116,7 @@ export default {
     },
     mounted() {
         this.video = this.$refs.v;
-        // console.log(this.video);
-        console.log("Video");
+        console.log(this.$route.query);
     },
     methods: {
         menuPlay() {

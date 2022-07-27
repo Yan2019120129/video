@@ -13,14 +13,9 @@ Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 //创建vm
-var vm=new Vue({
+new Vue({
 	el: '#app',
 	render: h => h(App),
 	store,
 	router,
-	mounted() {
-		setTimeout(() => {
-			this.$destroy()
-		}, 5000)
-	}
 })

@@ -1,23 +1,11 @@
 <template>
     <div>
-        <h1>你好！！！</h1>
+        <h1>Home</h1>
     </div>
 </template>
 <script>
-import Video from '../components/Video'
 export default {
-    name: 'Home',
-    comments: {
-        Video,
-    },
-    mounted(){
-        console.log("Home");
-    },
-    data() {
-        return {
-            hello: 'MyHome'
-        }
-    }
+    name: 'Home'
 }
 </script>
 <style>
