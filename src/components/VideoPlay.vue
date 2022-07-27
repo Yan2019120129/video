@@ -5,7 +5,7 @@
             <!-- <source
                 src="https://aliyun.oss.careyshop.cn/uploads/files/20191113/9bbf7ac9-a452-445b-8152-4443bc3505e8.mp4?type=aliyun"
                 type="video/mp4" > -->
-                <source :src="$route.query.url">
+            <source :src="$route.query.url">
             您的浏览器不支持 HTML5 video 标签。
         </video>
         <!-- <div id="play_menu">

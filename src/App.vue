@@ -1,12 +1,11 @@
 <template>
   <div>
     <h1>欢迎!!!</h1>
-    <img src="./assets/img/tv.png" alt="">
     <router-link to="/home">{{ toHome }}</router-link>
     <router-link :to="{
-      name:'videoPlay',
-      query:{
-        url:require('./assets/video/test.mp4'),
+      name: 'videoPlay',
+      query: {
+        url: this.videoSrc,
       }
     }">{{ toVideo }}</router-link>
     <router-view></router-view>
@@ -27,7 +26,7 @@ export default {
       isShow: true,
       toHome: 'Home',
       toVideo: 'VideoPlay',
-      // videoSrc: require("./assets/video/example.mp4"),
+      videoSrc: require("./assets/video/test.mp4"),
     }
   },
   methods: {
