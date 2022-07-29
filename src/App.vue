@@ -1,6 +1,12 @@
 <template>
-  <div>
-    <h1>欢迎!!!</h1>
+  <div class="App">
+    <div class="head">
+      <BiliHead></BiliHead>
+    </div>
+    <div class="main">
+      <BiliMain></BiliMain>
+    </div>
+    <div class="fool"></div>
     <router-link to="/home">{{ toHome }}</router-link>
     <router-link :to="{
       name: 'videoPlay',
@@ -14,9 +20,12 @@
 </template>
 
 <script>
+import BiliHead from './components/BiliHead'
+import BiliMain from './components/BiliMain'
 export default {
   name: 'App',
   components: {
+    BiliHead, BiliMain
   },
   mounted() {
     // console.log(require);
@@ -29,21 +38,27 @@ export default {
       videoSrc: require("./assets/video/test.mp4"),
     }
   },
-  methods: {
-    btnIsShow() {
-      // this.isShow = !x;
-      // console.log(this.isShow);
-    }
-  }
 }
 </script>
 
 <style>
-a {
-  margin: 100px;
-  padding: 5px;
-  background: red;
-  border-radius: 5px;
-  text-decoration: none;
+.App {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.head {}
+
+.main {
+  width: 85%;
+  /* height: 50vh; */
+  background-color: red;
+}
+
+.fool {
+  width: 100%;
+  height: 10vh;
+  background-color: aqua;
 }
 </style>

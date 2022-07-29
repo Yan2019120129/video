@@ -1,14 +1,10 @@
 <template>
-    <div>
-        <!-- <h1>Video</h1> -->
-        <video id="video" ref="v" controls>
-            <!-- <source
-                src="https://aliyun.oss.careyshop.cn/uploads/files/20191113/9bbf7ac9-a452-445b-8152-4443bc3505e8.mp4?type=aliyun"
-                type="video/mp4" > -->
+    <div class="play_body">
+        <video id="video" ref="v">
             <source :src="$route.query.url">
             您的浏览器不支持 HTML5 video 标签。
         </video>
-        <!-- <div id="play_menu">
+        <div id="play_menu">
             <div class="play_menu_top"></div>
             <div class="play_menu_end">
                 <div class="menu_bar">
@@ -19,7 +15,10 @@
                     </div>
                 </div>
                 <div class="menu_bottom">
-                    <button class="menu_play" @click="menuPlay"><img src="../assets/img/startVideo.png"></button>
+                    <button class="menu_play" @click="menuPlay">
+                    <img v-show="isPlay" src="../assets/img/startVideo.png">
+                    <img v-show="!isPlay" src="../assets/img/stopVideo.png">
+                    </button>
                     <button class="menu_time">00:00/00:00</button>
                     <button class="menu_aut"><b>自动</b></button>
                     <button class="menu_speed"><b>倍速</b></button>
@@ -97,7 +96,7 @@
         </div>
         <div id="bar1">
             <div class="bar1Inside"></div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -122,9 +121,11 @@ export default {
         menuPlay() {
             if (this.video.paused) {
                 this.video.play()
+               this.isPlay=false;
                 console.log("开始");
             } else {
                 this.video.pause()
+               this.isPlay=true;
                 console.log("暂停");
             }
         }
@@ -155,25 +156,21 @@ body {
     top: 0px;
     padding: auto;
     transition: .5s .1s;
-    /* opacity: 0; */
 }
 
 .play_menu_top {
     width: 1200px;
     height: 88%;
-    /* background-color: aqua; */
 }
 
 .play_menu_end {
     width: 100%;
     height: 12%;
-    /* opacity: 0; */
     transition: .2s .1s;
     background: -webkit-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
     background: -o-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
     background: -moz-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
     background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));
-    /* background-color: black; */
 }
 
 .menu_bar {
@@ -214,7 +211,7 @@ body {
 .bar a {
     width: 0px;
     height: 4px;
-    border: 6px solid red;
+    border: 6px solid rgb(0, 204, 255);
     border-top-color: rgb(0, 119, 255);
     border-bottom-color: rgb(0, 119, 255);
     border-left-color: transparent;
