@@ -43,17 +43,22 @@ export default {
 
 <style>
 .App {
+  margin: 0 auto;
   display: flex;
   align-items: center;
   flex-direction: column;
+  max-width: 2560px;
+  min-width: 1200px;
+  object-fit: cover;
 }
 
-.head {}
+.head {
+  width: 100%;
+}
 
 .main {
-  width: 85%;
-  /* height: 50vh; */
-  background-color: red;
+  width: 100%;
+  /* background-color: red; */
 }
 
 .fool {

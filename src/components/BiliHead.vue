@@ -1,5 +1,6 @@
 <template>
-        <div class="bili-head">
+    <div class="bili-head">
+        <div class="bili-head_top">
             <div class="bili-head_banner">
                 <ul class="bili-head_banner_left-ul">
                     <li>导航1</li>
@@ -23,16 +24,82 @@
                 </ul>
             </div>
             <img class="bili-head-img" src="@/assets/img/headImg.png">
+
         </div>
+
+        <div class="bili-head_end">
+            <div class="bili-head_navigation">
+                <div class="navigation_left">
+                    <div>
+                        <img src="@/assets/img/001.jpg" alt=""><br>
+                        <a href="">动态</a>
+                    </div>
+                    <div>
+                        <img src="@/assets/img/001.jpg" alt=""><br>
+                        <a href="">热门</a>
+                    </div>
+                    <div>
+                        <img src="@/assets/img/001.jpg" alt=""><br>
+                        <a href="">频道</a>
+                    </div>
+                </div>
+                <div class="navigation_middle">
+                    <div v-for="(p, index) in myData.slice(0, 32)" :key="index">
+                        <button>
+                            {{ p.name }}
+                        </button>
+                    </div>
+                </div>
+                <div class="navigation_right">
+                    <div>
+                        <svg></svg>
+                        <a href="">测试</a>
+                    </div>
+                    <div>
+                        <svg></svg>
+                        <a href="">测试</a>
+                    </div>
+                    <div>
+                        <svg></svg>
+                        <a href="">测试</a>
+                    </div>
+                    <div>
+                        <svg></svg>
+                        <a href="">测试</a>
+                    </div>
+                    <div>
+                        <svg></svg>
+                        <a href="">测试</a>
+                    </div>
+                    <div>
+                        <svg></svg>
+                        <a href="">测试</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </template>
 <script>
+import testData from '@/assets/test.json'
+export default {
+    name: "BiliHead",
+    data() {
+        return {
+            myData: testData.test,
+        }
+    },
+    mounted() {
+        console.log(this.myData);
+    }
+}
 </script>
 <style scoped>
 .bili-head {
     position: relative;
     display: block;
     width: 100%;
-    height: 18vh;
 }
 
 .bili-head-img {
@@ -94,15 +161,76 @@
     width: 70%;
 }
 
-.bili-head_navigation_ul {
-    margin: 0px;
-    padding: 0px;
-    list-style-type: none ;
+.bili-head_end {
+    width: 100%;
+}
+
+
+.bili-head_navigation {
+    margin: 0 10%;
+    padding: 10px 0;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
+    /* background-color: rgb(1, 218, 238); */
 }
-.bili-head_navigation_ul li{
-margin: 1vw;
+
+.navigation_left {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.navigation_left>div {
+    margin: auto 0;
+    padding-right: 1vw;
+}
+
+.navigation_left img {
+    border-radius: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+
+.navigation_middle {
+    width: 100%;
+    height: 5vh;
+    margin: auto 20px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    grid-gap: 10px 10px;
+}
+
+.navigation_middle> div {
+    margin: auto;
+}
+.navigation_middle button {
+    margin: auto;
+}
+
+.navigation_right {
+    display: grid;
+    margin: auto 0;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px 10px;
+}
+
+.navigation_right>div {
+    margin: auto;
+    white-space: nowrap;
+    /* 内容不换行 */
+}
+
+.navigation_right svg {
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+}
+
+.navigation_right a {
+    margin: auto 0;
 }
 </style>
