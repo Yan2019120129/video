@@ -2,51 +2,51 @@
     <div class="bili-main">
         <!-- div.grid-container>(div.item$ >(div.head{图片}+div.box-fool{标题}))*7 -->
         <div class="grid-container">
-            <div class="item1 box">
+            <div class="item1">
                 <img src="../assets/img/001.jpg" alt="">
             </div>
-            <div class="item2 box">
-                <div class="head">图片</div>
-                <div class="box-fool">标题</div>
-            </div>
-            <div class="item3 box">
-                <div class="head">图片</div>
-                <div class="box-fool">标题</div>
-            </div>
-            <div class="item4 box">
-                <div class="head">图片</div>
-                <div class="box-fool">标题</div>
-            </div>
-            <div class="item5 box">
-                <div class="head">图片</div>
-                <div class="box-fool">标题</div>
-            </div>
-            <div class="item6 box">
-                <div class="head">图片</div>
-                <div class="box-fool">标题</div>
-            </div>
-            <div class="item7 box">
-                <div class="head">图片</div>
-                <div class="box-fool">标题</div>
+            <div class="item2 box" v-for="index of 8">
+                <div class="head"> <img class="box-img" src="../assets/img/001.jpg" alt=""></div>
+                <div class="box-fool"><span>描述</span><span>标题</span></div>
             </div>
         </div>
+        <!-- <div class="recommended">
+            <div class="box">
+                <div>
+                    <img class="box-img" src="../assets/img/001.jpg" alt="">
+                </div>
+                <div>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+
+        </div> -->
     </div>
 </template>
-    <script>
+<script>
 </script>
     <style>
+    .bili-main {
+        width: 100%;
+        height: 500px;
+    }
+    
     .grid-container {
-        margin: 0px 10%;
+        height: 50vh;
+        width: 100%;
+        margin: 0 10%;
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(6, 200px);
         grid-gap: 20px 10px;
     }
     
+    .box {
+        display: flex;
+        flex-direction: column;
+    }
+    
     .item1 {
-        /* grid-column-start: 1;
-                        grid-column-end: 3;
-                        grid-row-start: 1;
-                        grid-row-end: 3; */
         grid-area: 1/1/3/3;
     }
     
@@ -54,5 +54,19 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+    
+    .head {
+        height: 70%;
+    }
+    
+    .box-img {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .fool {
+        height: 30%;
+        width: 100%;
     }
     </style>

@@ -44,11 +44,9 @@
                     </div>
                 </div>
                 <div class="navigation_middle">
-                    <div v-for="(p, index) in myData.slice(0, 32)" :key="index">
-                        <button>
-                            {{ p.name }}
-                        </button>
-                    </div>
+                    <button v-for="(p, index) in myData.slice(0, 25)" :key="index">
+                        {{ p.name }}
+                    </button>
                 </div>
                 <div class="navigation_right">
                     <div>
@@ -167,15 +165,17 @@ export default {
 
 
 .bili-head_navigation {
-    margin: 0 10%;
-    padding: 10px 0;
+    padding: 2vh 10%;
+    height: 65px;
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     /* background-color: rgb(1, 218, 238); */
 }
 
 .navigation_left {
+    height: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -195,27 +195,29 @@ export default {
 
 
 .navigation_middle {
+    border-right: 1px solid black;
     width: 100%;
-    height: 5vh;
-    margin: auto 20px;
+    height: 100%;
     overflow: hidden;
     display: grid;
+    padding: 0 2vw;
     grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    grid-gap: 10px 10px;
+    grid-template-rows: repeat(max(2), 3vh);
+    gap: 10px 10px;
+
 }
 
-.navigation_middle> div {
-    margin: auto;
-}
-.navigation_middle button {
-    margin: auto;
+.navigation_middle>button {
+    width: 100%;
+    white-space: nowrap;
+    align-content: center;
 }
 
 .navigation_right {
+    padding-left: 2vw;
     display: grid;
-    margin: auto 0;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px 10px;
+    grid-gap: 20px 10px;
 }
 
 .navigation_right>div {
