@@ -7,41 +7,38 @@
       <BiliMain></BiliMain>
     </div>
     <div class="fool"></div>
-    <router-link to="/home">{{ toHome }}</router-link>
     <router-link :to="{
-      name: 'videoPlay',
+      name: 'VideoView',
       query: {
         url: this.videoSrc,
       }
-    }">{{ toVideo }}</router-link>
+    }">{{ toView }}</router-link>
     <router-view></router-view>
   </div>
 
 </template>
 
 <script>
-import BiliHead from './components/BiliHead'
-import BiliMain from './components/BiliMain'
+import BiliHead from './components/BiliHead.vue'
+import BiliMain from './components/BiliMain.vue'
 export default {
   name: 'App',
   components: {
-    BiliHead, BiliMain
-  },
-  mounted() {
-    // console.log(require);
+    BiliHead,
+    BiliMain
   },
   data() {
     return {
-      isShow: true,
       toHome: 'Home',
       toVideo: 'VideoPlay',
-      videoSrc: require("./assets/video/test.mp4"),
+      toView: 'VideoView',
+      videoSrc: require("@/assets/video/test.mp4"),
     }
-  },
+  }
 }
 </script>
 
-<style>
+<style scoped>
 .App {
   margin: 0 auto;
   display: flex;
@@ -57,8 +54,7 @@ export default {
 }
 
 .main {
-  width: 100%;
-  /* background-color: red; */
+  width: 80%;
 }
 
 .fool {

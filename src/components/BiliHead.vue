@@ -202,7 +202,7 @@ export default {
     display: grid;
     padding: 0 2vw;
     grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    grid-template-rows: repeat(max(2), 3vh);
+    grid-template-rows: repeat(max(2), 25px);
     gap: 10px 10px;
 
 }

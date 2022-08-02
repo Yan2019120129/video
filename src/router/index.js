@@ -1,15 +1,11 @@
 import VueRouter from 'vue-router'
-import VideoPlay from '../components/VideoPlay'
-import Home from '../components/Home'
+import VideoView from '@/components/VideoView/VideoView'
 export default new VueRouter({
     routes: [
         {
-            name: 'videoPlay',
-            path: '/videoPlay',
-            component: VideoPlay,
-        }, {
-            path: '/home',
-            component: Home,
+            name: 'VideoView',
+            path:'/VideoView/VideoView',
+            component:VideoView,
         }
     ]
 })
