@@ -4,10 +4,14 @@
             <ToPromoteHead></ToPromoteHead>
         </div>
         <div class="toPromote">
-            <ToPromote></ToPromote>
+            <ToPromote>
+            </ToPromote>
         </div>
         <div class="toPromote">
-            <ToPromoteSecond></ToPromoteSecond>
+            <ToPromoteSecond><span>赛事</span></ToPromoteSecond>
+        </div>
+        <div class="toPromote">
+            <ToPromoteThird><span>国创</span></ToPromoteThird>
         </div>
         <div class="toPromote">
             <ToPromoteThird></ToPromoteThird>
@@ -31,9 +35,7 @@ export default {
             items: null,
         }
     }, mounted() {
-/*         this.items = this.$refs.TPH
-        this.$store.commit('calculateContainerLength', this.items)
-        console.log(this.$store.state.items); */
+
     }, methods: {
 
     }

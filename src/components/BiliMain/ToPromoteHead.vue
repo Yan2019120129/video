@@ -3,7 +3,7 @@
         <div class="item1">
             <img src="@/assets/img/001.jpg" alt="">
         </div>
-        <VideoView v-for="index in this.$store.state.TPHCitems"></VideoView>
+        <VideoView v-for="index in this.$store.state.TPHCitems "></VideoView>
     </div>
 </template>
 <script>
@@ -16,11 +16,10 @@ export default {
     data() {
         return {
             gridEle: null,
-            gridItem: null,
         }
     }, mounted() {
         this.gridEle = this.$refs.tph;
-        this.$store.commit('toPromoteHeadContainer', this.gridEle);
+        this.$store.commit('toPromoteContainer', this.gridEle);
     }, methods: {
 
     }

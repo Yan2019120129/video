@@ -19,17 +19,16 @@ export default {
             gridEle: null,
         }
     }, mounted() {
-        this.gridEle = this.$refs.tp
-        this.$store.commit("toPromoteContainer", this.gridEle)
     }
 }
 </script  >
 <style scoped>
-.ToPromote{
+.ToPromote {
     width: 100%;
     height: 100%;
     overflow: hidden;
 }
+
 .ToPromote-title {
     padding: 10px 0;
 }
@@ -37,7 +36,7 @@ export default {
 .grid-container {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px 20px;
 }
 

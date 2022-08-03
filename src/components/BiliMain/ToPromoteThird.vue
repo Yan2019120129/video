@@ -1,7 +1,9 @@
 <template>
     <div class="ToPromoteThird">
         <div class="ToPromoteThird-left">
-            <div class="ToPromote-title">推广</div>
+            <div class="ToPromote-title">
+                <slot>推广</slot>
+            </div>
             <div class="grid-container">
                 <div ref="VVI" class="item" v-for="index in this.$store.state.TPCitems*3">
                     <VideoView></VideoView>
