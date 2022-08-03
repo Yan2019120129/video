@@ -8,7 +8,7 @@ const actions = {
 
 const mutations = {
     toPromoteContainer(state, value) {
-        console.log("toPromoteHeadContainer");
+        console.log("toPromoteContainer");
         const getWindowInfo = () => {
             state.TPHCitems = Math.trunc((value.clientWidth / (value.firstElementChild.clientWidth / 2)) * 2 - 4); // 计算容器内能存放多少个子元素， 父元素元素宽度除以子元素宽度
             state.TPCitems = Math.trunc(value.clientWidth / 220);

@@ -3,16 +3,19 @@
         <div class="head">
             <div class="videoPlay" @mouseenter="videoPlay" @mouseleave="videoPlay">
                 <picture class="box-picture" ref="pic">
-                    <source srcset="@/assets/img/001.jpg">
-                    <img src="@/assets/img/002.jpg">
+                    <source srcset="@/assets/img/002.jpg">
+                    <img src="@/assets/img/001.jpg">
                 </picture>
-                <video ref="vid"  class="box-video" crossorigin="anonymous" muted="muted">
-                    <source v-show="!isPlay" :src="$route.query.url">
+                <video ref="vid" class="box-video" crossorigin="anonymous" muted="muted" preload="none">
+                    <source :src="$route.query.url">
+                    加载失败
                 </video>
             </div>
         </div>
-        <div class="middle" style="text-overflow:ellipsis;">描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述</div>
-        <div class="foot"><a>标题</a></div>
+        <div class="foot">
+            <div class="foot_head" style="text-overflow:ellipsis;">描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述</div>
+            <div class="foot-end"><a>标题</a></div>
+        </div>
     </div>
 </template>
 <script>
@@ -53,15 +56,29 @@ export default {
 </script>
     <style>
     .box {
+        width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
     }
     
-    .box-video {
+    .head {
+        width: 100%;
+        height: 70%;
+    }
+    
+    .videoPlay {
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
         width: 100%;
         height: 100%;
+    }
     
+    
+    .box-video {
+        height: 100%;
     }
     
     .box-picture {
@@ -74,22 +91,20 @@ export default {
         opacity: 1;
     }
     
-    .videoPlay {
-        border-radius: 5px;
-        overflow: hidden;
-        position: relative;
-        width: 100%;
-        height: 100%;
-    }
-    
-    .videoPlay picture img,
+    .box-picture img,
     source {
         width: 100%;
         height: 100%;
         transition: all .1s linear;
     }
     
-    .middle {
+        
+    .fool {
+        width: 100%;
+        height: 30%;
+    }
+
+    .foot_head {
         /* 在恰当的断字点进行换行 */
         word-break: break-all;
         /* 超出范围隐藏 */
@@ -103,8 +118,8 @@ export default {
         /* 子元素的垂直排列方式 */
         -webkit-box-orient: vertical;
     }
-    
-    .fool {
-        width: 100%;
-    }
+
+.fool_end{
+    width: 100%;
+}
     </style>

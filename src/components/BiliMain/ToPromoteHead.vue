@@ -8,6 +8,7 @@
 </template>
 <script>
 import VideoView from '../VideoView/VideoView'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
     name: 'ToPromoteHead',
     components: {
