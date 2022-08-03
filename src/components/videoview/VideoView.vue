@@ -2,13 +2,13 @@
     <div class="box">
         <div class="head">
             <div class="videoPlay" @mouseenter="videoPlay" @mouseleave="videoPlay">
-                <video v-show="!isShowImg" class="box-video" crossorigin="anonymous" muted="muted" ref="test">
-                    <source v-show="!isPlay" :src="$route.query.url">
-                </video>
-                <picture class="box-picture" v-show="isShowImg" >
+                <picture class="box-picture" ref="pic">
                     <source srcset="@/assets/img/001.jpg">
                     <img src="@/assets/img/002.jpg">
                 </picture>
+                <video ref="vid"  class="box-video" crossorigin="anonymous" muted="muted">
+                    <source v-show="!isPlay" :src="$route.query.url">
+                </video>
             </div>
         </div>
         <div class="middle" style="text-overflow:ellipsis;">描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述</div>
@@ -22,14 +22,15 @@ export default {
         'videoSrc'
     ], data() {
         return {
-            isShowImg: true,
+            picture: null,
             isPlay: true,
             video: null,
             showClothTimer: null,
         }
     },
     mounted() {
-        this.video = this.$refs.test;
+        this.video = this.$refs.vid;
+        this.picture = this.$refs.pic;
     },
     methods: {
         videoPlay() {
@@ -37,13 +38,13 @@ export default {
             clearTimeout(this.showClothTimer);
             if (!this.isPlay) {
                 this.showClothTimer = setTimeout(() => {
+                    this.picture.style = 'opacity:0;';
                     this.video.play();
-                    this.isShowImg = false;
                 }, 1000);
             } else {
+                this.picture.style = 'opacity:1';
                 this.video.pause();
                 this.video.currentTime = null;
-                this.isShowImg = true;
             }
 
         }
@@ -60,15 +61,29 @@ export default {
     .box-video {
         width: 100%;
         height: 100%;
+    
+    }
+    
+    .box-picture {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0px;
+        left: 0px;
         transition: all .1s linear;
+        opacity: 1;
     }
     
     .videoPlay {
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
         width: 100%;
         height: 100%;
     }
     
-    .videoPlay picture img,source {
+    .videoPlay picture img,
+    source {
         width: 100%;
         height: 100%;
         transition: all .1s linear;

@@ -15,7 +15,6 @@
     }">{{ toView }}</router-link>
     <router-view></router-view>
   </div>
-
 </template>
 
 <script>
@@ -40,6 +39,7 @@ export default {
 
 <style scoped>
 .App {
+  background-color: white;
   margin: 0 auto;
   display: flex;
   align-items: center;

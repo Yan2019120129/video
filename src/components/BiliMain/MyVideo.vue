@@ -1,11 +1,7 @@
 <template>
-    <div class="video"
-     @pointermove.prevent="handleMouseMove($event)" 
-     @pointerup.prevent="stopDragging"
-        @pointerleave="handleMouseLeave" 
-        @pointerenter="handleMouseEnter" ref="vcontainer">
-        <video class="video__player" ref="v"
-         @timeupdate="handleTimeUpdate" @ended="handleEnd" controls>
+    <div class="video" @pointermove.prevent="handleMouseMove($event)" @pointerup.prevent="stopDragging"
+        @pointerleave="handleMouseLeave" @pointerenter="handleMouseEnter" ref="vcontainer">
+        <video class="video__player" ref="v" @timeupdate="handleTimeUpdate" @ended="handleEnd" controls>
             <source :src="videoSrc" />
         </video>
         <!-- <div class="controller" v-show="isControlVisible">
@@ -76,7 +72,7 @@ export default {
             progress: null,
         };
     },
-    
+
     computed: {
         videoProgressPercent() {
             return `${this.videoProgress * 100}%`;

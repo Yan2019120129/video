@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="ToPromote">
         <div class="ToPromote-title">推广</div>
-        <div class="grid-container">
-            <div class="item" v-for="index in 10">
+        <div class="grid-container" ref="tp">
+            <div class="item" v-for="index in this.$store.state.TPCitems">
                 <VideoView></VideoView>
             </div>
         </div>
@@ -14,21 +14,36 @@ export default {
     name: 'ToPromote',
     components: {
         VideoView
+    }, data() {
+        return {
+            gridEle: null,
+        }
+    }, mounted() {
+        this.gridEle = this.$refs.tp
+        this.$store.commit("toPromoteContainer", this.gridEle)
     }
 }
 </script  >
 <style scoped>
-.ToPromote-title {}
+.ToPromote{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.ToPromote-title {
+    padding: 10px 0;
+}
 
 .grid-container {
     width: 100%;
-    display: flex;
-    flex-direction: row;
-    column-gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+    gap: 20px 20px;
 }
 
-.item {
-    width: 200px;
+/* .item {
+    flex-grow: 1;
+    min-width: 200px;
     height: 200px;
-}
+} */
 </style>
