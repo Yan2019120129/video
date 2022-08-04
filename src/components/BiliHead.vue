@@ -4,7 +4,13 @@
             <div class="bili-head_banner">
                 <ul class="bili-head_banner_left-ul">
                     <li>导航1</li>
-                    <li>导航2</li>
+                    <li>
+                        <NavigationItem>
+                            <!-- 插入slot="button_active"属性为动态效果 -->
+                            <!-- 插入slot="button_text" 为静态效果 -->
+                            <a slot="button_active">导航</a>
+                        </NavigationItem>
+                    </li>
                     <li>导航3</li>
                     <li>导航4</li>
                     <li>导航5</li>
@@ -12,7 +18,6 @@
                 </ul>
                 <form action="">
                     <input type="text"><button>搜素</button>
-
                 </form>
                 <ul class="bili-head_banner_right-ul">
                     <li>导航7</li>
@@ -24,7 +29,6 @@
                 </ul>
             </div>
             <img class="bili-head-img" src="@/assets/img/headImg.png">
-
         </div>
 
         <div class="bili-head_end">
@@ -80,8 +84,12 @@
 </template>
 <script>
 import testData from '@/assets/test.json'
+import NavigationItem from '@/components/BiliHead/NavigationItem'
 export default {
     name: "BiliHead",
+    components: {
+        NavigationItem
+    },
     data() {
         return {
             myData: testData.test,

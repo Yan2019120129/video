@@ -54,18 +54,17 @@ export default {
     }
 }
 </script>
-    <style>
+    <style scoped>
     .box {
         width: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: space-around;
     }
     
     .head {
         width: 100%;
-        height: 70%;
+        height: 60%;
     }
     
     .videoPlay {
@@ -79,6 +78,7 @@ export default {
     
     .box-video {
         height: 100%;
+        width: 100%;
     }
     
     .box-picture {
@@ -98,12 +98,15 @@ export default {
         transition: all .1s linear;
     }
     
-        
-    .fool {
+    
+    .foot {
         width: 100%;
-        height: 30%;
+        height: 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
     }
-
+    
     .foot_head {
         /* 在恰当的断字点进行换行 */
         word-break: break-all;
@@ -118,8 +121,9 @@ export default {
         /* 子元素的垂直排列方式 */
         -webkit-box-orient: vertical;
     }
-
-.fool_end{
-    width: 100%;
-}
+    
+    .foot_end {
+        margin-top: 5px;
+        width: 100%;
+    }
     </style>

@@ -7,13 +7,13 @@
       <BiliMain></BiliMain>
     </div>
     <div class="fool"></div>
-    <router-link :to="{
+    <!-- <router-link :to="{
       name: 'VideoView',
       query: {
         url: this.videoSrc,
       }
     }">{{ toView }}</router-link>
-    <router-view></router-view>
+    <router-view></router-view> -->
   </div>
 </template>
 
