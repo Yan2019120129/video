@@ -6,7 +6,7 @@
             </div>
             <div class="grid-container">
                 <div ref="VVI" class="item" v-for="index in this.$store.state.TPCitems*3">
-                    <VideoView></VideoView>
+                    <VideoView><source :src="videoData"></VideoView>
                 </div>
             </div>
         </div>
@@ -34,7 +34,9 @@ export default {
     name: 'ToPromoteThird',
     components: {
         VideoView
-    },
+    },props:[
+        'videoData'
+    ],
     data() {
         return {
             ToPromoteThirdRigthHeadIsShow: false,

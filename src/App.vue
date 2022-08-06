@@ -7,13 +7,13 @@
       <BiliMain></BiliMain>
     </div>
     <div class="fool"></div>
-    <!-- <router-link :to="{
+    <router-link :to="{
       name: 'VideoView',
       query: {
         url: this.videoSrc,
       }
     }">{{ toView }}</router-link>
-    <router-view></router-view> -->
+    <router-view></router-view>
   </div>
 </template>
 
@@ -44,8 +44,8 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-width: 2560px;
-  min-width: 1200px;
+  max-width: 256rem;  
+  min-width: 120rem;
   object-fit: cover;
 }
 
@@ -59,7 +59,7 @@ export default {
 
 .fool {
   width: 100%;
-  height: 10vh;
+  height: 25rem;
   background-color: aqua;
 }
 </style>

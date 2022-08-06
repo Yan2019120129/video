@@ -1,20 +1,20 @@
     <template>
     <div class="bili-main">
         <div ref="TPH" class="toPromote">
-            <ToPromoteHead></ToPromoteHead>
+            <ToPromoteHead :videoData="videoData"></ToPromoteHead>
         </div>
         <div class="toPromote">
-            <ToPromote>
+            <ToPromote :videoData="videoData">
             </ToPromote>
         </div>
         <div class="toPromote">
-            <ToPromoteSecond><span>赛事</span></ToPromoteSecond>
+            <ToPromoteSecond :videoData="videoData"><span>赛事</span></ToPromoteSecond>
         </div>
         <div class="toPromote">
-            <ToPromoteThird><span>国创</span></ToPromoteThird>
+            <ToPromoteThird :videoData="videoData"><span>国创</span></ToPromoteThird>
         </div>
         <div class="toPromote">
-            <ToPromoteThird></ToPromoteThird>
+            <ToPromoteThird :videoData="videoData"></ToPromoteThird>
         </div>
     </div>
 </template>
@@ -30,12 +30,11 @@ export default {
         VideoView, ToPromote, ToPromoteSecond, ToPromoteHead, ToPromoteThird
     }, data() {
         return {
-            grid: null,
-            gridItem: null,
-            items: null,
+            videoData: null,
         }
     }, mounted() {
-
+        this.$store.dispatch("getVideo",null);
+        this.videoData = this.$store.state.VideoData;
     }, methods: {
 
     }

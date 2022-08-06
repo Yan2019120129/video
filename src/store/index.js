@@ -3,12 +3,17 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const actions = {
-
+    getVideo(state, value) {
+        value = require("@/assets/video/test.mp4");
+        state.commit('setVideo', value)
+    }
 }
 
 const mutations = {
+    setVideo(state, value) {
+        state.VideoData = value;
+    },
     toPromoteContainer(state, value) {
-        console.log("toPromoteContainer");
         const getWindowInfo = () => {
             state.TPHCitems = Math.trunc((value.clientWidth / (value.firstElementChild.clientWidth / 2)) * 2 - 4); // 计算容器内能存放多少个子元素， 父元素元素宽度除以子元素宽度
             state.TPCitems = Math.trunc(value.clientWidth / 220);
@@ -33,7 +38,8 @@ const mutations = {
 
 const state = {
     TPHCitems: 0,
-    TPCitems: 0
+    TPCitems: 0,
+    VideoData: '',
 }
 
 export default new Vuex.Store({

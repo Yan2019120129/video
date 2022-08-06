@@ -3,29 +3,81 @@
         <div class="bili-head_top">
             <div class="bili-head_banner">
                 <ul class="bili-head_banner_left-ul">
-                    <li>导航1</li>
                     <li>
-                        <NavigationItem>
+                        <Navigation>
                             <!-- 插入slot="button_active"属性为动态效果 -->
                             <!-- 插入slot="button_text" 为静态效果 -->
-                            <a slot="button_active">导航</a>
-                        </NavigationItem>
+                            <a slot="button_active">首页</a>
+                        </Navigation>
                     </li>
-                    <li>导航3</li>
-                    <li>导航4</li>
-                    <li>导航5</li>
-                    <li>导航6</li>
+                    <li>
+                        <Navigation>
+                            <a slot="button_active">番剧</a>
+                            <NavigationMenu slot="menu" />
+                        </Navigation>
+                    </li>
+                    <li>
+                        <Navigation>
+                            <a slot="button_active">直播</a>
+                            <NavigationMenu slot="menu" />
+                        </Navigation>
+                    </li>
+                    <li>
+                        <Navigation>
+                            <a slot="button_active">游戏中心</a>
+                            <NavigationMenuOne slot="menu" />
+                        </Navigation>
+                    </li>
                 </ul>
-                <form action="">
+                <form action="" class="head_search">
                     <input type="text"><button>搜素</button>
                 </form>
                 <ul class="bili-head_banner_right-ul">
-                    <li>导航7</li>
-                    <li>导航8</li>
-                    <li>导航9</li>
-                    <li>导航10</li>
-                    <li>导航11</li>
-                    <li>导航12</li>
+                    <li>
+                        <Navigation>
+                            <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
+                            <a slot="button_text">大会员</a>
+                            <!-- <NavigationMenuOne slot="menu" /> -->
+                        </Navigation>
+                    </li>
+                    <li>
+                        <Navigation>
+                            <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
+                            <a slot="button_text">消息</a>
+                            <!-- <NavigationMenuOne slot="menu" /> -->
+                        </Navigation>
+                    </li>
+                    <li>
+                        <Navigation>
+                            <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
+                            <a slot="button_text">动态</a>
+                            <!-- <NavigationMenuOne slot="menu" /> -->
+                        </Navigation>
+                    </li>
+                    <li>
+                        <Navigation>
+                            <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
+                            <a slot="button_text">搜藏</a>
+                            <!-- <NavigationMenuOne slot="menu" /> -->
+                        </Navigation>
+                    </li>
+                    <li>
+                        <Navigation>
+                            <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
+                            <a slot="button_text">历史</a>
+                            <!-- <NavigationMenuOne slot="menu" /> -->
+                        </Navigation>
+                    </li>
+
+
+                    <li>
+                        <Navigation>
+                            <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
+                            <a slot="button_text">创作中心</a>
+                            <!-- <NavigationMenuOne slot="menu" /> -->
+                        </Navigation>
+                    </li>
+
                 </ul>
             </div>
             <img class="bili-head-img" src="@/assets/img/headImg.png">
@@ -84,11 +136,13 @@
 </template>
 <script>
 import testData from '@/assets/test.json'
-import NavigationItem from '@/components/BiliHead/NavigationItem'
+import Navigation from '@/components/BiliHead/Navigation'
+import NavigationMenuOne from '@/components/BiliHead/NavigationMenuOne.vue'
+import NavigationMenu from '@/components/BiliHead/NavigationMenu.vue'
 export default {
     name: "BiliHead",
     components: {
-        NavigationItem
+        Navigation, NavigationMenuOne, NavigationMenu
     },
     data() {
         return {
@@ -104,6 +158,7 @@ export default {
     position: relative;
     display: block;
     width: 100%;
+    z-index: 1;
 }
 
 .bili-head-img {
@@ -116,41 +171,55 @@ export default {
 
 .bili-head_banner {
     width: 100%;
-    top: 1vh;
+    height: 4rem;
     position: absolute;
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
 }
 
 .bili-head_banner_left-ul {
+    height: 100%;
     list-style-type: none;
     width: 35%;
     display: flex;
     flex-direction: row;
+    align-items: center;
     margin: 0px;
     padding: 0px;
-    /* justify-content: space-around; */
 }
 
 .bili-head_banner_left-ul li {
-    margin-left: 1vw;
+    margin-left: 1rem;
+    height: 100%;
     color: white;
+    align-content: center;
+}
+
+.head_search button {
+    font-size: 1.6rem;
 }
 
 .bili-head_banner_right-ul {
+    height: 100%;
     list-style-type: none;
     width: 35%;
     display: flex;
     flex-direction: row;
+    align-items: center;
     margin: 0px;
     padding: 0px;
     justify-content: end;
 }
 
 .bili-head_banner_right-ul li {
-    margin-right: 1vw;
+    margin-right: 1rem;
     color: white;
+}
+
+.bili-head_banner_right-ul li a {
+    font-size: 10px;
 }
 
 .bili-head_banner form {
@@ -189,8 +258,7 @@ export default {
 }
 
 .navigation_left>div {
-    margin: auto 0;
-    padding-right: 1vw;
+    margin-right: 1rem;
 }
 
 .navigation_left img {

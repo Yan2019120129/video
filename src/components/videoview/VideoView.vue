@@ -7,8 +7,9 @@
                     <img src="@/assets/img/001.jpg">
                 </picture>
                 <video ref="vid" class="box-video" crossorigin="anonymous" muted="muted" preload="none">
-                    <source :src="$route.query.url">
-                    加载失败
+                    <slot>
+                        <source src="@/assets/video/test.mp4">
+                    </slot>
                 </video>
             </div>
         </div>
@@ -22,7 +23,7 @@
 export default {
     name: 'VideoView',
     props: [
-        'videoSrc'
+        'videoData'
     ], data() {
         return {
             picture: null,
@@ -39,7 +40,7 @@ export default {
         videoPlay() {
             this.isPlay = !this.isPlay;
             clearTimeout(this.showClothTimer);
-            if (!this.isPlay) {
+            if (!this.isPlay && this.video.paused) {
                 this.showClothTimer = setTimeout(() => {
                     this.picture.style = 'opacity:0;';
                     this.video.play();
@@ -108,6 +109,7 @@ export default {
     }
     
     .foot_head {
+        font-size: 1rem;
         /* 在恰当的断字点进行换行 */
         word-break: break-all;
         /* 超出范围隐藏 */

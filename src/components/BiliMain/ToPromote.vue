@@ -3,7 +3,7 @@
         <div class="ToPromote-title">推广</div>
         <div class="grid-container" ref="tp">
             <div class="item" v-for="index in this.$store.state.TPCitems">
-                <VideoView></VideoView>
+                <VideoView><source :src="videoData"></VideoView>
             </div>
         </div>
     </div>
@@ -14,7 +14,10 @@ export default {
     name: 'ToPromote',
     components: {
         VideoView
-    }, data() {
+    },props:[
+        'videoData'
+    ],
+     data() {
         return {
             gridEle: null,
         }
@@ -36,6 +39,7 @@ export default {
 .grid-container {
     width: 100%;
     display: grid;
+    height: 200px;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px 20px;
 }

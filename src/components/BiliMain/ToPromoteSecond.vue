@@ -5,9 +5,10 @@
                 <slot>推广</slot>
             </div>
             <div class="grid-container">
-
-                <div ref="VVI" class="item" v-for="index in this.$store.state.TPCitems*2">
-                    <VideoView></VideoView>
+                <div ref="VVI" class="item" v-for="index in this.$store.state.TPCitems * 2">
+                    <VideoView>
+                        <source :src="videoData">
+                    </VideoView>
                 </div>
             </div>
         </div>
@@ -35,7 +36,9 @@ export default {
     name: 'ToPromoteSecond',
     components: {
         VideoView
-    },
+    }, props: [
+        'videoData'
+    ],
     data() {
         return {
             ToPromoteSecondRigthHeadIsShow: false,
@@ -65,7 +68,7 @@ export default {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    grid-template-rows: 2;
+    grid-template-rows: repeat(2,200px);
     grid-gap: 20px 20px;
 }
 

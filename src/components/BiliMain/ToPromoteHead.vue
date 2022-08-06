@@ -3,17 +3,21 @@
         <div class="item1">
             <img src="@/assets/img/001.jpg" alt="">
         </div>
-        <VideoView v-for="index in this.$store.state.TPHCitems "></VideoView>
+        <VideoView v-for="index in this.$store.state.TPHCitems ">
+            <source :src="videoData">
+        </VideoView>
     </div>
 </template>
 <script>
 import VideoView from '../VideoView/VideoView'
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
     name: 'ToPromoteHead',
     components: {
         VideoView
     },
+    props: [
+        'videoData'
+    ],
     data() {
         return {
             gridEle: null,
