@@ -1,9 +1,9 @@
 <template>
     <div class="grid-container" ref="tph">
-        <div class="item1">
-            <img src="@/assets/img/001.jpg" alt="">
+        <div class="item1" >
+            <img src="@/assets/img/001.jpg" alt="" >
         </div>
-        <VideoView v-for="index in this.$store.state.TPHCitems ">
+        <VideoView v-for="index in this.$store.state.TPHCitems " >
             <source :src="videoData">
         </VideoView>
     </div>
@@ -26,7 +26,11 @@ export default {
         this.gridEle = this.$refs.tph;
         this.$store.commit('toPromoteContainer', this.gridEle);
     }, methods: {
-
+        toHome() {
+            this.$router.push({
+                name: 'Home',
+            })
+        }
     }
 }
 </script>

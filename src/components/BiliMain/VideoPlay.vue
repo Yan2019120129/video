@@ -1,7 +1,7 @@
 <template>
     <div class="play_body">
         <video id="video" ref="v">
-            <source :src="$route.query.url">
+            <source src="@/assets/video/test.mp4">
             您的浏览器不支持 HTML5 video 标签。
         </video>
         <div id="play_menu">
@@ -11,13 +11,13 @@
                     <div class="bar">
                         <a></a>
                         <div class="barInside"></div>
-                        <img src="../assets/img/tv.png" alt="">
+                        <img src="@/assets/img/tv.png" alt="">
                     </div>
                 </div>
                 <div class="menu_bottom">
                     <button class="menu_play" @click="menuPlay">
-                    <img v-show="isPlay" src="../assets/img/startVideo.png">
-                    <img v-show="!isPlay" src="../assets/img/stopVideo.png">
+                        <img v-show="isPlay" src="@/assets/img/startVideo.png">
+                        <img v-show="!isPlay" src="@/assets/img/stopVideo.png">
                     </button>
                     <button class="menu_time">00:00/00:00</button>
                     <button class="menu_aut"><b>自动</b></button>
@@ -102,7 +102,7 @@
 
 <script>
 export default {
-    name: 'videoPlay',
+    name: 'VideoPlay',
     props: [
         'videoSrc'
     ],
@@ -121,11 +121,11 @@ export default {
         menuPlay() {
             if (this.video.paused) {
                 this.video.play()
-               this.isPlay=false;
+                this.isPlay = false;
                 console.log("开始");
             } else {
                 this.video.pause()
-               this.isPlay=true;
+                this.isPlay = true;
                 console.log("暂停");
             }
         }

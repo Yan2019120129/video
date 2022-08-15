@@ -7,12 +7,14 @@
                         <Navigation>
                             <!-- 插入slot="button_active"属性为动态效果 -->
                             <!-- 插入slot="button_text" 为静态效果 -->
-                            <a slot="button_active">首页</a>
+                            <!-- <a slot="button_active">首页</a> -->
+                            <router-link slot="button_active" to="/Home">首页</router-link>
                         </Navigation>
                     </li>
                     <li>
                         <Navigation>
-                            <a slot="button_active">番剧</a>
+                            <!-- <a slot="button_active">番剧</a> -->
+                            <router-link slot="button_active" to="/VideoPlay">番剧</router-link>
                             <NavigationMenu slot="menu" />
                         </Navigation>
                     </li>
