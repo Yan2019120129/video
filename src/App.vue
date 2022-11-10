@@ -1,25 +1,38 @@
 <template>
   <div class="App">
+    <Login v-if="ifShowLogin"></Login>
     <div class="head">
       <BiliHead></BiliHead>
     </div>
     <div class="main">
-      <BiliMain></BiliMain>
+      <BiliMain>
+        <keep-alive>
+          <router-view name="router_Video"></router-view>
+        </keep-alive>
+      </BiliMain>
     </div>
-    <div class="fool"></div>
+    <div class="fool">
+      <BiliFool/>
+    </div>
   </div>
 </template>
 
 <script>
-import Home from '@/components/Home.vue'
-import BiliHead from './components/BiliHead.vue'
-import BiliMain from './components/BiliMain.vue'
+import Home from '@/views/Home/Home.vue'
+import BiliHead from '@/components/BiliHead/BiliHead'
+import BiliMain from '@/components/BiliMain/BiliMain'
+import BiliFool from "@/components/BiliFloot/index.vue"
+import Login from "@/components/BiliHead/MenuAndSearch/loging/Login"
+import {mapMutations, mapState} from "vuex";
+
 export default {
   name: 'App',
   components: {
     BiliHead,
     BiliMain,
+    BiliFool,
     Home,
+    Login,
   },
   data() {
     return {
@@ -28,7 +41,23 @@ export default {
       toView: 'VideoView',
       videoSrc: require("@/assets/video/test.mp4"),
     }
+  },
+  mounted() {
+    if (localStorage.getItem("token") != null) {
+      console.log("登录了")
+      this.ifLogin(true)
+    } else {
+      console.log("没登录")
+      this.ifLogin(false)
+    }
+  },
+  computed: {
+    ...mapState("loginAbout", ["ifShowLogin"])
+  },
+  methods: {
+    ...mapMutations("loginAbout", {ifLogin: "ifLogin"})
   }
+
 }
 </script>
 
@@ -39,10 +68,10 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  max-width: 256rem;
-  min-width: 120rem;
-  object-fit: cover;
+  max-width: 100%;
+  min-width: 100rem;
 }
+
 
 .head {
   width: 100%;
@@ -55,6 +84,6 @@ export default {
 .fool {
   width: 100%;
   height: 25rem;
-  background-color: aqua;
+  background-color: #d7f8f3;
 }
 </style>

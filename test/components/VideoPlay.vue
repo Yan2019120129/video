@@ -1,5 +1,5 @@
 <template>
-  <div class="App">
+  <div class="VideoPlay">
     <div class="play_video_show_left">
       <p>标题</p>
       <div class="title_message_top">
@@ -83,7 +83,7 @@
 import videoPlay from "@/views/VideoPlay/Video";
 
 export default {
-  name: 'App',
+  name: 'VideoPlay',
   components: {
     videoPlay
   },

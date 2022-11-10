@@ -15,6 +15,6 @@
       "dom.iterable",
       "scripthost"
     ],
-    "jsx": "preserve" //添加配置
+    "jsx": "preserve"
   }
 }

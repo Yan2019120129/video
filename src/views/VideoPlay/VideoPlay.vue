@@ -1,5 +1,5 @@
 <template>
-  <div class="App">
+  <div class="VideoPlay">
     <div class="play_video_show_left">
       <p>标题</p>
       <div class="title_message_top">
@@ -11,6 +11,10 @@
         <div class="title_message_play_count">
           <img src="@/assets/img/tv.png">
           <span>626.3万</span>
+        </div>
+        <div class="title_message_play_count">
+          <img src="@/assets/img/tv.png">
+          <span>评论</span>
         </div>
         <div class="title_message_publish_time">
           <img src="@/assets/img/tv.png">
@@ -29,13 +33,16 @@
         <img src="@/assets/img/tv.png">
         <img src="@/assets/img/tv.png">
         <div class="bullet_hell_input">
-          <p>
-            <span>请先<a href="">登录</a> 或 <a href="">注册</a></span>
-            <input type="text">
-            <span>弹幕礼仪</span>
-            <img src="@/assets/img/tv.png">
-            <button>发送</button>
-          </p>
+          <p>请先<a href="">登录</a> 或 <a href="">注册</a></p>
+          <input type="text">
+          <span>弹幕礼仪</span>
+          <svg t="1667574164735" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+               p-id="2273" width="15" height="15">
+            <path
+                d="M312.888889 995.555556c-17.066667 0-28.444444-5.688889-39.822222-17.066667-22.755556-22.755556-17.066667-56.888889 5.688889-79.644445l364.088888-329.955555c11.377778-11.377778 17.066667-22.755556 17.066667-34.133333 0-11.377778-5.688889-22.755556-17.066667-34.133334L273.066667 187.733333c-22.755556-22.755556-28.444444-56.888889-5.688889-79.644444 22.755556-22.755556 56.888889-28.444444 79.644444-5.688889l364.088889 312.888889c34.133333 28.444444 56.888889 73.955556 56.888889 119.466667s-17.066667 85.333333-51.2 119.466666l-364.088889 329.955556c-11.377778 5.688889-28.444444 11.377778-39.822222 11.377778z"
+                p-id="2274"></path>
+          </svg>
+          <button>发送</button>
         </div>
       </div>
 
@@ -70,8 +77,80 @@
           </svg>
           <span>626.3万</span>
         </div>
+      </div>
 
+      <div class="video_play_details">
+        <pre ref="video_play_details_pre">
+来喽owo！喜欢请点个关注给个三连，
+我还会继续更新的！
+十一期素材
+BGM：YMCA
+工作细胞
+魔法禁书目录
+男子高中生的日常
+复仇者联盟
+东百往事
+冰雪奇缘
+希望之花（机动战士高达 铁血的奥尔芬斯）
+疯狂动物城
+唐伯虎点秋香
+无敌破坏王
+大话西游
+原神
+假如
+虎哥一眼万年
+天使降临到我身边
+c3魔方少女
+伪恋
+钢之炼金术师
+猫咪日常
+雏子的笔记
+鸡你太美
+凉宫春日
+3年E班
+猛男版新宝岛
+甲铁城的卡巴内瑞
+我的妹妹不可能那么可爱
+Wake Up，Girls
+肯德基母亲节广告
+你的名字
+间谍过家家
+        </pre>
+      </div>
+      <p style="cursor:pointer;" @click="even_more">展开更多</p>
 
+      <div class="user_comment">
+        <div class="Align_Horizontal_Centers">
+          <p class="Align_Horizontal_Centers">
+            <span class="user_comment_first_word">评论</span>
+            <span>123</span>
+          </p>
+          <p class="user_comment_title_right">
+            <span>最热</span>
+            <el-divider direction="vertical"></el-divider>
+            <span>最新</span>
+          </p>
+        </div>
+        <div class="user_comment_main">
+          <div class="user_comment_main_first_comment">
+            <el-avatar slot="button_active"
+                       src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+            <el-input
+                type="textarea"
+                :rows="2"
+                placeholder="请输入内容"
+                v-model="textarea">
+            </el-input>
+                        <el-button type="primary">发送</el-button>
+          </div>
+          <UserComment>
+            <UserCommentTwo/>
+            <UserCommentTwo/>
+            <UserCommentTwo/>
+          </UserComment>
+          <UserComment/>
+          <UserComment/>
+        </div>
       </div>
     </div>
     <div class="play_video_show_right">
@@ -81,19 +160,36 @@
 </template>
 <script>
 import videoPlay from "@/views/VideoPlay/Video";
+import UserComment from "@/views/VideoPlay/cpns/UserComment";
+import UserCommentTwo from "@/views/VideoPlay/cpns/UserCommentTwo";
 
 export default {
-  name: 'App',
+  name: 'VideoPlay',
   components: {
-    videoPlay
+    videoPlay,
+    UserComment,
+    UserCommentTwo,
   },
   data() {
     return {
       activeName: 'second',
+      ifEvenMore: false,
       id: "",
-      psw: ""
+      psw: "",
+      textarea: ""
     };
   },
+  methods: {
+    even_more() {
+      if (!this.ifEvenMore) {
+        this.ifEvenMore = true
+        this.$refs.video_play_details_pre.style = "height:100%;"
+      } else {
+        this.ifEvenMore = false
+        this.$refs.video_play_details_pre.style = "height:70px;"
+      }
+    }
+  }
 };
 </script>
 <style scoped>
@@ -103,23 +199,24 @@ export default {
 
 .play_video_show_left {
   float: left;
-  width: 55%;
-  padding-left: 10%;
+  width: 65%;
+  /*padding-left: 10%;*/
   height: 100%;
-  background: #e3e3e3;
+  /*background: #e3e3e3;*/
 }
 
 .play_video_show_right {
   float: right;
-  width: 25%;
-  padding-right: 10%;
+  width: 35%;
+  /*padding-right: 10%;*/
   height: 100%;
-  background: #cbcbcb;
+  /*background: #cbcbcb;*/
 }
 
 .title_message_top {
   display: flex;
   flex-direction: row;
+  font-size: 15px;
 }
 
 .title_message_top div {
@@ -137,11 +234,13 @@ export default {
 }
 
 .play_video_message {
-  /*position: absolute;*/
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid #eeeeee;
+  box-shadow: 1px 1px 2px #eeeeee;
+  white-space: nowrap;
   font-size: 13px;
   padding: 10px;
   right: 0;
@@ -163,7 +262,8 @@ export default {
   background: #f1f2f3;
   border-radius: 5px;
   height: 40px;
-  padding: 0 5px;
+  width: 500px;
+  padding-left: 5px;
 }
 
 .bullet_hell_input img {
@@ -172,25 +272,85 @@ export default {
 }
 
 .bullet_hell_input input {
-  width: 380px;
+  margin: 0 10px;
+  height: 70%;
+  width: 100%;
+  border-radius: 5px;
   border-width: 0;
   outline: none;
-  /*background: none;*/
+}
+
+.bullet_hell_input button {
+  width: 25%;
+  height: 100%;
+  border-radius: 0 5px 5px 0;
+  border: none;
+  background: #66b1ff;
 }
 
 .title_message_end {
   display: flex;
   flex-direction: row;
   gap: 10px;
+  margin: 10px 0;
 }
 
-.title_message_end div {
-
+.title_message_end div path {
+  fill: #525252;
 }
 
-.title_message_end div svg, span {
+.title_message_end div:hover path {
+  fill: #00aeec;
+}
+
+.title_message_end div:hover {
+  color: #00aeec;
+}
+
+.title_message_end div svg + span {
   vertical-align: middle;
   margin-right: 10px;
 }
 
+.video_play_details pre {
+  height: 80px;
+  overflow: hidden;
+}
+
+.Align_Horizontal_Centers {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user_comment_first_word {
+  font-size: 20px;
+}
+
+.user_comment_title_right {
+  margin-left: 20px;
+}
+
+.user_comment_main_first_comment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.user_comment_main_first_comment > span {
+  margin: 10px;
+}
+
+.user_comment_main_user > span {
+  margin: 10px;
+}
+
+.user_comment_main_user_comment pre {
+  font-weight: bold;
+}
+
+.user_comment_time_count > * {
+  padding-right: 10px;
+}
 </style>
