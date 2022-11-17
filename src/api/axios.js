@@ -1,5 +1,6 @@
 /* 1.引入文件 */
 import axios from 'axios' //引入 axios库
+import store from "@/store/index"
 
 /* 2.全局默认配置 */
 let baseURL
@@ -14,10 +15,10 @@ if (process.env.NODE_ENV === 'development') { // 开发环境
     }
 }
 // 配置axios的属性
-axios.defaults.timeout = 6000;    // 请求超时时间1分钟
-axios.defaults.baseURL = baseURL; // 你的接口地址
-axios.defaults.responseType = "json";
-axios.defaults.withCredentials = false;  //是否允许带cookie这些
+// axios.defaults.timeout = 5 * 60 * 1000;   // 请求超时时间1分钟
+// axios.defaults.baseURL = baseURL; // 你的接口地址
+// axios.defaults.responseType = "json";
+// axios.defaults.withCredentials = false;  //是否允许带cookie这些
 
 /*
 *你也可以创建一个实例，然后在实例中配置相关属性，此方法和上面的方法一样，写法不同，怎么用随个人
@@ -25,7 +26,7 @@ axios.defaults.withCredentials = false;  //是否允许带cookie这些
 */
 const Axios = axios.create({
     baseURL: baseURL, 		      // 后台服务地址
-    timeout: 60000, 		      // 请求超时时间1分钟
+    timeout: 5 * 60 * 1000, 		      // 请求超时时间1分钟
     responseType: "json",
     withCredentials: false        // 是否允许带cookie这些
 });
@@ -36,11 +37,10 @@ const Axios = axios.create({
 时定义的变量
 */
 Axios.interceptors.request.use((config) => {
-    console.log(config)
     // 发送请求前进行拦截
     // 可在此处配置请求头信息
-    config.headers["token"] = "";
-
+    config.headers["token"] = store.state.loginAbout.token; // 为每个请求配置请求头
+    console.log("请求头",config.headers)
     // if (config.method == "post") {
     //     /*数据转换: axios post方式默认是json格式提交数据，如果使用application/x-www-form-urlencoded数据格式提交，要用qs.stringify()进行转换,个人建议不在拦截器中全局配置，因为不够灵活，还有一点是，如果
     //   设置了重新请求的配置，那么重新请求时，请求体中的config里面的传参就会被再次进行qs.stringify()转
@@ -53,11 +53,11 @@ Axios.interceptors.request.use((config) => {
     return Promise.reject(error)
 })
 Axios.interceptors.response.use((res) => {
-    //请求响应后拦截
-    if (res.status == 200) {       // 对响应数据做些事
-        //alert("提交成功")
-        return Promise.resolve(res)
-    }
+    // //请求响应后拦截
+    // if (res.status == 200) {       // 对响应数据做些事
+    //                                //alert("提交成功")
+    //     return Promise.resolve(res)
+    // }
     return res;
 }, (error) => {
     //alert("网络异常!") 404等问题可以在这里处理

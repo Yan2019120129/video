@@ -25,27 +25,7 @@
           <span>未经作者授权,禁止转载</span>
         </div>
       </div>
-      <div class="play_area">
-        <videoPlay></videoPlay>
-      </div>
-      <div class="play_video_message">
-        <span>791人在观看,已装配2011条弹幕</span>
-        <img src="@/assets/img/tv.png">
-        <img src="@/assets/img/tv.png">
-        <div class="bullet_hell_input">
-          <p>请先<a href="">登录</a> 或 <a href="">注册</a></p>
-          <input type="text">
-          <span>弹幕礼仪</span>
-          <svg t="1667574164735" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-               p-id="2273" width="15" height="15">
-            <path
-                d="M312.888889 995.555556c-17.066667 0-28.444444-5.688889-39.822222-17.066667-22.755556-22.755556-17.066667-56.888889 5.688889-79.644445l364.088888-329.955555c11.377778-11.377778 17.066667-22.755556 17.066667-34.133333 0-11.377778-5.688889-22.755556-17.066667-34.133334L273.066667 187.733333c-22.755556-22.755556-28.444444-56.888889-5.688889-79.644444 22.755556-22.755556 56.888889-28.444444 79.644444-5.688889l364.088889 312.888889c34.133333 28.444444 56.888889 73.955556 56.888889 119.466667s-17.066667 85.333333-51.2 119.466666l-364.088889 329.955556c-11.377778 5.688889-28.444444 11.377778-39.822222 11.377778z"
-                p-id="2274"></path>
-          </svg>
-          <button>发送</button>
-        </div>
-      </div>
-
+      <Video></Video>
       <div class="title_message_end">
         <div class="video_click_count">
           <svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" class="icon">
@@ -54,7 +34,7 @@
           </svg>
           <span>626.3万</span>
         </div>
-        <div class="video_reward_count">
+        <div class="video_click_count">
           <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" class="icon"
           >
             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -62,7 +42,7 @@
           </svg>
           <span>626.3万</span>
         </div>
-        <div class="video_like_count">
+        <div class="video_click_count">
           <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" class="icon"
           >
             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -70,7 +50,7 @@
           </svg>
           <span>626.3万</span>
         </div>
-        <div class="video_transmit_count">
+        <div class="video_click_count">
           <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" class="icon">
             <path
                 d="M12.6058 10.3326V5.44359C12.6058 4.64632 13.2718 4 14.0934 4C14.4423 4 14.78 4.11895 15.0476 4.33606L25.3847 12.7221C26.112 13.3121 26.2087 14.3626 25.6007 15.0684C25.5352 15.1443 25.463 15.2144 25.3847 15.2779L15.0476 23.6639C14.4173 24.1753 13.4791 24.094 12.9521 23.4823C12.7283 23.2226 12.6058 22.8949 12.6058 22.5564V18.053C7.59502 18.053 5.37116 19.9116 2.57197 23.5251C2.47607 23.6489 2.00031 23.7769 2.00031 23.2122C2.00031 16.2165 3.90102 10.3326 12.6058 10.3326Z"></path>
@@ -141,7 +121,7 @@ Wake Up，Girls
                 placeholder="请输入内容"
                 v-model="textarea">
             </el-input>
-                        <el-button type="primary">发送</el-button>
+            <el-button type="primary">发送</el-button>
           </div>
           <UserComment>
             <UserCommentTwo/>
@@ -159,14 +139,14 @@ Wake Up，Girls
   </div>
 </template>
 <script>
-import videoPlay from "@/views/VideoPlay/Video";
+import Video from "@/views/VideoPlay/Video";
 import UserComment from "@/views/VideoPlay/cpns/UserComment";
 import UserCommentTwo from "@/views/VideoPlay/cpns/UserCommentTwo";
 
 export default {
   name: 'VideoPlay',
   components: {
-    videoPlay,
+    Video,
     UserComment,
     UserCommentTwo,
   },
@@ -200,7 +180,6 @@ export default {
 .play_video_show_left {
   float: left;
   width: 65%;
-  /*padding-left: 10%;*/
   height: 100%;
   /*background: #e3e3e3;*/
 }
@@ -217,6 +196,7 @@ export default {
   display: flex;
   flex-direction: row;
   font-size: 15px;
+  padding: 10px 0;
 }
 
 .title_message_top div {
@@ -229,41 +209,10 @@ export default {
   height: 20px;
 }
 
-.play_area {
-  margin-top: 20px;
-}
-
-.play_video_message {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid #eeeeee;
-  box-shadow: 1px 1px 2px #eeeeee;
-  white-space: nowrap;
-  font-size: 13px;
-  padding: 10px;
-  right: 0;
-  left: 0;
-}
-
 .play_video_message > img {
   width: 20px;
   height: 20px;
   margin-left: 0;
-}
-
-.bullet_hell_input {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  right: 0;
-  background: #f1f2f3;
-  border-radius: 5px;
-  height: 40px;
-  width: 500px;
-  padding-left: 5px;
 }
 
 .bullet_hell_input img {
@@ -293,6 +242,12 @@ export default {
   flex-direction: row;
   gap: 10px;
   margin: 10px 0;
+}
+
+.video_click_count {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 .title_message_end div path {

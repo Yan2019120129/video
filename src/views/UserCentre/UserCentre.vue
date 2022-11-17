@@ -13,15 +13,27 @@
                 </a>
               </span>
               <div class="play_video_show_left">
-                <el-upload
-                    class="upload-demo"
-                    drag
-                    action="http://localhost:2090/upload"
-                    multiple>
-                  <i class="el-icon-upload"></i>
-                  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                  <div class="el-upload__tip" slot="tip">上传视频</div>
-                </el-upload>
+                <!--                :headers="config"-->
+                <!--                action="http://localhost:9527/nacos-video-upload/upload/uploading"-->
+                <!--                :headers="token"-->
+                <!--                :http-request="vue_upload"-->
+                <!--                :before-upload="placeUploadDate"-->
+                <!--                <el-upload-->
+                <!--                    class="upload-demo"-->
+                <!--                    drag-->
+                <!--                    :data="userIdAndUserPhone"-->
+                <!--                    :headers="{'token': token}"-->
+                <!--                    action="http://localhost:9527/nacos-video-upload/upload/testUploading"-->
+                <!--                    multiple>-->
+                <!--                  <i class="el-icon-upload"></i>-->
+                <!--                  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>-->
+                <!--                  <div class="el-upload__tip" slot="tip">上传视频</div>-->
+                <!--                </el-upload>-->
+                <form>
+                  <input type="file" name="file" ref="testMp4">
+                  <input type="submit" property="提交" @click="vue_upload">
+                </form>
+
                 <el-divider></el-divider>
                 <h4>我的视频专栏</h4>
                 <el-divider></el-divider>
@@ -70,30 +82,59 @@
               收藏
             </el-tab-pane>
           </el-tabs>
-
         </template>
-
       </div>
-
-
     </div>
-
-
   </div>
 </template>
 
 <script>
+
+import {mapState} from "vuex";
+import {javaUpload} from "@/api";
+
 export default {
   data() {
     return {
       drawer: false,
-      activeName: 'first'
+      activeName: 'first',
+      uploadData: "",
+      userIdAndUserPhone: this.analysisToken,
+      fileDate: {
+        file: "23432424",
+      },
     };
+  },
+  mounted() {
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
-    }
+    },
+    placeUploadDate(file) {
+      this.uploadData = file
+      console.log("放置了数据", this.uploadData)
+    },
+    vue_upload() {
+      this.fileDate.file = this.$refs.testMp4.value
+      // 根据后台需求数据格式
+      const form = new FormData();
+      // 文件对象
+      form.append("file", this.fileDate.file);
+      console.log(this.fileDate.file);
+      javaUpload(form).then(
+          response => {
+            console.log("返回成功")
+            console.log("返回的数据", response.data)
+          }, error => {
+            console.log(error.response?.data);
+            console.log(error.response?.status);
+            console.log("错误信息", error)
+          })
+    },
+  },
+  computed: {
+    ...mapState("loginAbout", ["token", "analysisToken"]),
   }
 };
 </script>

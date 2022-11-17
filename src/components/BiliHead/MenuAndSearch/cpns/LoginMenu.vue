@@ -63,6 +63,8 @@
 </template>
 <script>
 
+import {mapMutations} from "vuex";
+
 export default {
   name: "LoginMenu",
   data() {
@@ -72,8 +74,10 @@ export default {
     }
   },
   methods: {
+    ...mapMutations("loginAbout",{placeToken:"placeToken"}),
     open() {
-      localStorage.clear()
+      localStorage.clear() // 清空localStorage
+      this.placeToken("") // 清空vuex里的token
       this.$store.commit("loginAbout/ifLogin", false)
     },
   }

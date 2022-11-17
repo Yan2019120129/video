@@ -23,7 +23,7 @@ import BiliHead from '@/components/BiliHead/BiliHead'
 import BiliMain from '@/components/BiliMain/BiliMain'
 import BiliFool from "@/components/BiliFloot/index.vue"
 import Login from "@/components/BiliHead/MenuAndSearch/loging/Login"
-import {mapMutations, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 
 export default {
   name: 'App',
@@ -50,11 +50,13 @@ export default {
       console.log("没登录")
       this.ifLogin(false)
     }
+    this.placeToken(localStorage.getItem("token")) // 放入vuex存储登录状态
   },
   computed: {
     ...mapState("loginAbout", ["ifShowLogin"])
   },
   methods: {
+    ...mapActions("loginAbout", {placeToken: "placeToken"}),
     ...mapMutations("loginAbout", {ifLogin: "ifLogin"})
   }
 

@@ -15,7 +15,6 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 import axios from 'axios';
 
-
 // 将axios挂在到原型上
 Vue.prototype.axios = axios;
 //关闭Vue的生产提示

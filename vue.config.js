@@ -7,9 +7,10 @@ module.exports = {
     },
     lintOnSave: false, //关闭语法检查
     devServer: {
+        port: 8081,
         proxy: {
             '/api': { // 这个api要与 axios1.js 文件中的 baseURL 值对应
-                target: 'http://localhost:2090', // 你第二个接口的域名
+                target: 'http://localhost:9527', // 你第二个接口的域名
                 ChangeOrRight: true,
                 pathRewrite: {
                     '^/api': ''

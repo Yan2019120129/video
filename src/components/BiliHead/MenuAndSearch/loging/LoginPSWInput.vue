@@ -32,7 +32,8 @@
 </template>
 <script>
 
-import {mapMutations} from "vuex";
+import {mapActions, mapMutations} from "vuex";
+import {userLogin} from "@/api";
 
 export default {
   name: 'LoginPSWInput',
@@ -54,6 +55,7 @@ export default {
   // 方法
   methods: {
     ...mapMutations("loginAbout", {ifLogin: "ifLogin", ifLoginInterface: "ifLoginInterface"}),
+    ...mapActions("loginAbout", {placeToken: "placeToken",analysisToke:"analysisToke"}),
     register() {
       console.log(2222)
       this.$emit("register")
@@ -95,21 +97,28 @@ export default {
       console.log("进入登录,开始判断输入是否符合规范")
       if (this.ifPhoneOrId(this.userPhoneOrId)) {
         console.log("输入符合规范，开始发送请求", this.userPhoneOrId)
-        this.axios.post("/user/login", this.userMessage).then(
+        userLogin(this.userMessage).then(
             response => {
-              // 跳出登录成功的弹窗
-              this.$message({
-                message: '登录成功',
-                type: 'success'
-              });
-              // 关闭登录界面
-              this.ifLoginInterface(false)
-              // response.data读取返回的数据
-              console.log("请求成功,将token放入浏览器本地", response.data)
-              // 将token放入浏览器本地缓存
-              localStorage.setItem("token", response.data.token)
-              // 将登录成功的状态放入vuex里
-              this.ifLogin(true)
+              if (response.data.state) {
+                // 跳出登录成功的弹窗
+                this.$message({
+                  message: '登录成功',
+                  type: 'success'
+                });
+                // 关闭登录界面
+                this.ifLoginInterface(false)
+                // response.data读取返回的数据
+                console.log("请求成功,将token放入浏览器本地", response.data)
+                // 将token放入浏览器本地缓存
+                localStorage.setItem("token", response.data.token)
+                console.log("将token放入vuex", response.data)
+                this.placeToken(response.data.token)
+                this.analysisToke(response.data.token)
+                // 将登录成功的状态放入vuex里
+                this.ifLogin(true)
+              } else {
+                this.$message.error(response.data.msg);
+              }
             }, error => {
               console.log("请求失败", error.message)
             }
