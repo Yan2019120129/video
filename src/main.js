@@ -17,6 +17,7 @@ import axios from 'axios';
 
 // 将axios挂在到原型上
 Vue.prototype.axios = axios;
+Vue.prototype.axios = axios;
 //关闭Vue的生产提示
 Vue.config.productionTip = false;
 

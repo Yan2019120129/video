@@ -22,7 +22,7 @@ export default {
 <style scoped>
 .itemOne {
   position: relative;
-  /*z-index: 2;*/
+  z-index: 12;
   height: 100%;
   /*使用flex解决disNone按钮和菜单的垂直居中的问题*/
   display: flex;

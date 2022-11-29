@@ -7,11 +7,10 @@
     </div>
     <slot name="button"></slot>
   </div>
-
 </template>
 <style scoped>
 .bt {
-  /*z-index: 1;*/
+  /*z-index: 99;*/
   width: 100%;
   height: 100%;
   position: relative;

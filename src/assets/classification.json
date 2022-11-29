@@ -1,0 +1,50 @@
+{
+  "options": [
+    {
+      "label": "推荐",
+      "options": [
+        {
+          "value": "JobMarket",
+          "label": "职业职场"
+        },
+        {
+          "value": "everyday",
+          "label": "日常"
+        },
+        {
+          "value": "schoolyard",
+          "label": "校园"
+        },
+        {
+          "value": "business",
+          "label": "商业"
+        },
+        {
+          "value": "ShouBan",
+          "label": "手办"
+        }
+      ]
+    },
+    {
+      "label": "生活",
+      "options": [
+        {
+          "value": "Chengdu",
+          "label": "成都"
+        },
+        {
+          "value": "Shenzhen",
+          "label": "深圳"
+        },
+        {
+          "value": "Guangzhou",
+          "label": "广州"
+        },
+        {
+          "value": "Dalian",
+          "label": "大连"
+        }
+      ]
+    }
+  ]
+}

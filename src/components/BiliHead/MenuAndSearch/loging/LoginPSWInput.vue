@@ -32,7 +32,7 @@
 </template>
 <script>
 
-import {mapActions, mapMutations} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 import {userLogin} from "@/api";
 
 export default {
@@ -54,8 +54,10 @@ export default {
   watch: {},
   // 方法
   methods: {
-    ...mapMutations("loginAbout", {ifLogin: "ifLogin", ifLoginInterface: "ifLoginInterface"}),
-    ...mapActions("loginAbout", {placeToken: "placeToken",analysisToke:"analysisToke"}),
+    ...mapMutations("layoutAbout", {ifLoginInterface: "ifLoginInterface"}),
+    ...mapMutations("loginAbout", {ifLogin: "ifLogin"}),
+    ...mapActions("loginAbout", {aPlaceToken: "aPlaceToken", aAnalysisToke: "aAnalysisToke"}),
+    ...mapState("loginAbout", ["analysisToken"]),
     register() {
       console.log(2222)
       this.$emit("register")
@@ -105,16 +107,16 @@ export default {
                   message: '登录成功',
                   type: 'success'
                 });
-                // 关闭登录界面
+                console.log("关闭登录界面")
                 this.ifLoginInterface(false)
-                // response.data读取返回的数据
-                console.log("请求成功,将token放入浏览器本地", response.data)
-                // 将token放入浏览器本地缓存
+                console.log("返回的数据", response.data)
+                console.log("将token放入浏览器本地缓存")
                 localStorage.setItem("token", response.data.token)
-                console.log("将token放入vuex", response.data)
-                this.placeToken(response.data.token)
-                this.analysisToke(response.data.token)
-                // 将登录成功的状态放入vuex里
+                console.log("将token放入vuex")
+                this.aPlaceToken(response.data.token)
+                console.log("将token放入vuex中解析")
+                this.aAnalysisToke(response.data.token)
+                console.log("将登录成功的状态放入vuex里")
                 this.ifLogin(true)
               } else {
                 this.$message.error(response.data.msg);

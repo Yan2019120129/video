@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="play_body" ref="vp">
       <video id="video" ref="v">
         <source src="@/assets/video/test.mp4">
@@ -176,8 +175,10 @@
 
         </svg>
         <div class="bullet_hell_input">
-          <p>请先<a href="">登录</a> 或 <a href="">注册</a></p>
-          <input type="text">
+          <p v-if="ifLogin">请输入你的弹幕</p>
+          <p v-if="!ifLogin">请先<a href="">登录</a> 或 <a href="">注册</a></p>
+          <input v-if="ifLogin" type="text">
+          <input v-if="!ifLogin" type="text" readonly>
           <span>弹幕礼仪</span>
           <svg t="1667574164735" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                p-id="2273" width="15" height="15">
@@ -196,6 +197,8 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 class Bullet {
   id
   status = "waiting"
@@ -335,6 +338,9 @@ export default {
       }
       this.bullets = [] // 清空大幕数组
     }
+  },
+  computed:{
+    ...mapState("loginAbout",["ifLogin"])
   }
 }
 </script>

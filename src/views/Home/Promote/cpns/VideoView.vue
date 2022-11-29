@@ -55,7 +55,12 @@ export default {
       }
     },
     toVideoPlay() {
-      this.$router.push("/VideoPlay")
+      this.$router.push({
+        name:"videoPlay",
+        params:{
+
+        }
+      })
     }
   }
 }

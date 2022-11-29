@@ -1,33 +1,33 @@
 <template>
   <div class="bili-head_banner_outskirts">
     <div ref="MenuAndSearch" class="bili-head_banner">
-      <ul class="bili-head_banner_left-ul">
-        <li>
+      <div class="bili-head_banner_left-ul">
+        <div>
           <Navigation>
             <!-- 插入slot="button_active"属性为动态效果 -->
             <!-- 插入slot="button_text" 为静态效果 -->
-            <router-link slot="button_active" to="/Home">首页</router-link>
+            <router-link slot="button_active" to="/main">首页</router-link>
           </Navigation>
-        </li>
-        <li>
+        </div>
+        <div>
           <Navigation>
-            <router-link slot="button_active" to="/VideoPlay">番剧</router-link>
+            <router-link slot="button_active" to="/videoPlay">番剧</router-link>
             <LiveMenu slot="menu"/>
           </Navigation>
-        </li>
-        <li>
+        </div>
+        <div @click="$router.push('/BackgroundAnimation')">
           <Navigation>
             <a slot="button_active">直播</a>
             <LiveMenu slot="menu"/>
           </Navigation>
-        </li>
-        <li>
+        </div>
+        <div>
           <Navigation>
             <a slot="button_active">游戏中心</a>
             <GameMenu slot="menu"/>
           </Navigation>
-        </li>
-      </ul>
+        </div>
+      </div>
       <!--                        <form action="" class="head_search">-->
       <!--                            <input type="text"><button>搜素</button>-->
       <!--                        </form>-->
@@ -35,54 +35,53 @@
       <el-input style="width: 60%;margin:0 40px 0 40px;border-radius: 20px;" v-model="input" placeholder="请输入内容">
       </el-input>
       <!--    右边的导航栏-->
-      <ul class="bili-head_banner_right-ul">
+      <div class="bili-head_banner_right-ul">
         <!-- 头像-->
-        <li>
+        <div>
           <LoginNavigation>
             <el-avatar slot="button_active"
                        src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
             <NoLoginMenu v-if="!ifLogin" slot="menu"/>
             <LoginMenu v-if="ifLogin" slot="menu"/>
           </LoginNavigation>
-        </li>
-        <li>
+        </div>
+        <div>
           <Navigation>
             <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
             <a slot="button_text">大会员</a>
           </Navigation>
-        </li>
-        <li>
+        </div>
+        <div>
           <Navigation>
             <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
             <a slot="button_text">消息</a>
           </Navigation>
-        </li>
-        <li>
+        </div>
+        <div>
           <Navigation>
             <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
             <a slot="button_text">动态</a>
           </Navigation>
-        </li>
-        <li>
+        </div>
+        <div @click="$router.push('/UserCentre')">
           <Navigation>
             <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
-            <a slot="button_text">搜藏</a>
+            <a slot="button_text">收藏</a>
           </Navigation>
-        </li>
-        <li>
+        </div>
+        <div>
           <Navigation>
             <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
             <a slot="button_text">历史</a>
           </Navigation>
-        </li>
-
-        <li>
+        </div>
+        <div>
           <Navigation>
             <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
             <a slot="button_text">创作中心</a>
           </Navigation>
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
     <div class="unfold_menu">
       <img class="menu_button" @click="openMenu" src="@/assets/svg/navigationArrows.svg" alt="">
@@ -103,7 +102,6 @@ import NoLoginMenu from '@/components/BiliHead/MenuAndSearch/cpns/NoLoginMenu.vu
 import LoginMenu from '@/components/BiliHead/MenuAndSearch/cpns/LoginMenu.vue'
 
 import {mapState} from "vuex";
-import NavigationClassify from "@/components/BiliHead/MenuAndSearch/NavigationClassify";
 import NavigationClassifyTwo from "@/components/BiliHead/MenuAndSearch/NavigationClassifyTwo";
 
 export default {
@@ -115,7 +113,6 @@ export default {
     NoLoginMenu,
     LoginNavigation,
     LoginMenu,
-    NavigationClassify,
     NavigationClassifyTwo
   },
   data() {
@@ -131,18 +128,18 @@ export default {
   methods: {
     openMenu() {
       this.ifShowMenu = !this.ifShowMenu
-    }
+    },
   }
 }
 </script>
 <style scoped>
 .bili-head_banner_outskirts {
-  z-index: 2;
-  position: fixed;
+  position: sticky;
+  z-index: 15;
   height: 4rem;
-  left: 0;
-  right: 0;
-  background: #ffffff;
+  top: 0;
+  width: 100%;
+  background: white;
   color: #000000;
   box-shadow: 1px 1px 1px #f5f5f5;
 
@@ -155,7 +152,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background: white;
+  /*background: #e4fffb;*/
 }
 
 
@@ -169,7 +166,7 @@ export default {
   justify-content: space-between;
 }
 
-.bili-head_banner_left-ul li {
+.bili-head_banner_left-ul div {
   height: 100%;
   align-content: center;
 }
@@ -189,11 +186,11 @@ export default {
   justify-content: space-between;
 }
 
-.bili-head_banner_right-ul li {
+.bili-head_banner_right-ul div {
   color: #000000;
 }
 
-.bili-head_banner_right-ul li a {
+.bili-head_banner_right-ul div a {
   font-size: 10px;
 }
 

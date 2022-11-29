@@ -2,7 +2,7 @@
   <div class="ToPromote">
     <div class="ToPromote-title">推广</div>
     <div class="grid-container" ref="tp">
-      <div class="item" v-for="index in 6">
+      <div class="item" v-for="index in 5" :key="index">
         <VideoView>
           <source :src="videoData">
         </VideoView>
@@ -50,8 +50,9 @@ export default {
 .grid-container {
   width: 100%;
   display: grid;
-  height: 200px;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  height: 250px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-rows: repeat(1, minmax(200px, 1fr));
   gap: 20px 20px;
 }
 </style>

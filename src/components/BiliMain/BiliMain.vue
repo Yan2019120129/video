@@ -1,8 +1,6 @@
 <template>
   <div class="bili-main">
-    <slot>
       <Home></Home>
-    </slot>
   </div>
 </template>
 <script>
@@ -14,7 +12,7 @@ export default {
     Home
   }, data() {
     return {
-      videoData: null,
+
     }
   },
   mounted() {

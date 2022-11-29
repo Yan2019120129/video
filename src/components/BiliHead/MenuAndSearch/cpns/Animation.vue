@@ -21,9 +21,10 @@ export default {
 </script>
 <style scoped>
 .itemOne {
+  z-index: 12;
   position: relative;
-  /*z-index: 2;*/
   height: 100%;
+  cursor: pointer;
 }
 
 .item-button {
@@ -32,6 +33,10 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.img_path g {
+  fill: blue;
 }
 
 .itemOne:hover .item-button_active {

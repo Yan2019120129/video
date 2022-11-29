@@ -5,7 +5,7 @@
         <slot>推广</slot>
       </div>
       <div class="grid-container">
-        <div ref="VVI" class="item" v-for="index in 12">
+        <div ref="VVI" class="item" v-for="index in 8">
           <VideoView>
             <source :src="videoData">
           </VideoView>
@@ -41,7 +41,7 @@ export default {
   },
   data() {
     return {
-      ToPromoteSecondRigthHeadIsShow: false,
+      ToPromoteSecondRigthHeadIsShow: true,
       ToPromoteSecondLeftItems: 14,
     }
   },
@@ -74,13 +74,13 @@ export default {
 .grid-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  grid-template-rows: repeat(2, 200px);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-rows: repeat(2, minmax(250px, 1fr));
   grid-gap: 20px 20px;
 }
 
 .ToPromoteSecond-rigth {
-  width: 20%;
+  width: 25%;
 }
 
 .ToPromoteSecond-rigth-head {

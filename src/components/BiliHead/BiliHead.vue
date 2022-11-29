@@ -1,14 +1,15 @@
 <template>
   <div class="bili-head">
     <div class="bili-head_top">
-      <transition name="MenuAndSearch">
-        <MenuAndSearch v-if="!ifShowHeadBackground"/>
-      </transition>
-      <transition name="MenuAndSearchTwo">
-        <MenuAndSearchTwo v-if="ifShowHeadBackground"/>
-      </transition>
-      <img class="bili-head-img" src="@/assets/img/headImg.png">
+      <!--              <MenuAndSearch v-if="!ifShowNavigationBars"/>-->
+      <div ref="img_style" class="img_style">
+        <!--        <img class="bili-head-img" src="@/assets/img/headImg.png">-->
+        <!--                <BackgroundAnimation></BackgroundAnimation>-->
+        <!--        <div ref="img_shade" class="img_shade"></div>-->
+      </div>
     </div>
+    <i v-if="!isShow" class="el-icon-arrow-up img_button" @click="adjustStyle(false)"></i>
+    <i v-if="isShow" class="el-icon-arrow-down img_button" @click="adjustStyle(true)"></i>
     <NavigationClassify/>
   </div>
 </template>
@@ -18,6 +19,8 @@ import SmallMenuBelow from '@/components/BiliHead/MenuAndSearch/cpns/SmallMenuBe
 import MenuAndSearch from "@/components/BiliHead/MenuAndSearch/MenuAndSearch";
 import MenuAndSearchTwo from "@/components/BiliHead/MenuAndSearch/MenuAndSearchTwo";
 import NavigationClassify from "@/components/BiliHead/MenuAndSearch/NavigationClassify";
+import {mapActions, mapState} from "vuex";
+import BackgroundAnimation from "@/components/BiliHead/MenuAndSearch/BackgroundAnimation"
 
 export default {
   name: "BiliHead",
@@ -26,12 +29,13 @@ export default {
     SmallMenuUp,
     SmallMenuBelow,
     MenuAndSearch,
-    NavigationClassify
+    NavigationClassify,
+    BackgroundAnimation
   },
   data() {
     return {
       input: '',
-      ifShowHeadBackground: false,
+      isShow: true,
     }
   },
   mounted() {
@@ -51,23 +55,41 @@ export default {
     window.addEventListener("scroll", cancalDebounce)
   },
   methods: {
+    ...mapActions("layoutAbout", {aIfNavigationBars: "aIfNavigationBars"}),
     ifShowHeadBackgroundMethod() {
       // 滚动条距文档顶部的距离
       let scrollTop = document.querySelector("html").scrollTop || 0
       if (scrollTop > 80) {
         console.log("显示")
-        this.ifShowHeadBackground = true
+        this.aIfNavigationBars(true)
+        // this.ifShowHeadBackground = true
       } else {
         console.log("隐藏")
-        this.ifShowHeadBackground = false
+        this.aIfNavigationBars(false)
+        // this.ifShowHeadBackground = false
+      }
+    },
+    adjustStyle(value) {
+      if (value) {
+        this.$refs.img_style.style = "height: 300px;"
+        // this.$refs.img_shade.style = "height: 80px;"
+        this.isShow = false
+      } else {
+        this.$refs.img_style.style = "height: 0px;"
+        // this.$refs.img_shade.style = "height: 0px;"
+        this.isShow = true
       }
     }
+  },
+  computed: {
+    ...mapState("layoutAbout", {ifShowNavigationBars: "ifShowNavigationBars"})
   }
 }
 </script>
 <style scoped>
 
 .bili-head {
+  z-index: 11;
   position: relative;
   display: block;
   width: 100%;
@@ -140,5 +162,60 @@ export default {
 
 .navigation_right a {
   margin: auto 0;
+}
+
+.img_style {
+  position: relative;
+  /*background: #000000;*/
+  background: -webkit-radial-gradient(center, ellipse cover, #ffffff 0%, #f2efd9 100%);
+  height: 0px;
+  overflow: hidden;
+  transition: 2s;
+}
+
+.img_shade {
+  width: 100%;
+  height: 0px;
+  position: absolute;
+  background: #d7f8f3;
+  border: 1px solid #f1f1f1;
+  transition: 2s;
+  top: 0;
+}
+
+.img_button {
+  /*position: absolute;*/
+  /*transform: translateY(100%);*/
+  margin: 0 50%;
+  cursor: pointer;
+  padding: 0 10px 10px 10px;
+  /*height: 30px;*/
+  /*width: 30px;*/
+}
+
+.img_button:hover {
+  animation: float_up_or_down 1s;
+}
+
+@keyframes spread {
+  0% {
+    height: 100%;
+  }
+
+  100% {
+    height: 40px;
+  }
+}
+
+@keyframes float_up_or_down {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 </style>

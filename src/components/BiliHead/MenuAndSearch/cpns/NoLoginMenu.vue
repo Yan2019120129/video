@@ -25,7 +25,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("loginAbout", ["ifLoginInterface"]),
+    ...mapMutations("layoutAbout", ["ifLoginInterface"]),
     open() {
       this.ifLoginInterface(true)
     }

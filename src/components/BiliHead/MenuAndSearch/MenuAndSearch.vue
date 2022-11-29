@@ -34,55 +34,55 @@
     <el-input style="width: 60%;margin:0 40px 0 40px;border-radius: 20px;" v-model="input" placeholder="请输入内容">
     </el-input>
     <!--    右边的导航栏-->
-    <ul class="bili-head_banner_right-ul">
+    <div class="bili-head_banner_right-ul">
       <!-- 头像-->
-      <li>
+      <div>
         <LoginNavigation>
           <el-avatar slot="button_active"
                      src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
           <NoLoginMenu v-if="!ifLogin" slot="menu"/>
           <LoginMenu v-if="ifLogin" slot="menu"/>
         </LoginNavigation>
-      </li>
-      <li>
+      </div>
+      <div>
         <Navigation>
           <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
           <a slot="button_text">大会员</a>
         </Navigation>
-      </li>
-      <li>
+      </div>
+      <div>
         <Navigation>
           <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
           <a slot="button_text">消息</a>
         </Navigation>
-      </li>
-      <li>
+      </div>
+      <div>
         <Navigation>
           <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
           <a slot="button_text">动态</a>
         </Navigation>
-      </li>
-      <li>
+      </div>
+      <div @click="$router.push('/UserCentre')">
         <Navigation>
-          <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
-          <a slot="button_text">搜藏</a>
+          <img src="@/assets/svg/bigVIP.svg" class="img_path" slot="button_active" alt="">
+          <a slot="button_text">收藏</a>
         </Navigation>
-      </li>
-      <li>
+      </div>
+      <div>
         <Navigation>
           <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
           <a slot="button_text">历史</a>
         </Navigation>
-      </li>
+      </div>
 
-      <li>
+      <div>
         <Navigation>
           <img src="@/assets/svg/bigVIP.svg" slot="button_active" alt="">
           <a slot="button_text">创作中心</a>
         </Navigation>
-      </li>
+      </div>
 
-    </ul>
+    </div>
   </div>
 </template>
 <script>
@@ -121,8 +121,7 @@ export default {
 </script>
 <style scoped>
 .bili-head_banner {
-  z-index: 2;
-  /*width: 100%;*/
+  z-index: 99;
   height: 4rem;
   padding: 0px 20px 0 20px;
   position: absolute;
@@ -132,7 +131,7 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  color: white;
+  color: #551a8b;
 }
 
 
@@ -148,7 +147,7 @@ export default {
   padding: 0px;
 }
 
-.bili-head_banner_left-ul li {
+.bili-head_banner_left-ul div {
   /*margin-left: 1rem;*/
   height: 100%;
   /*color: white;*/
@@ -173,12 +172,12 @@ export default {
   /*justify-content: end;*/
 }
 
-.bili-head_banner_right-ul li {
+.bili-head_banner_right-ul div {
   /*margin-right: 1rem;*/
   /*color: white;*/
 }
 
-.bili-head_banner_right-ul li a {
+.bili-head_banner_right-ul div a {
   font-size: 10px;
 }
 

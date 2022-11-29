@@ -12,7 +12,8 @@
       <div class="login_popout">
         <div class="login_left">
           <p>扫描二维码登录</p>
-          <img :src="QRCode.url" alt="二维码">
+          <img v-if="isQRCode" src="@/assets/svg/login/QRCode.svg" alt="">
+          <img v-if="!isQRCode" :src="QRCode.url" alt="二维码">
         </div>
         <div class="login_middle_hr"></div>
         <div class="login_right">
@@ -51,7 +52,7 @@
 <script>
 import loginPSWInput from "@/components/BiliHead/MenuAndSearch/loging/LoginPSWInput";
 import loginNoteInput from "@/components/BiliHead/MenuAndSearch/loging/LoginNoteInput";
-import {mapMutations, mapState} from "vuex";
+import {mapActions, mapMutations, mapState} from "vuex";
 import {getQRCode} from "@/api";
 
 export default {
@@ -62,6 +63,7 @@ export default {
   },
   data() {
     return {
+      isQRCode:true,
       activeName: 'second',
       id: "",
       psw: "",
@@ -78,6 +80,7 @@ export default {
         response => {
           console.log("返回成功")
           console.log("返回的数据", response.data)
+          this.isQRCode=false
           this.QRCode.url = 'data:image/png;base64,' + response.data.url
         },
         error => {
@@ -86,10 +89,10 @@ export default {
     )
   },
   computed: {
-    ...mapState("loginAbout", ["ifShowLogin"]),
+    ...mapState("layoutAbout", ["ifShowLogin"]),
   },
   methods: {
-    ...mapMutations("loginAbout", {ifLoginInterface: 'ifLoginInterface'}),
+    ...mapActions("layoutAbout", {aIfLoginInterface: 'aIfLoginInterface'}),
     register() {
       this.toShow(false)
     },
@@ -105,13 +108,14 @@ export default {
     },
     closeLogin() {
       console.log("关闭登录窗口")
-      this.ifLoginInterface(false)
+      this.aIfLoginInterface(false)
     }
   }
 };
 </script>
 <style scoped>
 .Login_background {
+  z-index: 12;
   position: fixed;
   /*overflow: hidden;*/
   top: 0;
@@ -119,7 +123,6 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(176, 174, 174, 0.5);
-  z-index: 3;
 }
 
 .Login {

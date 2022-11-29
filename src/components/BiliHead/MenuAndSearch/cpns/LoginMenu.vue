@@ -30,10 +30,10 @@
     </div>
 
     <div class="login_menu_end">
-      <div class="Line_attribute Other_border">
+      <div class="Line_attribute Other_border" @click="$router.push('/UserMessage')">
         <div class="Line_attribute">
           <img src="@/assets/img/tv.png" alt="">
-          <h4 class="login_menu_button" @click="$router.push('/UserCentre')">个人中心</h4>
+          <h4 class="login_menu_button" >个人中心</h4>
         </div>
         <img class="img_right" src="@/assets/img/tv.png" alt="">
       </div>
@@ -63,7 +63,7 @@
 </template>
 <script>
 
-import {mapMutations} from "vuex";
+import {mapActions} from "vuex";
 
 export default {
   name: "LoginMenu",
@@ -74,11 +74,15 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("loginAbout",{placeToken:"placeToken"}),
+    ...mapActions("loginAbout", {aPlaceToken: "aPlaceToken",aIfLogin:"aIfLogin"}),
     open() {
       localStorage.clear() // 清空localStorage
-      this.placeToken("") // 清空vuex里的token
-      this.$store.commit("loginAbout/ifLogin", false)
+      this.aPlaceToken("") // 清空vuex里的token
+      this.aIfLogin(false) //设置为未登录状态
+      this.$message({
+        message: '请重新登录',
+        type: 'warning'
+      });
     },
   }
 }
