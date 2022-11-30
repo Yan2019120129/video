@@ -26,7 +26,8 @@
 export default {
   name: 'VideoView',
   props: [
-    'videoData'
+    'videoData',
+    'video_url'
   ], data() {
     return {
       picture: null,
@@ -58,7 +59,7 @@ export default {
       this.$router.push({
         name:"videoPlay",
         params:{
-
+          video_url:this.video_url
         }
       })
     }

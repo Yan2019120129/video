@@ -1,5 +1,4 @@
-import {verifyToken} from "@/api";
-import {hintLogin} from "@/utility/messageHint";
+import {verify} from "@/utility/messageHint";
 import VueRouter from 'vue-router'
 import Home from '@/views/Home/Home.vue'
 import Video from '@/views/VideoPlay/Video'
@@ -159,36 +158,15 @@ const router = new VueRouter({
 })
 
 // 全局前置路由守卫————初始化的时候被调用、每次路由切换之前被调用
-router.beforeEach((to, from, next) => {
-    console.log(to.meta.jurisdiction)
+router.beforeEach(async (to, from, next) => {
     // 判断是什么用户，能使用什么权限
     switch (to.meta.jurisdiction) {
         case "common": // 公用模块
             next()
             break
         case "commonUser": // 允许访问用户中心
-            console.log(to.meta.token);
             if (to.meta.token != null) {
-                verifyToken(token).then(
-                    req => {
-                        if (!req.data.state) {
-                            store.dispatch("loginAbout/aIfLogin", false).then()// 设置登录状态为未登录
-                            hintLogin() // 提示登录信息
-                        }
-                        console.log("返回信息", req.data);
-                        next()
-                        return
-                    },
-                    error => {
-                        store.dispatch("loginAbout/aIfLogin", false).then(); // 设置登录状态为未登录
-                        console.log("返回信息", error.response.data);
-                        console.log("没有权限");
-                        hintLogin()
-                        // next()
-                        next({path: '/'})
-                        return
-                    }
-                );
+                await verify(to.meta.token) === true ? next() : next({path: '/'})
             }
             break
         case "commonUserVIP": // 允许访问vip

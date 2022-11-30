@@ -22,10 +22,8 @@ export default {
   methods: {
     init() {
       if (localStorage.getItem("token") != null) {
-        console.log("已登录")
         this.aIfLogin(true)
       } else {
-        console.log("未登录")
         this.$message({
           message: '请登录！',
           type: 'warning'

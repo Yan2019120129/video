@@ -46,9 +46,6 @@ export function verifyToken(datas) {
 }
 
 export function javaUpload(data) {
-    console.log("发送的数据", data)
-    let self = this
-    console.log(self)
     return Axios({
         url: "/nacos-video-upload/upload/uploading",
         method: "post",

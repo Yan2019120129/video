@@ -25,7 +25,9 @@
           <span>未经作者授权,禁止转载</span>
         </div>
       </div>
-      <Video></Video>
+      <Video>
+        <source src="http://192.168.15.185:2091/2022-11-29/0f649399-cd3c-48c9-94f3-3a5ed2932bd0.mp4">
+      </Video>
       <div class="title_message_end">
         <div class="video_click_count">
           <svg width="28" height="28" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" class="icon">
@@ -158,6 +160,9 @@ export default {
       psw: "",
       textarea: ""
     };
+  },
+  mounted() {
+
   },
   methods: {
     even_more() {

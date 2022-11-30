@@ -40,7 +40,6 @@ Axios.interceptors.request.use((config) => {
     // 发送请求前进行拦截
     // 可在此处配置请求头信息
     config.headers["token"] = store.state.loginAbout.token; // 为每个请求配置请求头
-    console.log("请求头",config.headers)
     // if (config.method == "post") {
     //     /*数据转换: axios post方式默认是json格式提交数据，如果使用application/x-www-form-urlencoded数据格式提交，要用qs.stringify()进行转换,个人建议不在拦截器中全局配置，因为不够灵活，还有一点是，如果
     //   设置了重新请求的配置，那么重新请求时，请求体中的config里面的传参就会被再次进行qs.stringify()转

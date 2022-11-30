@@ -2,7 +2,9 @@
   <div>
     <div class="play_body" ref="vp">
       <video id="video" ref="v">
-        <source src="@/assets/video/test.mp4">
+        <slot>
+<!--          <source src="@/assets/video/test.mp4">-->
+        </slot>
         您的浏览器不支持 HTML5 video 标签。
       </video>
       <div id="play_menu">
@@ -220,8 +222,8 @@ const trackCount = 15 // 轨道的数量
 const trackHeight = 30  // 轨道的高度
 
 const randomSelect = (lenght) => { // 生成随机数
-                                   // floor 舍去小数点进一为整数。
-                                   // random 正数小数点大于0.5整数舍去小数进一。如Math.random(11.5)=12。random负数小数大于0.5
+  // floor 舍去小数点进一为整数。
+  // random 正数小数点大于0.5整数舍去小数进一。如Math.random(11.5)=12。random负数小数大于0.5
   return Math.floor(Math.random() * lenght)
 }
 
@@ -339,8 +341,8 @@ export default {
       this.bullets = [] // 清空大幕数组
     }
   },
-  computed:{
-    ...mapState("loginAbout",["ifLogin"])
+  computed: {
+    ...mapState("loginAbout", ["ifLogin"])
   }
 }
 </script>

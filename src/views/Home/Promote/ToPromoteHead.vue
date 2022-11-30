@@ -40,8 +40,9 @@
     <el-col :span="14">
       <div class="grid-content bg-purple-light">
         <div class="grid-container" ref="tph">
-          <VideoView v-for="n in videoData " :key="n.video_id">
-            <source :src="n.video_url">
+          <VideoView v-for="n in videoData " :key="n.video_id" :video_url="n.video_url">
+            <source src="http://192.168.15.185:2091/2022-11-29/0f649399-cd3c-48c9-94f3-3a5ed2932bd0.mp4">
+<!--            <source :src="n.video_url">-->
           </VideoView>
         </div>
       </div>
