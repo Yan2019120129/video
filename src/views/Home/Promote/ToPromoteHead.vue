@@ -40,10 +40,20 @@
     <el-col :span="14">
       <div class="grid-content bg-purple-light">
         <div class="grid-container" ref="tph">
-          <VideoView v-for="n in videoData " :key="n.video_id" :video_url="n.video_url">
-            <source src="http://192.168.15.185:2091/2022-11-29/0f649399-cd3c-48c9-94f3-3a5ed2932bd0.mp4">
-<!--            <source :src="n.video_url">-->
-          </VideoView>
+          <div v-for="n in videoMain"
+               @click="toVideoPlay(n)"
+               :key="n.videoId">
+            <VideoView :videoData="n">
+              <img slot="img" :src="`pav${n.videoCoverImgUrl}`">
+              <source slot="video" :src="`pav${n.videoUrl}`">
+              <div slot="describe" class="foot_head" style="text-overflow:ellipsis;">
+                {{ n.videoBriefIntroduction }}
+              </div>
+              <div slot="tile" class="foot-end">
+                <a>{{ n.videoTitle }}</a>
+              </div>
+            </VideoView>
+          </div>
         </div>
       </div>
     </el-col>
@@ -52,6 +62,8 @@
 <script>
 import VideoView from '@/views/Home/Promote/cpns/VideoView'
 import {mapState} from 'vuex'
+import {getVideoMain} from "@/api/common";
+import {getVideo, setVideo} from "@/utility/manageDate";
 
 export default {
   name: 'ToPromoteHead',
@@ -61,24 +73,53 @@ export default {
   data() {
     return {
       gridEle: null,
+      videoMain: {},
     }
   },
-  props: [
-    'videoData'
-  ],
   mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+      let value = getVideo("videoMain")
+      if (value) { // 判断本地缓存是否有数据，没有数据则从新获取
+        this.videoMain = value
+      } else {
+        this.getData()
+      }
+    },
+    getData() {
+      // 获取ToPromoteHead模块数据
+      getVideoMain().then(req => {
+            let video = req.data["records"]
+            this.videoMain = video
+            setVideo("videoMain", video)
+          },
+          error => {
+            console.log("错误信息", error.message)
+          }
+      )
+    },
+    toVideoPlay(value) {
+      this.$router.push({
+        name: "videoPlay",
+        query: {
+          userId: value.userId,
+          videoId: value.videoId,
+        }
+      })
+    },
+    // toHome() {
+    //   this.$router.push({
+    //     name: 'Home',
+    //   })
+    // },
 
   },
   computed: {
-    ...mapState('layoutAbout', ["TPHCitems", "TPCitems"])
+    ...mapState('layoutAbout', ["TPHCitems", "TPCitems"]),
   },
-  methods: {
-    toHome() {
-      this.$router.push({
-        name: 'Home',
-      })
-    },
-  }
+
 }
 </script>
 <style scoped>

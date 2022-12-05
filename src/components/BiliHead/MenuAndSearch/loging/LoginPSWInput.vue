@@ -44,7 +44,7 @@ export default {
       ifErrorMessage: false,
       userPhoneOrId: "yan_goodBoy",
       userMessage: {
-        userId: '',
+        userName: '',
         userPhone: '',
         userPassword: "unlock"
       },
@@ -90,7 +90,7 @@ export default {
         }
       } else {
         // 非数值则赋值为id
-        this.userMessage.userId = value
+        this.userMessage.userName = value
         console.log("是id")
         return true;
       }

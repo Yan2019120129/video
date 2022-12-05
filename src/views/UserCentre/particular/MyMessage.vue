@@ -45,6 +45,10 @@
 </template>
 
 <script>
+import {getUser} from "@/api";
+import {mapActions, mapState} from "vuex";
+import {getTokenValue} from "@/utility/manageDate";
+
 export default {
   name: "MyMessage",
   data() {
@@ -60,11 +64,28 @@ export default {
     }
         ;
   },
+  mounted() {
+    this.init()
+  },
   methods: {
+    init() {
+      const fromData = new FormData()
+      fromData.append("userId", getTokenValue("userId"))
+      getUser(fromData).then(req => {
+        console.log(req.data)
+      }, error => {
+        console.log(error.message)
+      })
+    },
     onSubmit() {
       console.log('submit!');
-    }
+    },
+    ...mapActions("loginAbout", {aAnalysisToke: "aAnalysisToke"})
+  },
+  computed: {
+    ...mapState("loginAbout", ["analysisToken"])
   }
+
 }
 </script>
 

@@ -2,9 +2,7 @@
   <div>
     <div class="play_body" ref="vp">
       <video id="video" ref="v">
-        <slot>
-<!--          <source src="@/assets/video/test.mp4">-->
-        </slot>
+        <slot></slot>
         您的浏览器不支持 HTML5 video 标签。
       </video>
       <div id="play_menu">
@@ -229,6 +227,10 @@ const randomSelect = (lenght) => { // 生成随机数
 
 export default {
   name: 'Video',
+  components: {
+
+  },
+
   props: [
     'videoSrc'
   ],

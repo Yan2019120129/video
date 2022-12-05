@@ -1,23 +1,19 @@
 <template>
-  <div class="box" @click="toVideoPlay">
+<!--    <div class="box" @click="toVideoPlay">-->
+    <div class="box" >
     <div class="head">
       <div class="videoPlay" @mouseenter="videoPlay" @mouseleave="videoPlay">
         <picture class="box-picture" ref="pic">
-          <source srcset="@/assets/img/002.jpg">
-          <img src="@/assets/img/001.jpg">
+          <slot name="img"></slot>
         </picture>
-        <video ref="vid" class="box-video" crossorigin="anonymous" muted="muted" preload="none">
-          <slot>
-            <source src="@/assets/video/test.mp4">
-          </slot>
+        <video ref="vid" class="box-video" muted="muted" preload="auto">
+          <slot name="video"></slot>
         </video>
       </div>
     </div>
     <div class="foot">
-      <div class="foot_head" style="text-overflow:ellipsis;">
-        描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述描述
-      </div>
-      <div class="foot-end"><a>标题</a></div>
+      <slot name="describe"></slot>
+      <slot name="tile"></slot>
     </div>
   </div>
 </template>
@@ -25,10 +21,7 @@
 
 export default {
   name: 'VideoView',
-  props: [
-    'videoData',
-    'video_url'
-  ], data() {
+  data() {
     return {
       picture: null,
       isPlay: true,
@@ -36,6 +29,9 @@ export default {
       showClothTimer: null,
     }
   },
+  props: [
+    "videoData"
+  ],
   mounted() {
     this.video = this.$refs.vid;
     this.picture = this.$refs.pic;
@@ -55,14 +51,14 @@ export default {
         this.video.currentTime = null;
       }
     },
-    toVideoPlay() {
-      this.$router.push({
-        name:"videoPlay",
-        params:{
-          video_url:this.video_url
-        }
-      })
-    }
+    // toVideoPlay() {
+    //   this.$router.push({
+    //     name: "videoPlay",
+    //     query: {
+    //       videoData: this.videoData
+    //     }
+    //   })
+    // }
   }
 }
 </script>

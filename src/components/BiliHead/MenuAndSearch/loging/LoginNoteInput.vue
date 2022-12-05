@@ -15,31 +15,37 @@
           </el-option>
         </el-select>
 
-        <input type="text" name="id" v-model="userPhone">
+        <input type="text" name="id" v-model="sendData.userPhone">
         <!--        分割线-->
         <el-divider direction="vertical"></el-divider>
         <a>获取验证码</a>
       </div>
       <div class="login_form_hr"></div>
       <div class="login_form_psw">
-        验证码<input type="text" name="userPassword" v-model="userPassword">
+        验证码<input type="text" name="userPassword" v-model="sendData.userPassword">
       </div>
     </form>
     <div class="login_form_button">
       <!--      <el-button plain>注册</el-button>-->
-      <el-button type="primary" @click="register">注册/登录</el-button>
+      <el-button type="primary" @click="vueRegister">注册/登录</el-button>
     </div>
   </div>
 
 </template>
 <script>
+import {addUser} from "@/api";
+import {mapActions, mapMutations, mapState} from "vuex";
+import {setToken} from "@/utility/manageDate";
+
 export default {
   name: 'LoginNoteInput',
   data() {
     return {
       activeName: 'second',
-      userPhone: "15577098792",
-      userPassword: "unlock",
+      sendData: {
+        userPhone: "15577098792",
+        userPassword: "unlock",
+      },
       cities: [{
         value: '中国香港特别行政区',
         label: '+852'
@@ -63,28 +69,42 @@ export default {
     };
   },
   methods: {
-    register() {
-      this.axios({
-        method: "post",
-        url: "http://192.168.15.185:2090/user/save",
-        data: {
-          userPhone: this.userPhone,
-          userPassword: this.userPassword
-        }
-      }).then(
+    ...mapMutations("layoutAbout", {ifLoginInterface: "ifLoginInterface"}),
+    ...mapMutations("loginAbout", {ifLogin: "ifLogin"}),
+    ...mapActions("loginAbout", {aPlaceToken: "aPlaceToken", aAnalysisToke: "aAnalysisToke"}),
+    ...mapState("loginAbout", ["analysisToken"]),
+    vueRegister() {
+      addUser(this.sendData).then(
           response => {
             console.log("获取返回的数据：", response.data)
             if (!response.data.state) {
               this.$alert("你的账号已注册！！！")
+            } else {
+              this.$message({
+                message: '登录成功',
+                type: 'success'
+              });
+              console.log("关闭登录界面")
+              this.ifLoginInterface(false)
+              console.log("返回的数据", response.data)
+              console.log("将token放入浏览器本地缓存")
+              // localStorage.setItem("token", response.data.token)
+              setToken(response.data.token)
+              console.log("将token放入vuex")
+              this.aPlaceToken(response.data.token)
+              console.log("将token放入vuex中解析")
+              this.aAnalysisToke(response.data.token)
+              console.log("将登录成功的状态放入vuex里")
+              this.ifLogin(true)
             }
           }, error => {
-            console.log("请求失败：", error.message
-            )
+            console.log("请求失败：", error.message)
           }
       )
     }
   }
-};
+}
+;
 </script>
 <style scoped>
 .login_right p {

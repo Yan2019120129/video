@@ -6,6 +6,15 @@
 <script>
 import Main from "@/components/Main";
 import {mapActions} from "vuex";
+import {verify} from "@/utility/messageHint";
+import {
+  getSubarea,
+  getVideoAimtron,
+  getVideoCompetition,
+  getVideoExtension,
+  getVideoLiveStreaming,
+  getVideoMain
+} from "@/api/common";
 
 export default {
   name: "App",
@@ -16,25 +25,18 @@ export default {
     return {}
   },
   mounted() {
-
     this.init();
   },
   methods: {
-    init() {
-      if (localStorage.getItem("token") != null) {
+    async init() {
+      let token = localStorage.getItem("token")
+      if (await verify(token)) { // token验证成功会进入
         this.aIfLogin(true)
-      } else {
-        this.$message({
-          message: '请登录！',
-          type: 'warning'
-        });
-        this.aIfLogin(false)
+        this.aPlaceToken(token) // 放入vuex存储登录状态
+        this.aAnalysisToke(token) // 页面刷新的时候放入vuex解析token
       }
-      this.aPlaceToken(localStorage.getItem("token")) // 放入vuex存储登录状态
-      this.aAnalysisToke(localStorage.getItem("token")) // 页面刷新的时候放入vuex解析token
     },
-    ...mapActions("loginAbout", {aPlaceToken: "aPlaceToken", aAnalysisToke: "aAnalysisToke", aIfLogin: "aIfLogin"}),
-
+    ...mapActions("loginAbout", {aPlaceToken: "aPlaceToken", aAnalysisToke: "aAnalysisToke", aIfLogin: "aIfLogin"})
   }
 }
 </script>
@@ -46,7 +48,7 @@ export default {
   /*min-width: 1600px;*/
   width: 100%;
   /*max-width: 1707px;*/
-
+  background: #ffffff;
   margin: auto;
   border: 1px solid #e3e3e3;
 

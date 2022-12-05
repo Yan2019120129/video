@@ -15,12 +15,15 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 import axios from 'axios';
 
+import VueVideoPlayer from 'vue-video-player'
+
 // 将axios挂在到原型上
 Vue.prototype.axios = axios;
 Vue.prototype.axios = axios;
 //关闭Vue的生产提示
 Vue.config.productionTip = false;
 
+Vue.use(VueVideoPlayer)
 Vue.use(VueRouter);
 Vue.use(ElementUI);
 //创建vm

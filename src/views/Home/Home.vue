@@ -16,19 +16,23 @@
           <span>换一组</span>
         </button>
       </div>
-      <ToPromoteHead :videoData="videoData"/>
+      <ToPromoteHead/>
     </div>
+    <el-divider></el-divider>
     <div class="toPromote">
-      <ToPromote :videoData="videoData"></ToPromote>
+      <ToPromote></ToPromote>
     </div>
+    <el-divider></el-divider>
     <div class="toPromote">
-      <ToPromoteSecond :videoData="videoData"><span>赛事</span></ToPromoteSecond>
+      <ToPromoteSecond><span>赛事</span></ToPromoteSecond>
     </div>
+    <el-divider></el-divider>
     <div class="toPromote">
-      <ToPromoteThird :videoData="videoData"><span>国创</span></ToPromoteThird>
+      <ToPromoteThird><span>国创</span></ToPromoteThird>
     </div>
+    <el-divider></el-divider>
     <div class="toPromote">
-      <ToPromoteThird :videoData="videoData"></ToPromoteThird>
+      <ToPromoteThird></ToPromoteThird>
     </div>
   </div>
 </template>
@@ -37,7 +41,6 @@ import ToPromoteHead from './Promote/ToPromoteHead'
 import ToPromote from './Promote/ToPromote'
 import ToPromoteSecond from './Promote/ToPromoteSecond'
 import ToPromoteThird from './Promote/ToPromoteThird'
-import {getVideo} from "@/api";
 
 export default {
   name: 'Home',
@@ -48,19 +51,7 @@ export default {
     ToPromoteThird
   },
   data() {
-    return {
-      videoData: require("@/assets/video/test.mp4"),
-    }
-  },
-  mounted() {
-    getVideo().then(req => {
-          console.log("data", req.data)
-          this.videoData = req.data
-        },
-        error => {
-          console.log("错误信息", error.message)
-        }
-    )
+    return {}
   },
   methods: {
     reqDate() {
@@ -70,7 +61,6 @@ export default {
       this.$refs.svg_rotate.style = "animation: ;"
     },
   },
-  computed: {},
   activated() {
     console.log('News组件被激活了')
   },
@@ -83,7 +73,7 @@ export default {
 .handover {
   position: absolute;
   right: 0;
-  transform: translateX(110%);
+  transform: translateX(130%);
 }
 
 .button_handover {

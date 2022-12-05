@@ -5,9 +5,16 @@
         <slot>推广</slot>
       </div>
       <div class="grid-container">
-        <div ref="VVI" class="item" v-for="index in 8">
-          <VideoView>
-            <source :src="videoData">
+        <div ref="VVI" class="item" v-for="n in videoAimtron" :key="n.videoId">
+          <VideoView :videoData="n">
+            <img slot="img" :src="`pav/${n.videoCoverImgUrl}`">
+            <source slot="video" :src="`pav/${n.videoUrl}`">
+            <div slot="describe" class="foot_head" style="text-overflow:ellipsis;">
+              {{ n.videoBriefIntroduction }}
+            </div>
+            <div slot="tile" class="foot-end">
+              <a>{{ n.videoTitle }}</a>
+            </div>
           </VideoView>
         </div>
       </div>
@@ -33,6 +40,8 @@
 <script>
 import VideoView from '@/views/Home/Promote/cpns/VideoView'
 import {mapState} from "vuex";
+import {getVideoAimtron} from "@/api/common";
+import {getVideo, setVideo} from "@/utility/manageDate";
 
 export default {
   name: 'ToPromoteSecond',
@@ -43,16 +52,36 @@ export default {
     return {
       ToPromoteSecondRigthHeadIsShow: true,
       ToPromoteSecondLeftItems: 14,
+      videoAimtron: {}
     }
   },
-  props: [
-    'videoData'
-  ],
-  computed: {
-    ...mapState('layoutAbout', ["TPHCitems", "TPCitems"])
-  },
   mounted() {
-
+    this.init()
+  },
+  methods: {
+    init() {
+      let value = getVideo("videoAimtron")
+      if (value) { // 判断本地缓存是否有数据，没有数据则从新获取
+        this.videoAimtron = value
+      } else {
+        this.getData()
+      }
+    },
+    getData() {
+      // 获取国创模块数据
+      getVideoAimtron().then(req => {
+            let video = req.data["records"]
+            this.videoAimtron = video
+            setVideo("videoAimtron", video)
+          },
+          error => {
+            console.log("错误信息", error.message)
+          }
+      )
+    },
+  },
+  computed: {
+    ...mapState('layoutAbout', ["TPHCitems", "TPCitems"]),
   }
 }
 </script>
@@ -68,7 +97,9 @@ export default {
 }
 
 .ToPromote-title {
-  padding: 10px 0;
+  background-color: #fffce0;
+  padding: 10px 0 10px 10px;
+  border-radius: 3px;
 }
 
 .grid-container {

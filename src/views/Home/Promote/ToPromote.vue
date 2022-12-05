@@ -2,9 +2,16 @@
   <div class="ToPromote">
     <div class="ToPromote-title">推广</div>
     <div class="grid-container" ref="tp">
-      <div class="item" v-for="index in 5" :key="index">
-        <VideoView>
-          <source :src="videoData">
+      <div class="item" @click="toVideoPlay(n)" v-for="n in videoExtension" :key="n.videoId">
+        <VideoView :videoData="{'videoId':n.videoId,'videoExtension':'videoExtension'}">
+          <img slot="img" :src="`pav/${n.videoCoverImgUrl}`">
+          <source slot="video" :src="`pav/${n.videoUrl}`">
+          <div slot="describe" class="foot_head" style="text-overflow:ellipsis;">
+            {{ n.videoBriefIntroduction }}
+          </div>
+          <div slot="tile" class="foot-end">
+            <a>{{ n.videoTitle }}</a>
+          </div>
         </VideoView>
       </div>
     </div>
@@ -12,8 +19,8 @@
 </template>
 <script>
 import VideoView from '@/views/Home/Promote/cpns/VideoView'
-
-import {mapState} from "vuex"
+import {getVideoExtension} from "@/api/common";
+import {getVideo, setVideo} from "@/utility/manageDate";
 
 export default {
   name: 'ToPromote',
@@ -23,17 +30,48 @@ export default {
   data() {
     return {
       gridEle: null,
+      videoExtension: {}
     }
   },
-  props: [
-    'videoData'
-  ],
-  computed: { // 计算属性
-    ...mapState("loginAbout", ["TPHCitems", "TPCitems"])
+
+  mounted() {
+    this.init()
   },
   methods: { // 方法
+    init() {
+      if (getVideo("videoExtension")) { //如果没有获取数据则发送请求获取数据
+        this.videoExtension = getVideo("videoExtension")
+      } else {
+        this.getData()
+      }
+    },
+    getData() {
+      // 获取扩展模块数据
+      getVideoExtension().then(req => {
+            let video = req.data["records"]
+            this.videoExtension = video
+            setVideo("videoExtension", video)
+          },
+          error => {
+            console.log("错误信息", error.message)
+          }
+      )
+    },
+    toVideoPlay(value) {
+      this.$router.push({
+        name: "videoPlay",
+        query: {
+          userId: value.userId,
+          videoId: value.videoId,
+        }
+      })
+    },
+  },
+  // computed: { // 计算属性
+  //   ...mapState("loginAbout", ["TPHCitems", "TPCitems"]),
+  //   ...mapState("videoAbout", ["videoExtension"])
+  // },
 
-  }
 }
 </script>
 <style scoped>
@@ -44,7 +82,9 @@ export default {
 }
 
 .ToPromote-title {
-  padding: 10px 0;
+  background-color: #fffce0;
+  padding: 10px 0 10px 10px;
+  border-radius: 3px;
 }
 
 .grid-container {

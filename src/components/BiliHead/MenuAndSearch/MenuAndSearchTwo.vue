@@ -32,7 +32,8 @@
       <!--                            <input type="text"><button>搜素</button>-->
       <!--                        </form>-->
       <!--        搜索框-->
-      <el-input style="width: 60%;margin:0 40px 0 40px;border-radius: 20px;" v-model="input" placeholder="请输入内容">
+      <el-input class="input_border-radius" style="width: 60%;margin:0 10% 0 10%;border-radius: 30px;" v-model="input"
+                placeholder="请输入内容">
       </el-input>
       <!--    右边的导航栏-->
       <div class="bili-head_banner_right-ul">
@@ -142,7 +143,6 @@ export default {
   background: white;
   color: #000000;
   box-shadow: 1px 1px 1px #f5f5f5;
-
 }
 
 .bili-head_banner {
@@ -263,5 +263,9 @@ export default {
   background: rgba(0, 0, 0, 0.2);
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.input_border-radius > .el-input__inner {
+  border-radius: 10px;
 }
 </style>

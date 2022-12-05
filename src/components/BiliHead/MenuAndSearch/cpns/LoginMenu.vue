@@ -64,6 +64,8 @@
 <script>
 
 import {mapActions} from "vuex";
+import {clearToken} from "@/utility/manageDate";
+import {hintLogin} from "@/utility/messageHint";
 
 export default {
   name: "LoginMenu",
@@ -76,13 +78,10 @@ export default {
   methods: {
     ...mapActions("loginAbout", {aPlaceToken: "aPlaceToken",aIfLogin:"aIfLogin"}),
     open() {
-      localStorage.clear() // 清空localStorage
+      clearToken(); // 清除token
       this.aPlaceToken("") // 清空vuex里的token
       this.aIfLogin(false) //设置为未登录状态
-      this.$message({
-        message: '请重新登录',
-        type: 'warning'
-      });
+      hintLogin()
     },
   }
 }

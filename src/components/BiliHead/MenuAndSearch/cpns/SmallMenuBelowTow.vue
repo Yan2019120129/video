@@ -10,9 +10,15 @@
 </template>
 <style scoped>
 .bt {
+  /*z-index: 99;*/
   width: 100%;
   height: 100%;
   position: relative;
+}
+
+.bt:hover > .BMOutSide {
+  display: block;
+  animation: menuShow .5s;
 }
 
 .bt button {
@@ -24,22 +30,17 @@
   border-radius: 5px;
 }
 
-.bt:hover button {
-  background-color: #dedede;
-}
-
 .buttonMenu > * {
   white-space: nowrap;
 }
 
 .BMOutSide {
-  z-index: 2;
-  padding: 10px;
+  padding: 5px;
+  /*bottom: 100%;*/
   top: 100%;
-  align-items: center;
+  left: -80%;
   display: none;
   position: absolute;
-  left: -80%;
 }
 
 .buttonMenu {
@@ -52,14 +53,10 @@
   background-color: white;
 }
 
-.bt:hover > .BMOutSide {
-  display: block;
-  animation: menuShow .5s;
-}
 
-/* .bt:hover .buttonMenu {
-    animation: menuShow .5s;
-} */
+.bt:hover button {
+  background-color: #dedede;
+}
 
 @keyframes menuShow {
   0% {

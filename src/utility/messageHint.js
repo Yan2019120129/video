@@ -9,13 +9,29 @@ export function hintLogin() {
     });
 }
 
+export function hintUploadSucceed() {
+    Message({
+        message: '上传成功！！！',
+        type: 'success'
+    });
+}
+export function hintUploadFail() {
+    Message.error('上传失败！！！');
+}
+
 export function verify(data) {
+    if (!data) {
+        console.log("isData",data);
+        hintLogin() // 提示登录信息
+        return false;
+    }
     return verifyToken(data).then(
         req => {
             if (!req.data.state) {
                 store.dispatch("loginAbout/aIfLogin", false).then()// 设置登录状态为未登录
                 localStorage.setItem("token", "")
                 hintLogin() // 提示登录信息
+                return false;
             }
             console.log("返回信息", req.data);
             return true;

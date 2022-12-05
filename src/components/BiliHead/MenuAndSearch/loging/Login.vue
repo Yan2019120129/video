@@ -115,7 +115,7 @@ export default {
 </script>
 <style scoped>
 .Login_background {
-  z-index: 12;
+  z-index: 20;
   position: fixed;
   /*overflow: hidden;*/
   top: 0;

@@ -3,7 +3,15 @@
     <MenuAndSearchTwo></MenuAndSearchTwo>
     <div class="user_center">
       <div class="user_center_top">
-        <img class="user_center_top_img" alt="" src="@/assets/img/UserCenter/user_cneter.webp">
+        <!--        <img class="user_center_top_img" alt="" src="@/assets/img/UserCenter/user_cneter.webp">-->
+        <el-carousel :autoplay="false" :interval="4000" type="card" height="200px">
+          <el-carousel-item v-for="item in 6" :key="item">
+            <!--            <h3 class="medium">{{ item }}</h3>-->
+            <div class="img_slideshow">
+              <img src="@/assets/img/004.jpg" alt="">
+            </div>
+          </el-carousel-item>
+        </el-carousel>
         <div class="surround_padding">
           <template>
             <el-tabs v-model="activeName">
@@ -87,7 +95,76 @@
                   <span class="n-text">收藏</span>
                 </a>
               </span>
-                收藏
+                <div class="collect">
+                  <el-row>
+                    <el-col :span="3">
+                      <el-col :span="24">
+                        <div class="navigation"><span>新建收藏夹</span></div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="navigation"><span>感悟</span></div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="navigation"><span>后端学习</span></div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="navigation"><span>程序员专栏</span></div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="navigation"><span>话题收藏夹</span></div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="navigation"><span>专题收藏夹</span></div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="navigation"><span>专栏收藏夹</span></div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="navigation"><span>相簿收藏夹</span></div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="navigation"><span>课程收藏夹</span></div>
+                      </el-col>
+                      <el-col :span="24">
+                        <div class="navigation"><span>笔记本收藏夹</span></div>
+                      </el-col>
+
+                    </el-col>
+                    <el-col :span="21">
+                      <div class="grid-content bg-purple-light">
+                        <el-col :span="24">
+                          <div class="tv_top">
+                            <el-row>
+                              <el-col :span="8" :offset="1">
+                                <div class="collect_img">
+                                  <img src="@/assets/img/003.jpg" alt="">
+                                </div>
+                              </el-col>
+
+                              <el-col :span="14">
+                                <div class="grid-content bg-purple-light">
+                                  <p>默认收藏夹</p>
+                                  <p>创建者：諕人播放数：0</p>
+                                  <p>15个内容·公开</p>
+                                  <p>播放全部视频</p>
+                                </div>
+                              </el-col>
+                            </el-row>
+                            <el-divider></el-divider>
+                            <el-row>
+                              <el-col :span="23" :offset="1">
+                                <div class="grid-content bg-purple-dark">
+                                  <LikeGrid>
+                                  </LikeGrid>
+                                </div>
+                              </el-col>
+                            </el-row>
+                          </div>
+                        </el-col>
+                      </div>
+                    </el-col>
+                  </el-row>
+                </div>
               </el-tab-pane>
             </el-tabs>
           </template>
@@ -101,17 +178,19 @@
 import {mapState} from "vuex";
 import {javaUpload} from "@/api";
 import MenuAndSearchTwo from "@/components/BiliHead/MenuAndSearch/MenuAndSearchTwo";
+import LikeGrid from "@/views/UserCollect/LikeGrid";
 
 export default {
   data() {
     return {
       drawer: false,
-      activeName: 'first',
+      activeName: 'fifth',
       uploadData: "",
     };
   },
   components: {
-    MenuAndSearchTwo
+    MenuAndSearchTwo,
+    LikeGrid
   },
   methods: {
     vue_upload(value) {
@@ -134,10 +213,13 @@ export default {
             console.log(error.response?.status);
             console.log("错误信息", error)
           })
-    },
-  },
+    }
+    ,
+  }
+  ,
   computed: {
-    ...mapState("loginAbout", ["token", "analysisToken"]),
+    ...
+        mapState("loginAbout", ["token", "analysisToken"]),
   }
 }
 ;
@@ -152,6 +234,7 @@ export default {
   /*background: white;*/
   width: 80%;
   margin: auto;
+  padding-bottom: 80px;
 }
 
 .user_center_top_img {
@@ -194,5 +277,51 @@ export default {
   /*padding-right: 10%;*/
   height: 100%;
   /*background: #cbcbcb;*/
+}
+
+/* 收藏-------------------------------------*/
+.collect {
+  width: 100%;
+}
+
+.navigation {
+  height: 50px;
+  border-radius: 5px;
+}
+
+.navigation:hover {
+  background-color: #d7d7d7;
+}
+
+.navigation span {
+  padding-left: 10px;
+  line-height: 50px;
+}
+
+.tv_top {
+  height: 200px;
+}
+
+.collect_img {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.collect_img img {
+  height: 150px;
+  width: 220px;
+  border-radius: 10px;
+  /*width: 200px;*/
+}
+
+.img_slideshow {
+  height: 100%;
+
+  /*overflow: hidden;*/
+}
+
+.img_slideshow img{
+  max-width: 100%;
+  height: auto;
 }
 </style>

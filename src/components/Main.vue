@@ -1,5 +1,21 @@
 <template>
   <div class="Main">
+    <el-backtop></el-backtop>
+    <el-backtop :bottom="100">
+      <div
+          style="{
+        height: 100%;
+        width: 100%;
+        background-color: #f2f5f6;
+        box-shadow: 0 0 6px rgba(0,0,0, .12);
+        text-align: center;
+        line-height: 40px;
+        color: #1989fa;
+      }"
+      >
+        UP
+      </div>
+    </el-backtop>
     <transition name="el-zoom-in-top">
       <MenuAndSearchTwo></MenuAndSearchTwo>
     </transition>
@@ -9,6 +25,7 @@
     </div>
     <div class="main">
       <router-view name="router_main"></router-view>
+
     </div>
     <div class="fool">
       <BiliFool/>
@@ -51,7 +68,7 @@ export default {
 
 <style scoped>
 .Main {
-  background-color: white;
+  background-color: #fbeeee;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -61,13 +78,20 @@ export default {
   height: 100%;
 }
 
-
 .head {
-  width: 100%;
+  width: 80%;
+  /*background: #ffe0e0;*/
+  padding: 0 10px;
+  border: 1px solid #d7d7d7;
+  border-bottom: none;
 }
 
 .main {
   width: 80%;
+  background: #ffffff;
+  padding: 0 10px;
+  border: 1px solid #d7d7d7;
+  border-top: none;
 }
 
 .fool {

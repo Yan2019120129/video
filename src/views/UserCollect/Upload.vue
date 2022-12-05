@@ -94,6 +94,7 @@
                       ref="uploadVideo"
                       :on-change="fileDate"
                       :http-request="vue_upload"
+                      :limit="1"
                       :auto-upload="false"
                       action=""
                       multiple>
@@ -123,7 +124,6 @@
                     <el-col :span="15" :offset="2">
                       <div class="grid-content bg-purple">
                         <!--                        action="http://localhost:9527/nacos-video-upload/upload/uploadImg"-->
-
                         <el-upload
                             list-type="picture-card"
                             action=""
@@ -212,16 +212,16 @@
                     </el-col>
                     <el-col :span="5" :offset="2">
                       <div class="grid-content bg-purple-light">
-                        <el-select v-model="videoSubarea" placeholder="请选择">
+                        <el-select v-model="videoSubareaValue" placeholder="请选择">
                           <el-option-group
-                              v-for="group in options"
-                              :key="group.label"
-                              :label="group.label">
+                              v-for="group in optionsTest"
+                              :key="group.videoSubareaId"
+                              :label="group.videoSubarea">
                             <el-option
-                                v-for="item in group.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                v-for="item in group.videoSubareaType"
+                                :key="item.videoSubareaTypeId"
+                                :label="item.videoSubareaType"
+                                :value="item.videoSubareaTypeId">
                             </el-option>
                           </el-option-group>
                         </el-select>
@@ -402,13 +402,15 @@
         </el-container>
       </el-container>
     </el-container>
-    <el-button οnclick=“document>1123</el-button>
   </div>
 </template>
 
 <script>
 import {mapState} from "vuex";
 import {javaUpload} from "@/api";
+import {getClassification} from "@/api/common";
+import {hintUploadFail, hintUploadSucceed} from "@/utility/messageHint";
+import {getTokenValue} from "@/utility/manageDate";
 // import classification from "src/assets/classification.json"
 
 export default {
@@ -421,7 +423,7 @@ export default {
       videoTitle: '',
       videoIsTransshipmentUrl: '',
       videoIsTransshipment: '0',
-      videoSubarea: '',
+      videoSubareaValue: '',
       videoCreation: false,
       videoBriefIntroduction: '',
       videoPublishTime: '',
@@ -433,44 +435,7 @@ export default {
       disabled: false,
       isCollapse: true,
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-      options: [{
-        label: '推荐',
-        options: [{
-          value: 'JobMarket',
-          label: '职业职场'
-        }, {
-          value: 'everyday',
-          label: '日常'
-        },
-          {
-            value: 'schoolyard',
-            label: '校园'
-          },
-          {
-            value: 'business',
-            label: '商业'
-          },
-          {
-            value: 'ShouBan',
-            label: '手办'
-          },
-        ]
-      }, {
-        label: '生活',
-        options: [{
-          value: 'Chengdu',
-          label: '成都'
-        }, {
-          value: 'Shenzhen',
-          label: '深圳'
-        }, {
-          value: 'Guangzhou',
-          label: '广州'
-        }, {
-          value: 'Dalian',
-          label: '大连'
-        }]
-      }],
+      optionsTest: [],
       input: '',
       on_off: false,
       activeNames: ['1'],
@@ -515,9 +480,35 @@ export default {
     }
   },
   mounted() {
-    // console.log(classification)
+    this.init()
   },
   methods: {
+    init() {
+      getClassification().then(
+          req => {
+            let a = this.optionsTest = req.data
+            // for (let i = 0; i < this.optionsTest.length; i++) {
+            //   console.log(this.optionsTest[i].videoSubareaType)
+            //   for (let j = 0; j < this.optionsTest[i].videoSubareaType.length; j++) {
+            //     console.log(this.optionsTest[i].videoSubareaType[j].videoSubareaType)
+            //   }
+            // }
+
+            for (const reqKey in a) {
+              console.log(a[reqKey].videoSubareaType)
+              for (const reqKeyKey in a[reqKey].videoSubareaType) {
+                console.log(a[reqKey].videoSubareaType[reqKeyKey].videoSubareaType)
+              }
+            }
+
+            console.log("data", req.data)
+          },
+          error => {
+            error.message
+            console.log("error", error.message)
+          }
+      )
+    },
     choiceLabel(value) {
       let a = this.tags.find(item => item.name == value) // 获取指定的对象
       this.tags = this.tags.filter(item => item.name != value) // 获取除指定对象之外的元素
@@ -562,17 +553,18 @@ export default {
     vue_upload(value) {
       console.log("接收的数据", value)
       console.log("token数据", this.token)
-      console.log("解析的token数据", this.analysisToken[0])
+      console.log("解析的token数据", this.analysisToken)
       // 后端接收的是表单类型'Content-Type': 'multipart/form-data'，必须要使用FormData()类格式化数据才能传输成功
       const form = new FormData();
       form.append("file", value.file);
-      form.append("userId", this.analysisToken.userIdOrPhone[0]);
-      form.append("phone", this.analysisToken.userIdOrPhone[1]);
+      form.append("userName", getTokenValue("userName"));
+      form.append("userPhone", getTokenValue("userPhone"));
+      form.append("userId", getTokenValue("userId"));
       form.append("videoCoverImgUrl", this.videoCoverImgUrl)
       form.append("videoTitle", this.videoTitle)
       form.append("videoIsTransshipmentUrl", this.videoIsTransshipmentUrl)
       form.append("videoIsTransshipment", this.videoIsTransshipment)
-      form.append("videoSubarea", this.videoSubarea)
+      form.append("videoSubarea", this.videoSubareaValue)
       form.append("videoCreation", this.videoCreation)
       form.append("videoBriefIntroduction", this.videoBriefIntroduction)
       form.append("videoPublishTime", this.videoPublishTime)
@@ -589,10 +581,12 @@ export default {
           response => {
             console.log("返回成功")
             console.log("返回的数据", response.data)
+            hintUploadSucceed()
           }, error => {
             console.log(error.response?.data);
             console.log(error.response?.status);
             console.log("错误信息", error)
+            hintUploadFail()
           })
     },
     contribute(value) {

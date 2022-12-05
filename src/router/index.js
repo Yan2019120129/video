@@ -1,4 +1,4 @@
-import {verify} from "@/utility/messageHint";
+import {hintLogin, verify} from "@/utility/messageHint";
 import VueRouter from 'vue-router'
 import Home from '@/views/Home/Home.vue'
 import Video from '@/views/VideoPlay/Video'
@@ -9,14 +9,13 @@ import UserMessage from "@/views/UserCentre/UserMessage";
 import Upload from "@/views/UserCollect/Upload";
 import Main from "@/components/Main";
 import VideoUpload from "@/views/VideoPlay/VideoUpload";
-import store from "@/store/index"
 import Account from "@/views/UserCentre/particular/Account";
 import BackgroundAnimation from "@/components/BiliHead/MenuAndSearch/BackgroundAnimation";
 import UserMessageMain from "@/views/UserCentre/particular/UserMessageMain";
 import VIP from "@/views/UserCentre/particular/VIP";
 import MyMessage from "@/views/UserCentre/particular/MyMessage";
+import {getToken} from "@/utility/manageDate";
 
-const token = store.state.loginAbout.token;
 const router = new VueRouter({
     routes: [
         {
@@ -70,7 +69,7 @@ const router = new VueRouter({
         {
             name: 'userCentre',
             path: '/userCentre',
-            meta: {isAuth: true, jurisdiction: "commonUser", token},
+            meta: {isAuth: true, jurisdiction: "commonUser"},
             components: {
                 router_app: UserCentre
             },
@@ -78,7 +77,7 @@ const router = new VueRouter({
         {
             name: 'userMessage',
             path: '/userMessage',
-            meta: {isAuth: true, jurisdiction: "commonUser", token},
+            meta: {isAuth: true, jurisdiction: "commonUser"},
             components: {
                 router_app: UserMessage
             },
@@ -87,7 +86,7 @@ const router = new VueRouter({
                 {
                     name: "useMessageMain",
                     path: "useMessageMain",
-                    meta: {isAuth: true, jurisdiction: "commonUser", token},
+                    meta: {isAuth: true, jurisdiction: "commonUser"},
                     components: {
                         router_userMessage: UserMessageMain
                     },
@@ -96,7 +95,7 @@ const router = new VueRouter({
                         {
                             name: "vip",
                             path: "vip",
-                            meta: {isAuth: true, jurisdiction: "commonUserVIP", token},
+                            meta: {isAuth: true, jurisdiction: "commonUserVIP"},
                             components: {
                                 router_userMessageMain: VIP
                             },
@@ -104,7 +103,7 @@ const router = new VueRouter({
                         {
                             name: "myMessage",
                             path: "myMessage",
-                            meta: {isAuth: true, jurisdiction: "commonUser", token},
+                            meta: {isAuth: true, jurisdiction: "commonUser"},
                             components: {
                                 router_userMessageMain: MyMessage
                             },
@@ -114,7 +113,7 @@ const router = new VueRouter({
                 {
                     name: 'account',
                     path: 'account',
-                    meta: {isAuth: true, jurisdiction: "commonUser", token},
+                    meta: {isAuth: true, jurisdiction: "commonUser"},
                     components: {
                         router_userMessage: Account
                     },
@@ -124,7 +123,7 @@ const router = new VueRouter({
         , {
             name: 'upload',
             path: '/upload',
-            meta: {isAuth: true, jurisdiction: "commonUser", token},
+            meta: {isAuth: true, jurisdiction: "commonUser"},
             components: {
                 router_app: Upload
             },
@@ -141,7 +140,7 @@ const router = new VueRouter({
         {
             name: 'videoUpload',
             path: '/videoUpload',
-            meta: {isAuth: true, jurisdiction: "commonUser", token},
+            meta: {isAuth: true, jurisdiction: "commonUser"},
             components: {
                 router_main: VideoUpload
             },
@@ -149,24 +148,28 @@ const router = new VueRouter({
         {
             name: "userMessageMain",
             path: '/userMessageMain',
-            meta: {isAuth: true, jurisdiction: "commonUser", token},
+            meta: {isAuth: true, jurisdiction: "commonUser"},
             components: {
                 router_app: UserMessageMain
             }
         },
     ]
 })
-
+let token = getToken()
 // 全局前置路由守卫————初始化的时候被调用、每次路由切换之前被调用
 router.beforeEach(async (to, from, next) => {
     // 判断是什么用户，能使用什么权限
-    switch (to.meta.jurisdiction) {
+    switch (to.meta["jurisdiction"]) {
         case "common": // 公用模块
             next()
             break
         case "commonUser": // 允许访问用户中心
-            if (to.meta.token != null) {
-                await verify(to.meta.token) === true ? next() : next({path: '/'})
+            if (token) {
+                if (await verify(token)) {
+                    next()
+                }
+            } else {
+                hintLogin()
             }
             break
         case "commonUserVIP": // 允许访问vip

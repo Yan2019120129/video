@@ -14,23 +14,13 @@
   </div>
 </template>
 <script>
-import SmallMenuUp from '@/components/BiliHead/MenuAndSearch/cpns/SmallMenuUp.vue'
-import SmallMenuBelow from '@/components/BiliHead/MenuAndSearch/cpns/SmallMenuBelow.vue'
-import MenuAndSearch from "@/components/BiliHead/MenuAndSearch/MenuAndSearch";
-import MenuAndSearchTwo from "@/components/BiliHead/MenuAndSearch/MenuAndSearchTwo";
 import NavigationClassify from "@/components/BiliHead/MenuAndSearch/NavigationClassify";
 import {mapActions, mapState} from "vuex";
-import BackgroundAnimation from "@/components/BiliHead/MenuAndSearch/BackgroundAnimation"
 
 export default {
   name: "BiliHead",
   components: {
-    MenuAndSearchTwo,
-    SmallMenuUp,
-    SmallMenuBelow,
-    MenuAndSearch,
     NavigationClassify,
-    BackgroundAnimation
   },
   data() {
     return {
@@ -183,14 +173,12 @@ export default {
   top: 0;
 }
 
+
 .img_button {
-  /*position: absolute;*/
-  /*transform: translateY(100%);*/
   margin: 0 50%;
   cursor: pointer;
   padding: 0 10px 10px 10px;
-  /*height: 30px;*/
-  /*width: 30px;*/
+  color: #dadada;
 }
 
 .img_button:hover {

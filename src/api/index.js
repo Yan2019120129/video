@@ -1,10 +1,10 @@
-import Axios from "./axios" // 导入配置好的axios文件
+import Axios from "./axios"
 
 // 封装axios请求函数，并用export导出
 export function getQRCode(datas) {
     return Axios({
         url: "/nacos-video-admin/admin/createQrCode",
-        method: "get",
+        method: "post",
         headers: {
             // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
             'Content-Type': 'application/json' //设置请求头请求格式为json
@@ -13,18 +13,23 @@ export function getQRCode(datas) {
     })
 }
 
-export function getVideo(datas) {
+export function addUser(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/findAllVideo",
-        method: "get",
+        method: "post",
+        url: "/nacos-video-admin/admin/save",
         headers: {
             // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
             'Content-Type': 'application/json' //设置请求头请求格式为json
         },
-        data: datas
+        data: datas,
+        // data: {
+        //     userPhone: this.userPhone,
+        //     userPassword: this.userPassword
+        // }
     })
 }
 
+// 用户登录
 export function userLogin(datas) {
     return Axios({
         url: "/nacos-video-admin/admin/login",
@@ -36,12 +41,25 @@ export function userLogin(datas) {
     })
 }
 
-export function verifyToken(datas) {
+// 用户登录
+export function getUser(datas) {
     return Axios({
-        url: "/nacos-video-gateway/verifyToken", method: "post", headers: {
-            'Content-Type': 'application/json', //设置请求头请求格式为json
+        url: "/nacos-video-admin/admin/findOneById",
+        method: "get",
+        headers: {
+            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
         },
         data: datas
+    })
+}
+
+export function verifyToken(datas) {
+    return Axios({
+        url: "/nacos-video-gateway/verifyToken", method: "post",
+        headers: {
+            'Content-Type': 'application/json', //设置请求头请求格式为json
+            "token": datas
+        },
     })
 }
 

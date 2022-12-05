@@ -1,11 +1,11 @@
 <template>
-  <div class="ToPromoteThird">
-    <div class="ToPromoteThird-left">
+  <div class="ToPromoteSecond">
+    <div class="ToPromoteSecond-left">
       <div class="ToPromote-title">
         <slot>推广</slot>
       </div>
       <div class="grid-container">
-        <div ref="VVI" class="item" v-for="n in videoCompetition" :key="n.videoId">
+        <div ref="VVI" class="item" v-for="n in videoAimtron" :key="n.videoId">
           <VideoView :videoData="n">
             <img slot="img" :src="`pav/${n.videoCoverImgUrl}`">
             <source slot="video" :src="`pav/${n.videoUrl}`">
@@ -19,86 +19,53 @@
         </div>
       </div>
     </div>
-    <div class="ToPromoteThird-rigth" v-show="ToPromoteThirdRigthHeadIsShow">
-      <div class="ToPromoteThird-rigth-head">
-        <a>直播排行</a>
-        <a>关注主播</a>
-        <a>为你推荐</a>
-      </div>
-      <div class="TopromoteThird-right-main">
-        <ul class="right-main-ul">
-          <li class="right-main-ul-li" v-for="index in 5">
-            <div>
-              <img src="@/assets/img/001.jpg" alt="">
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
   </div>
 </template>
 <script>
 import VideoView from '@/views/Home/Promote/cpns/VideoView'
 import {mapState} from "vuex";
-import {getVideoLiveStreaming} from "@/api/common";
-import {getVideo, setVideo} from "@/utility/manageDate";
+import {getVideoAimtron} from "@/api/common";
 
 export default {
-  name: 'ToPromoteThird',
+  name: 'LikeGrid',
   components: {
     VideoView
   },
   data() {
     return {
-      ToPromoteThirdRigthHeadIsShow: true,
-      ToPromoteThirdLeftItems: 21,
-      videoCompetition: {}
+      ToPromoteSecondRigthHeadIsShow: true,
+      ToPromoteSecondLeftItems: 14,
+      videoAimtron: {}
     }
   },
   mounted() {
-    this.init()
+    // 获取国创模块数据
+    getVideoAimtron().then(req => {
+          this.videoAimtron = req.data.records
+        },
+        error => {
+          console.log("错误信息", error.message)
+        }
+    )
   },
-  methods: {
-    init() {
-      let value = getVideo("videoCompetition")
-      if (value) { // 判断本地缓存是否有数据，没有数据则从新获取
-        this.videoCompetition = value
-      } else {
-        this.getData()
-      }
-    },
-    getData() {
-      // 获取直播模块数据
-      getVideoLiveStreaming().then(req => {
-            let video = req.data["records"]
-            this.videoCompetition = video
-            setVideo("videoCompetition", video)
-          },
-          error => {
-            console.log("错误信息", error.message)
-          }
-      )
-    }
-  },
-  computed: { // 计算属性
-    ...
-        mapState("loginAbout", ["TPHCitems", "TPCitems"])
+  computed: {
+    ...mapState('layoutAbout', ["TPHCitems", "TPCitems"]),
   }
 }
 </script>
 <style scoped>
-.ToPromoteThird {
+.ToPromoteSecond {
   display: flex;
   column-gap: 10px;
   flex-direction: row;
 }
 
-.ToPromoteThird-left {
+.ToPromoteSecond-left {
   width: 100%;
 }
 
 .ToPromote-title {
-  background-color: #d1fffe;
+  background-color: #fffce0;
   padding: 10px 0 10px 10px;
   border-radius: 3px;
 }
@@ -106,21 +73,21 @@ export default {
 .grid-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  /*grid-template-rows: repeat(3, 250px);*/
-  grid-gap: 50px 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 30px 30px;
 }
 
-.ToPromoteThird-rigth {
+.ToPromoteSecond-rigth {
   width: 25%;
 }
 
-.ToPromoteThird-rigth-head {
+.ToPromoteSecond-rigth-head {
   display: flex;
   flex-direction: row;
 }
 
-.ToPromoteThird-rigth-head a {
+.ToPromoteSecond-rigth-head a {
   padding: 10px 10px 10px 0;
 
 }
