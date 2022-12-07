@@ -24,8 +24,9 @@
       <BiliHead></BiliHead>
     </div>
     <div class="main">
-      <router-view name="router_main"></router-view>
-
+      <keep-alive :include="['Home','VideoPlay']">
+        <router-view name="router_main"></router-view>
+      </keep-alive>
     </div>
     <div class="fool">
       <BiliFool/>
@@ -61,7 +62,6 @@ export default {
   },
   computed: {
     ...mapState("layoutAbout", ["ifShowLogin", "ifShowNavigationBars"]),
-    // ...mapState("layoutAbout", ["ifShowLogin"])
   },
 }
 </script>

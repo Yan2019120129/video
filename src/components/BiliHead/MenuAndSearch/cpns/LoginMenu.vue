@@ -30,7 +30,7 @@
     </div>
 
     <div class="login_menu_end">
-      <div class="Line_attribute Other_border" @click="$router.push('/UserMessage')">
+      <div class="Line_attribute Other_border" @click="$router.push('/userMessage')">
         <div class="Line_attribute">
           <img src="@/assets/img/tv.png" alt="">
           <h4 class="login_menu_button" >个人中心</h4>
@@ -81,7 +81,8 @@ export default {
       clearToken(); // 清除token
       this.aPlaceToken("") // 清空vuex里的token
       this.aIfLogin(false) //设置为未登录状态
-      hintLogin()
+      hintLogin() // 提示登录
+      location.reload() // 重新加载页面 否则会出现token不能实时更新，不能准确的判断登录状态的问题
     },
   }
 }

@@ -1,6 +1,5 @@
 /* 1.引入文件 */
 import axios from 'axios' //引入 axios库
-import store from "@/store/index"
 
 /* 2.全局默认配置 */
 let baseURL
@@ -36,23 +35,24 @@ const Axios = axios.create({
 如果不是用创建实例的方式配置，那么下面的Axios都要换成axios,也就是文件开头你用import引入axios
 时定义的变量
 */
-Axios.interceptors.request.use((config) => {
-    // 发送请求前进行拦截
-    // 可在此处配置请求头信息
-    if (!config.headers.token){
-        config.headers["token"] = localStorage.getItem("token") // 为每个请求配置请求头
-    }
-    // if (config.method == "post") {
-    //     /*数据转换: axios post方式默认是json格式提交数据，如果使用application/x-www-form-urlencoded数据格式提交，要用qs.stringify()进行转换,个人建议不在拦截器中全局配置，因为不够灵活，还有一点是，如果
-    //   设置了重新请求的配置，那么重新请求时，请求体中的config里面的传参就会被再次进行qs.stringify()转
-    //   换，会使得参数丢失，造成请求失败。*/
-    //     config.data = qs.stringify(config.data)
-    // }
-    return config;
-}, (error) => {
-    //console.log("错误的传参", 'fail');
-    return Promise.reject(error)
-})
+Axios.interceptors.request.use(
+    (config) => {
+        // 发送请求前进行拦截
+        // 可在此处配置请求头信息
+        if (!config.headers.token) {
+            config.headers["token"] = localStorage.getItem("token") // 为每个请求配置请求头
+        }
+        // if (config.method == "post") {
+        //     /*数据转换: axios post方式默认是json格式提交数据，如果使用application/x-www-form-urlencoded数据格式提交，要用qs.stringify()进行转换,个人建议不在拦截器中全局配置，因为不够灵活，还有一点是，如果
+        //   设置了重新请求的配置，那么重新请求时，请求体中的config里面的传参就会被再次进行qs.stringify()转
+        //   换，会使得参数丢失，造成请求失败。*/
+        //     config.data = qs.stringify(config.data)
+        // }
+        return config;
+    }, (error) => {
+        //console.log("错误的传参", 'fail');
+        return Promise.reject(error)
+    })
 Axios.interceptors.response.use((res) => {
     // //请求响应后拦截
     // if (res.status == 200) {       // 对响应数据做些事

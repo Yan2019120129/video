@@ -2,7 +2,7 @@
   <div class="ToPromoteSecond">
     <div class="ToPromoteSecond-left">
       <div class="grid-container">
-        <div ref="VVI" @click="toVideoPlay(n)" class="item" v-for="n in videoCollect" :key="n.videoId">
+        <div ref="VVI" @click="toVideoPlay(n)" class="item" v-for="n in videoMy" :key="n.videoId">
           <VideoView :videoData="n">
             <img slot="img" :src="`pav/${n.videoCoverImgUrl}`">
             <source slot="video" :src="`pav/${n.videoUrl}`">
@@ -21,11 +21,11 @@
 <script>
 import VideoView from '@/views/Home/Promote/cpns/VideoView'
 import {mapState} from "vuex";
-import {getVideoLike} from "@/api/common";
+import {getVideoMy} from "@/api/common";
 import {getTokenValue} from "@/utility/manageDate";
 
 export default {
-  name: 'LikeGrid',
+  name: 'MyGrid',
   components: {
     VideoView
   },
@@ -33,23 +33,25 @@ export default {
     return {
       ToPromoteSecondRigthHeadIsShow: true,
       ToPromoteSecondLeftItems: 14,
-      videoCollect: {}
+      videoMy: {}
     }
   },
   mounted() {
+    console.log("getVideoMy")
     let formData = new FormData();
     formData.append("userId", getTokenValue("userId"))
     // 获取用户收藏视频的信息
-    getVideoLike(formData).then(req => {
-          console.log("返回数据", req.data)
-          this.videoCollect=req.data
+    getVideoMy(formData).then(req => {
+          console.log("getVideoMy返回数据", req.data)
+          this.videoMy = req.data
+      this.$emit("myGridStateBack",false)
         },
         error => {
           console.log("错误信息", error.message)
         }
     )
   },
-  methods:{
+  methods: {
     toVideoPlay(value) {
       console.log("运行")
       this.$router.push({

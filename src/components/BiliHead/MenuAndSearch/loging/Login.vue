@@ -52,7 +52,7 @@
 <script>
 import loginPSWInput from "@/components/BiliHead/MenuAndSearch/loging/LoginPSWInput";
 import loginNoteInput from "@/components/BiliHead/MenuAndSearch/loging/LoginNoteInput";
-import {mapActions, mapMutations, mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 import {getQRCode} from "@/api";
 
 export default {
@@ -63,7 +63,7 @@ export default {
   },
   data() {
     return {
-      isQRCode:true,
+      isQRCode: true,
       activeName: 'second',
       id: "",
       psw: "",
@@ -76,23 +76,29 @@ export default {
     };
   },
   mounted() {
-    getQRCode(this.QRCode).then(
-        response => {
-          console.log("返回成功")
-          console.log("返回的数据", response.data)
-          this.isQRCode=false
-          this.QRCode.url = 'data:image/png;base64,' + response.data.url
-        },
-        error => {
-          console.log("错误信息", error.message)
-        }
-    )
-  },
-  computed: {
-    ...mapState("layoutAbout", ["ifShowLogin"]),
+    this.init()
   },
   methods: {
     ...mapActions("layoutAbout", {aIfLoginInterface: 'aIfLoginInterface'}),
+    init() {
+      getQRCode(this.QRCode).then(
+          response => {
+            console.log("返回成功")
+            console.log("返回的数据", response.data)
+            this.isQRCode = false
+            this.QRCode.url = 'data:image/png;base64,' + response.data.url
+          },
+          error => {
+            console.log("错误信息", error.message)
+          }
+      )
+      this.ifShow = this.ifLoginOrRegister
+      if (!this.ifShow) {
+        this.register()
+      }
+      console.log("注册", this.ifShow)
+    },
+
     register() {
       this.toShow(false)
     },
@@ -110,12 +116,15 @@ export default {
       console.log("关闭登录窗口")
       this.aIfLoginInterface(false)
     }
-  }
+  },
+  computed: {
+    ...mapState("layoutAbout", ["ifShowLogin", "ifLoginOrRegister"]),
+  },
 };
 </script>
 <style scoped>
 .Login_background {
-  z-index: 20;
+  z-index: 999;
   position: fixed;
   /*overflow: hidden;*/
   top: 0;

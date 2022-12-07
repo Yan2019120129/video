@@ -107,6 +107,7 @@ export default {
                   message: '登录成功',
                   type: 'success'
                 });
+                location.reload() // 重新加载页面 否则会出现token不能实时更新，不能准确的判断登录状态的问题
                 console.log("关闭登录界面")
                 this.ifLoginInterface(false)
                 console.log("返回的数据", response.data)

@@ -102,7 +102,6 @@ export function getShare(datas, state) {
     })
 }
 
-
 // 获取ToPromoteHead模块数据
 export function getVideoMain(datas) {
     return Axios({
@@ -168,8 +167,8 @@ export function getVideoLiveStreaming(datas) {
     })
 }
 
-export function getVideoCorrelation(datas){
-    console.log("数据",datas)
+// 获取视频相关信息
+export function getVideoCorrelation(datas) {
     return Axios({
         url: "/nacos-video-system/system/videoCorrelation",
         method: "post",
@@ -180,3 +179,61 @@ export function getVideoCorrelation(datas){
         data: datas
     })
 }
+
+// 获取用户收藏的视频信息
+export function getVideoLike(datas) {
+    return Axios({
+        url: "/nacos-video-system/system/findUserLikeById",
+        method: "post",
+        headers: {
+            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
+            // 'Content-Type': 'multipart/form-data'
+            // 'Content-Type': 'application/json' //设置请求头请求格式为json
+            'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
+        },
+        data:datas
+    })
+}
+
+// 获取用户上传的所有视频
+export function getVideoMy(datas) {
+    return Axios({
+        url: "/nacos-video-upload/upload/findUserVideosById",
+        method: "post",
+        headers: {
+            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
+            // 'Content-Type': 'multipart/form-data'
+            // 'Content-Type': 'application/json' //设置请求头请求格式为json
+            'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
+        },
+        data:datas
+    })
+}
+
+// 获取互动信息，对点赞，收藏，分享，投币做添加修改处理
+export function videoInteraction(datas,interactPath) {
+
+    return Axios({
+        url: `/nacos-video-system/system/${interactPath}`,
+        method: "get",
+        headers: {
+            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
+            'Content-Type': 'application/json' //设置请求头请求格式为json
+        },
+        data: datas
+    })
+}
+//  获取互动信息，对点赞，收藏，分享，投币做添加修改处理
+export function findAllInteract(datas){
+    console.log("findAllInteract数据",datas)
+    return Axios({
+        url: "/nacos-video-system/system/findAllInteract",
+        method: "post",
+        headers: {
+            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
+            'Content-Type': 'application/json' //设置请求头请求格式为json
+        },
+        data: datas
+    })
+}
+

@@ -7,15 +7,15 @@
       <p><img src="@/assets/img/tv.png"><span>发表弹幕/评论</span></p>
       <p><img src="@/assets/img/tv.png"><span>热门番剧影视看不停</span></p>
     </div>
-    <el-button type="primary" @click="open">立即登录</el-button>
+    <el-button type="primary" @click="open(true)">立即登录</el-button>
     <p class="login_hint">
-      <a>首次使用？</a><a href="">点我注册</a>
+      <a>首次使用？</a><a class="hyperlink_style" @click="open(false)">点我注册</a>
     </p>
   </div>
 </template>
 <script>
 
-import {mapMutations} from "vuex";
+import {mapActions} from "vuex";
 
 export default {
   name: "NoLoginMenu",
@@ -25,9 +25,16 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("layoutAbout", ["ifLoginInterface"]),
-    open() {
-      this.ifLoginInterface(true)
+    ...mapActions("layoutAbout", {aIfLoginOrRegister: "aIfLoginOrRegister", aIfLoginInterface: "aIfLoginInterface"}),
+
+    open(value) {
+      if (value) {
+        this.aIfLoginInterface(true)
+        this.aIfLoginOrRegister(true)
+      } else {
+        this.aIfLoginInterface(true)
+        this.aIfLoginOrRegister(false)
+      }
     }
   },
 
@@ -65,5 +72,11 @@ export default {
 .login_hint {
   /*使提示信息居中*/
   text-align: center;
+}
+
+.hyperlink_style {
+  Text-decoration: underline;
+  color: #42002f;
+  cursor: pointer;
 }
 </style>

@@ -114,7 +114,6 @@
         <div class="bar1Inside"></div>
       </div>
     </div>
-
     <div class="play_video_message play_video_message_center_horizontally">
       <span>791人在观看,已装配2011条弹幕</span>
       <div class="play_video_message_center_horizontally">

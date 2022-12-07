@@ -2,7 +2,7 @@
 <!--    <div class="box" @click="toVideoPlay">-->
     <div class="box" >
     <div class="head">
-      <div class="videoPlay" @mouseenter="videoPlay" @mouseleave="videoPlay">
+      <div class="videoPlay" @click="videoPlay" @mouseenter="videoPlay" @mouseleave="videoPlay">
         <picture class="box-picture" ref="pic">
           <slot name="img"></slot>
         </picture>

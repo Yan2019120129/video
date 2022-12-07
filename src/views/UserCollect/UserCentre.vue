@@ -23,20 +23,14 @@
                 </a>
               </span>
                 <div class="play_video_show_left">
-                  <!--                                :headers="config"-->
-                  <!--                                action="http://localhost:9527/nacos-video-upload/upload/uploading"-->
-                  <!--                                :headers="token"-->
-                  <!--                                :http-request="vue_upload"-->
-                  <!--                                :before-upload="placeUploadDate"-->
-                  <el-upload
-                      drag
-                      action=""
-                      multiple>
-                    <i class="el-icon-upload"></i>
-                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">上传视频</div>
-                  </el-upload>
-
+                  <el-row>
+                    <el-col :span="24">
+                      <div class="upload_border">
+                        <i class="el-icon-upload" style="font-size: 80px; color: #c0c4cc"></i>
+                        <div class="text_size" @click="$router.push('/upload')">上传视频</div>
+                      </div>
+                    </el-col>
+                  </el-row>
                   <el-divider></el-divider>
                   <el-row>
                     <el-col :span="12">
@@ -44,12 +38,17 @@
                         <h3>我的视频专栏 <a href=""></a></h3>
                       </div>
                     </el-col>
-                    <el-col :span="12">
+                    <el-col :span="12" v-if="isShow">
                       <div class="grid-content bg-purple-light">
                         <h5>你还没有上传视频~
                           <router-link to="/Upload" href="">立即上传</router-link>
                         </h5>
                       </div>
+                    </el-col>
+                  </el-row>
+                  <el-row>
+                    <el-col :span="20" :offset="1">
+                      <MyGrid @myGridStateBack="myGridState"></MyGrid>
                     </el-col>
                   </el-row>
                   <el-divider></el-divider>
@@ -179,18 +178,21 @@ import {mapState} from "vuex";
 import {javaUpload} from "@/api";
 import MenuAndSearchTwo from "@/components/BiliHead/MenuAndSearch/MenuAndSearchTwo";
 import LikeGrid from "@/views/UserCollect/LikeGrid";
+import MyGrid from "@/views/UserCollect/MyGrid";
 
 export default {
   data() {
     return {
       drawer: false,
-      activeName: 'fifth',
+      activeName: 'first',
       uploadData: "",
+      isShow: true,
     };
   },
   components: {
     MenuAndSearchTwo,
-    LikeGrid
+    LikeGrid,
+    MyGrid,
   },
   methods: {
     vue_upload(value) {
@@ -213,13 +215,15 @@ export default {
             console.log(error.response?.status);
             console.log("错误信息", error)
           })
+    },
+    myGridState: function (msg) {
+      console.log("msg", msg)
+      this.isShow = msg
     }
-    ,
   }
   ,
   computed: {
-    ...
-        mapState("loginAbout", ["token", "analysisToken"]),
+    ...mapState("loginAbout", ["token", "analysisToken"]),
   }
 }
 ;
@@ -265,7 +269,7 @@ export default {
 
 .play_video_show_left {
   float: left;
-  width: 65%;
+  width: 100%;
   /*padding-left: 10%;*/
   height: 100%;
   /*background: #e3e3e3;*/
@@ -320,8 +324,32 @@ export default {
   /*overflow: hidden;*/
 }
 
-.img_slideshow img{
+.img_slideshow img {
   max-width: 100%;
   height: auto;
+}
+
+.upload_border {
+  height: 200px;
+  width: 350px;
+  border: 1px dashed #b6b6b6;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  /*font-size: 80px;*/
+}
+
+.upload_border:hover {
+  border: 1px dashed #00d9ff;
+}
+
+.text_size {
+  font-size: 10px;
+  /*Text-decoration: underline;*/
+  cursor: pointer;
+  color: #00d9ff;
 }
 </style>

@@ -15,6 +15,7 @@ import UserMessageMain from "@/views/UserCentre/particular/UserMessageMain";
 import VIP from "@/views/UserCentre/particular/VIP";
 import MyMessage from "@/views/UserCentre/particular/MyMessage";
 import {getToken} from "@/utility/manageDate";
+import Navigation from "@/views/Home/Navigation";
 
 const router = new VueRouter({
     routes: [
@@ -153,11 +154,20 @@ const router = new VueRouter({
                 router_app: UserMessageMain
             }
         },
+        {
+            name: "navigation",
+            path: '/navigation',
+            meta: {isAuth: true, jurisdiction: "commonUser"},
+            components: {
+                router_app: Navigation
+            }
+        },
     ]
 })
 let token = getToken()
 // 全局前置路由守卫————初始化的时候被调用、每次路由切换之前被调用
 router.beforeEach(async (to, from, next) => {
+    console.log("路由token验证", token)
     // 判断是什么用户，能使用什么权限
     switch (to.meta["jurisdiction"]) {
         case "common": // 公用模块
@@ -169,6 +179,7 @@ router.beforeEach(async (to, from, next) => {
                     next()
                 }
             } else {
+                next("/")
                 hintLogin()
             }
             break

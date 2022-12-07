@@ -7,7 +7,7 @@
     <el-form ref="form" :model="form" label-width="100px">
       <el-form-item label="昵称：">
         <el-col :span="8">
-          <el-input size="mini" v-model="form.nickName"></el-input>
+          <el-input size="mini" v-model="form.userNickname"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="用户名：">
@@ -19,7 +19,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="性别：">
-        <el-radio-group v-model="form.sex">
+        <el-radio-group v-model="form.userSex">
           <el-radio label="男"></el-radio>
           <el-radio label="女"></el-radio>
           <el-radio label="保密"></el-radio>
@@ -28,7 +28,7 @@
       <el-form-item label="出生日期：">
         <div class="block">
           <el-date-picker
-              v-model="form.birthday"
+              v-model="form.userBirthday"
               type="date"
               placeholder="2022-02-05">
           </el-date-picker>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import {getUser} from "@/api";
+import {getUserMessage, saveUserMessage} from "@/api";
 import {mapActions, mapState} from "vuex";
 import {getTokenValue} from "@/utility/manageDate";
 
@@ -54,31 +54,42 @@ export default {
   data() {
     return {
       form: {
-        nickName: '',
+        userId: "",
         userName: 'bili_37638448427',
-        sex: '',
-        desc: '',
-        birthday: '',
+        userNickname: '',
+        userSex: '',
+        userSignature: '',
+        userBirthday: '',
         schoolMessage: '*学校信息当前仅支持在App中进行编辑（需升级至6.34及以上版本）'
       },
-    }
-        ;
+    };
   },
   mounted() {
+    this.form.userName = getTokenValue("userName")
+    this.form.userId = getTokenValue("userId")
     this.init()
   },
   methods: {
     init() {
       const fromData = new FormData()
-      fromData.append("userId", getTokenValue("userId"))
-      getUser(fromData).then(req => {
-        console.log(req.data)
+      let userId = getTokenValue("userId")
+      console.log("token", userId)
+      fromData.append("userId", userId)
+      getUserMessage(fromData).then(req => {
+        console.log("getUser", req.data)
       }, error => {
         console.log(error.message)
       })
     },
     onSubmit() {
       console.log('submit!');
+      saveUserMessage(this.form).then(
+          req => {
+            console.log("返回的信息", req.data)
+          }, error => {
+            console.log("返回的错误信息", error.message)
+          })
+
     },
     ...mapActions("loginAbout", {aAnalysisToke: "aAnalysisToke"})
   },

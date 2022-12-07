@@ -40,8 +40,14 @@
         <!-- 头像-->
         <div>
           <LoginNavigation>
-            <el-avatar slot="button_active"
-                       src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+            <el-avatar v-if="ifLogin"
+                       slot="button_active"
+                       :src="headImg">
+            </el-avatar>
+            <el-avatar v-if="!ifLogin"
+                       slot="button_active"
+                       icon="el-icon-user-solid">
+            </el-avatar>
             <NoLoginMenu v-if="!ifLogin" slot="menu"/>
             <LoginMenu v-if="ifLogin" slot="menu"/>
           </LoginNavigation>
@@ -114,13 +120,14 @@ export default {
     NoLoginMenu,
     LoginNavigation,
     LoginMenu,
-    NavigationClassifyTwo
+    NavigationClassifyTwo,
   },
   data() {
     return {
       myData: testData.test,
       input: '',
       ifShowMenu: false,
+      headImg: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
     }
   },
   computed: {

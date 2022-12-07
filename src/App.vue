@@ -1,25 +1,23 @@
 <template>
   <div class="App" ref="App">
-    <router-view name="router_app"></router-view>
+    <keep-alive :include="['Main','UserCentre','UserMessage']">
+      <router-view name="router_app"></router-view>
+    </keep-alive>
   </div>
 </template>
 <script>
 import Main from "@/components/Main";
 import {mapActions} from "vuex";
 import {verify} from "@/utility/messageHint";
-import {
-  getSubarea,
-  getVideoAimtron,
-  getVideoCompetition,
-  getVideoExtension,
-  getVideoLiveStreaming,
-  getVideoMain
-} from "@/api/common";
+import Navigation from "@/views/Home/Navigation";
+import NavigationItem from "@/views/Home/NavigationItem";
 
 export default {
   name: "App",
   components: {
-    Main
+    Main,
+    Navigation,
+    NavigationItem
   },
   data() {
     return {}
