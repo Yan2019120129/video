@@ -16,6 +16,7 @@ import VIP from "@/views/UserCentre/particular/VIP";
 import MyMessage from "@/views/UserCentre/particular/MyMessage";
 import {getToken} from "@/utility/manageDate";
 import Navigation from "@/views/Home/Navigation";
+import UserHead from "@/views/UserCentre/particular/UserHead";
 
 const router = new VueRouter({
     routes: [
@@ -107,6 +108,14 @@ const router = new VueRouter({
                             meta: {isAuth: true, jurisdiction: "commonUser"},
                             components: {
                                 router_userMessageMain: MyMessage
+                            },
+                        },
+                        {
+                            name: "userHead",
+                            path: "userHead",
+                            meta: {isAuth: true, jurisdiction: "commonUser"},
+                            components: {
+                                router_userMessageMain: UserHead
                             },
                         }
                     ]

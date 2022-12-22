@@ -8,7 +8,12 @@ export function hintLogin() {
         type: 'warning'
     });
 }
-
+export function hintUploadUploading() {
+    Message({
+        message: '开始上传！！！',
+        type: 'success'
+    });
+}
 export function hintUploadSucceed() {
     Message({
         message: '上传成功！！！',

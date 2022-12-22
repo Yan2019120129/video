@@ -17,7 +17,7 @@
         <div class="grid-el-row_style" @click="toPath('myMessage')">
           我的信息
         </div>
-        <div class="grid-el-row_style">
+        <div class="grid-el-row_style" @click="toPath('userHead')">
           我的头像
         </div>
         <div class="grid-el-row_style">

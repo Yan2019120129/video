@@ -3,7 +3,7 @@
     <div class="ToPromote-title">推广</div>
     <div class="grid-container" ref="tp">
       <div class="item" @click="toVideoPlay(n)" v-for="n in videoExtension" :key="n.videoId">
-        <VideoView :videoData="{'videoId':n.videoId,'videoExtension':'videoExtension'}">
+        <VideoView :videoData="n">
           <img slot="img" :src="`pav/${n.videoCoverImgUrl}`">
           <source slot="video" :src="`pav/${n.videoUrl}`">
           <div slot="describe" class="foot_head" style="text-overflow:ellipsis;">

@@ -37,12 +37,15 @@ export function clearToken() {
 
 // 获取解析token其中一个信息
 export function getTokenValue(key) {
-    let tokenArray = jwtDecode(token)["userIdOrPhone"][0]  // 解析token
-    for (let i in tokenArray) {
-        if (i === key) {
-            return tokenArray[i]
+    if (getToken()) { // 如果token不为空则进入
+        let tokenArray = jwtDecode(token)["userIdOrPhone"][0]  // 解析token
+        for (let i in tokenArray) {
+            if (i === key) {
+                return tokenArray[i]
+            }
         }
     }
+
 }
 
 // 获取全部的解析信息

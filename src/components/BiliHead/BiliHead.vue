@@ -1,11 +1,11 @@
 <template>
   <div class="bili-head">
     <div class="bili-head_top">
-      <!--              <MenuAndSearch v-if="!ifShowNavigationBars"/>-->
+      <!--  <MenuAndSearch v-if="!ifShowNavigationBars"/>-->
       <div ref="img_style" class="img_style">
-        <!--        <img class="bili-head-img" src="@/assets/img/headImg.png">-->
-        <!--                <BackgroundAnimation></BackgroundAnimation>-->
-        <!--        <div ref="img_shade" class="img_shade"></div>-->
+        <!--                      <img class="bili-head-img" src="@/assets/img/headImg.png">-->
+        <!--        <BackgroundAnimation></BackgroundAnimation>-->
+        <!--                      <div ref="img_shade" class="img_shade"></div>-->
       </div>
     </div>
     <i v-if="!isShow" class="el-icon-arrow-up img_button" @click="adjustStyle(false)"></i>

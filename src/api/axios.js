@@ -39,7 +39,7 @@ Axios.interceptors.request.use(
     (config) => {
         // 发送请求前进行拦截
         // 可在此处配置请求头信息
-        if (!config.headers.token) {
+        if (!config.headers["token"]) {
             config.headers["token"] = localStorage.getItem("token") // 为每个请求配置请求头
         }
         // if (config.method == "post") {

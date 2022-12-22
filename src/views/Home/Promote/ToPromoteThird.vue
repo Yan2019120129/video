@@ -5,7 +5,7 @@
         <slot>推广</slot>
       </div>
       <div class="grid-container">
-        <div ref="VVI" class="item" v-for="n in videoCompetition" :key="n.videoId">
+        <div ref="VVI" @click="toVideoPlay(n)" class="item" v-for="n in videoCompetition" :key="n.videoId">
           <VideoView :videoData="n">
             <img slot="img" :src="`pav/${n.videoCoverImgUrl}`">
             <source slot="video" :src="`pav/${n.videoUrl}`">
@@ -78,7 +78,16 @@ export default {
             console.log("错误信息", error.message)
           }
       )
+    },
+ toVideoPlay(value) {
+  this.$router.push({
+    name: "videoPlay",
+    query: {
+      userId: value.userId,
+      videoId: value.videoId,
     }
+  })
+},
   },
   computed: { // 计算属性
     ...

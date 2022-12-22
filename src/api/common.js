@@ -1,4 +1,5 @@
 import Axios from "./axios"
+import qs from "qs";
 
 //获取大小分类
 export function getClassification(datas) {
@@ -102,6 +103,26 @@ export function getShare(datas, state) {
     })
 }
 
+
+// 获取用户评论数据
+export function getUserRemark(datas) {
+    return Axios({
+        url: "/nacos-video-system/system/findAllRemarkByVideo",
+        method: "get",
+        params: datas
+    })
+}
+
+// 添加用户评论数据
+export function addRemark(datas) {
+    return Axios({
+        url: "/nacos-video-system/system/saveUserRemark",
+        method: "post",
+        data: qs.stringify(datas)
+    })
+}
+
+
 // 获取ToPromoteHead模块数据
 export function getVideoMain(datas) {
     return Axios({
@@ -171,12 +192,8 @@ export function getVideoLiveStreaming(datas) {
 export function getVideoCorrelation(datas) {
     return Axios({
         url: "/nacos-video-system/system/videoCorrelation",
-        method: "post",
-        headers: {
-            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
-            'Content-Type': 'application/json' //设置请求头请求格式为json
-        },
-        data: datas
+        method: "get",
+        params: datas
     })
 }
 
@@ -191,7 +208,7 @@ export function getVideoLike(datas) {
             // 'Content-Type': 'application/json' //设置请求头请求格式为json
             'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
         },
-        data:datas
+        data: datas
     })
 }
 
@@ -206,12 +223,12 @@ export function getVideoMy(datas) {
             // 'Content-Type': 'application/json' //设置请求头请求格式为json
             'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
         },
-        data:datas
+        data: datas
     })
 }
 
 // 获取互动信息，对点赞，收藏，分享，投币做添加修改处理
-export function videoInteraction(datas,interactPath) {
+export function videoInteraction(datas, interactPath) {
 
     return Axios({
         url: `/nacos-video-system/system/${interactPath}`,
@@ -223,9 +240,10 @@ export function videoInteraction(datas,interactPath) {
         data: datas
     })
 }
+
 //  获取互动信息，对点赞，收藏，分享，投币做添加修改处理
-export function findAllInteract(datas){
-    console.log("findAllInteract数据",datas)
+export function findAllInteract(datas) {
+    console.log("findAllInteract数据", datas)
     return Axios({
         url: "/nacos-video-system/system/findAllInteract",
         method: "post",

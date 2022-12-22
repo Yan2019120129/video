@@ -52,7 +52,21 @@
 <script>
 export default {
   name: "UserComment",
-  components: {}
+  components: {},
+  data(){
+    return {
+      send:{
+        userName:"",
+        grade:"",
+        userUrl:"",
+        remarkContent:"",
+        remarkTime:"",
+        remarkClickCount:"",
+        otherUserRemarkId:"",
+      },
+      up:false,
+    }
+  }
 }
 </script>
 

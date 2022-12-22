@@ -15,7 +15,7 @@
       </el-form-item>
       <el-form-item label="我的签名：">
         <el-col :span="20">
-          <el-input size="small" type="textarea" v-model="form.desc"></el-input>
+          <el-input size="small" type="textarea" v-model="form.userSignature"></el-input>
         </el-col>
       </el-form-item>
       <el-form-item label="性别：">
@@ -35,7 +35,7 @@
         </div>
       </el-form-item>
       <el-form-item label="学校信息：">
-        <span>{{ form.schoolMessage }}</span>
+        <span>{{ form.userSchoolMessage }}</span>
       </el-form-item>
       <el-form-item>
         <el-button size="small " type="primary" @click="onSubmit">保存</el-button>
@@ -48,6 +48,8 @@
 import {getUserMessage, saveUserMessage} from "@/api";
 import {mapActions, mapState} from "vuex";
 import {getTokenValue} from "@/utility/manageDate";
+import {hintUploadSucceed} from "@/utility/messageHint";
+import {Message} from "element-ui";
 
 export default {
   name: "MyMessage",
@@ -60,13 +62,15 @@ export default {
         userSex: '',
         userSignature: '',
         userBirthday: '',
-        schoolMessage: '*学校信息当前仅支持在App中进行编辑（需升级至6.34及以上版本）'
+        userSchoolMessage: '*学校信息当前仅支持在App中进行编辑（需升级至6.34及以上版本）'
       },
     };
   },
   mounted() {
     this.form.userName = getTokenValue("userName")
     this.form.userId = getTokenValue("userId")
+    console.log("userName", getTokenValue("userName"))
+    console.log("userId", getTokenValue("userId"))
     this.init()
   },
   methods: {
@@ -77,6 +81,9 @@ export default {
       fromData.append("userId", userId)
       getUserMessage(fromData).then(req => {
         console.log("getUser", req.data)
+        if (req.data) {
+          this.form = req.data
+        }
       }, error => {
         console.log(error.message)
       })
@@ -86,6 +93,7 @@ export default {
       saveUserMessage(this.form).then(
           req => {
             console.log("返回的信息", req.data)
+            hintUploadSucceed()
           }, error => {
             console.log("返回的错误信息", error.message)
           })

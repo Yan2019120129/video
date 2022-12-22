@@ -33,7 +33,8 @@
 <script>
 
 import {mapActions, mapMutations, mapState} from "vuex";
-import {userLogin} from "@/api";
+import {getUserMessage, userLogin} from "@/api";
+import {getTokenValue} from "@/utility/manageDate";
 
 export default {
   name: 'LoginPSWInput',
@@ -62,6 +63,7 @@ export default {
       console.log(2222)
       this.$emit("register")
     },
+
     ifPhoneOrId(value) {
       const regex = new RegExp(/^[0-9]*$/);
       /**
@@ -70,7 +72,7 @@ export default {
        *表示匹配0-无穷大。/^[0-9]{11}$/
        []代表or。以上是vue.js如何判断输入是否为数字的细节。更多。
        * */
-      // 如果满洲是数值进入
+      // 如果满足是数值进入
       if (regex.test(value)) {
         // 如果手机手机号是11位则进入
         if (value.length == 11) {
@@ -107,7 +109,6 @@ export default {
                   message: '登录成功',
                   type: 'success'
                 });
-                location.reload() // 重新加载页面 否则会出现token不能实时更新，不能准确的判断登录状态的问题
                 console.log("关闭登录界面")
                 this.ifLoginInterface(false)
                 console.log("返回的数据", response.data)
@@ -119,6 +120,8 @@ export default {
                 this.aAnalysisToke(response.data.token)
                 console.log("将登录成功的状态放入vuex里")
                 this.ifLogin(true)
+                location.reload() // 重新加载页面 否则会出现token不能实时更新，不能准确的判断登录状态的问题
+
               } else {
                 this.$message.error(response.data.msg);
               }
@@ -126,6 +129,10 @@ export default {
               console.log("请求失败", error.message)
             }
         )
+        const fromData = new FormData()
+        let userId = getTokenValue("userId")
+        console.log("token", userId)
+        fromData.append("userId", userId)
       } else {
         console.log("输入不符合规范，未发送请求")
         return

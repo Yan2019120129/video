@@ -24,7 +24,7 @@
       <BiliHead></BiliHead>
     </div>
     <div class="main">
-      <keep-alive :include="['Home','VideoPlay']">
+      <keep-alive :include="['Home']">
         <router-view name="router_main"></router-view>
       </keep-alive>
     </div>

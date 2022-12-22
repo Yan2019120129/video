@@ -1,7 +1,7 @@
 <template>
   <div class="VideoPlay">
     <div class="play_video_show_left">
-      <p>{{ videoData['video_title'] }}</p>
+      <p>{{ videoData['videoTitle'] }}</p>
       <div class="title_message_top">
         <div class="title_message_grade" v-if="false">
           <img src="@/assets/img/tv.png">
@@ -25,8 +25,8 @@
           <span>未经作者授权,禁止转载</span>
         </div>
       </div>
-      <Video v-if="videoData['video_url']">
-        <source :src="'pav'+videoData['video_url']">
+      <Video v-if="videoData['videoUrl']">
+        <source :src="'pav'+videoData['videoUrl']">
       </Video>
       <div class="title_message_end">
         <!--        点赞-->
@@ -66,7 +66,7 @@
       </div>
 
       <div class="video_play_details">
-        <pre ref="video_play_details_pre">{{ videoData['video_brief_introduction'] }}
+        <pre ref="video_play_details_pre">{{ videoData['videoBriefIntroduction'] }}
         </pre>
       </div>
       <p style="cursor:pointer;" @click="even_more">展开更多</p>
@@ -90,9 +90,9 @@
                 type="textarea"
                 :rows="2"
                 placeholder="请输入内容"
-                v-model="textarea">
+                v-model="userRemark.remarkContent">
             </el-input>
-            <el-button type="primary">发送</el-button>
+            <el-button type="primary" @click="sendRemark">发送</el-button>
           </div>
           <UserComment>
             <UserCommentTwo/>
@@ -153,8 +153,17 @@
 import Video from "@/views/VideoPlay/Video";
 import UserComment from "@/views/VideoPlay/cpns/UserComment";
 import UserCommentTwo from "@/views/VideoPlay/cpns/UserCommentTwo";
-import {findAllInteract, getCoins, getCollect, getLike, getShare, getVideoCorrelation} from "@/api/common";
-import {clearVideo, getToken, getTokenValue, getVideo, setVideo} from "@/utility/manageDate";
+import {
+  addRemark,
+  findAllInteract,
+  getCoins,
+  getCollect,
+  getLike,
+  getShare,
+  getUserRemark,
+  getVideoCorrelation
+} from "@/api/common";
+import {clearVideo, getToken, getTokenValue, setVideo} from "@/utility/manageDate";
 import {mapActions} from "vuex";
 
 export default {
@@ -172,7 +181,6 @@ export default {
       ifEvenMore: false,
       id: "",
       psw: "",
-      textarea: "",
       videoAbout: {},
       videoData: {},
       videoPlay: {},
@@ -180,20 +188,36 @@ export default {
       isCoins: false,
       isCollect: false,
       isShare: false,
-      likeValue: {},
+      videoValue: {},
       likeCount: "",
       coinsCount: "",
       collectCount: "",
       shareCount: "",
       userMessage: {},
+      userRemark: {
+        userName: "",
+        grade: "",
+        userUrl: "",
+        remarkContent: "",
+        remarkTime: new Date(),
+        remarkClickCount: "",
+        otherUserRemarkId: "",
+        videoId: ""
+      },
     }
   },
   mounted() {
-    this.likeValue = this.$route.query
-    setVideo("likeValue", this.likeValue)
+    // 放置视频id和用户名
+    this.videoValue = this.$route.query
+    this.userRemark.videoId = this.$route.query["videoId"]
+    setVideo("videoValue", this.videoValue)
     if (getToken()) {
+      // 放置用户名到用户信息中
       this.userMessage["userId"] = getTokenValue("userId")
+      // 放置视频id到用户信息中
       this.userMessage["videoId"] = this.$route.query["videoId"]
+      // 放置用户名到评论内容中
+      this.userRemark["userName"] = getTokenValue("userName")
     }
     this.init()
   },
@@ -201,53 +225,57 @@ export default {
     ...mapActions("layoutAbout", {aIfLoginInterface: "aIfLoginInterface",}),
     ...mapActions("loginAbout", {aIfLogin: "aIfLogin"}),
     init() {
-      let userId = this.likeValue["userId"]
-      let videoId = this.likeValue["videoId"]
-      let oldUserid = getVideo("likeValue")["userId"]
-      let oldVideoId = getVideo("likeValue")["videoId"]
-      if (userId == oldUserid && videoId == oldVideoId) {
-        let value = getVideo("videoPlay")
-        if (value) { // 判断本地缓存是否有数据，没有数据则从新获取
-          this.setData(value)
-        } else {
-          this.getData()
-        }
-      } else {
-        this.likeValue = getVideo("likeValue")
-        this.getData()
-      }
-      if (getToken()) {
-        findAllInteract(this.userMessage).then(
-            req => {
-              console.log("findAllInteract返回的数据", req.data)
-              let a = req.data
-              if (a["userPraise"]) {
-                this.isLike = true
-                this.$refs.rLike.style = "fill: #00aeec;"
-              }
-              if (a["userCoin"]) {
-                this.isCoins = true
-                this.$refs.rCoin.style = "fill: #00aeec;"
-              }
-              if (a["userLike"]) {
-                this.isCollect = true
-                this.$refs.rCollect.style = "fill: #00aeec;"
-              }
-              if (a["userShare"]) {
-                this.isShare = true
-                this.$refs.rShare.style = "fill: #00aeec;"
-              }
+      this.getData() // 获取个人点赞投币收藏分享的数据
+      findAllInteract(this.userMessage).then( // 初始化获取视频数据，修改点赞投币收藏分享样式状态
+          req => {
+            let a = req.data
+            if (a["userPraise"]) {
+              this.isLike = true
+              this.$refs.rLike.style = "fill: #00aeec;"
             }
-            , error => {
-              console.log("报错信息", error.message)
-
-            })
+            if (a["userCoin"]) {
+              this.isCoins = true
+              this.$refs.rCoin.style = "fill: #00aeec;"
+            }
+            if (a["userLike"]) {
+              this.isCollect = true
+              this.$refs.rCollect.style = "fill: #00aeec;"
+            }
+            if (a["userShare"]) {
+              this.isShare = true
+              this.$refs.rShare.style = "fill: #00aeec;"
+            }
+          }
+          , error => {
+            console.log("报错信息", error.message)
+          })
+      let videoId = {
+        videoId: this.userRemark.videoId
       }
-
+      getUserRemark(videoId).then(
+          rep => {
+            console.log("getUserRemark返回的数据", rep.data)
+          },
+          error => {
+            console.log("getUserRemark错误信息", error)
+          }
+      )
     },
-    setData(value) {
+
+    sendRemark(){
+        addRemark(this.userRemark).then(
+            rep=>{
+              console.log("返回的数据",rep.data)
+            },
+            error=>{
+              console.log("错误信息",error)
+            }
+        )
+    },
+    setData(value) { //将获取来的视频数据赋值给vue
       this.videoData = value.video[0]
       this.videoAbout = value.videoAbout[0]
+      console.log("getVideoCorrelation返回的数据", this.videoData)
       this.likeCount = parseInt(value.videoAbout[0]['userPraiseCount'])
       console.log("count", this.likeCount)
       this.coinsCount = parseInt(value.videoAbout[0]['userCoinCount'])
@@ -257,10 +285,11 @@ export default {
       this.shareCount = parseInt(value.videoAbout[0]['userShareCount'])
       console.log("count", this.shareCount)
     },
-    getData() {
+    getData() { // 获取个人点赞投币收藏分享的数据
       console.log("开始查询数据")
-      console.log("传输的数据", this.likeValue)
-      getVideoCorrelation(this.likeValue).then(req => {
+      console.log("传输的数据", this.videoValue)
+      let videoId = {videoId: this.videoValue.videoId}
+      getVideoCorrelation(videoId).then(req => {
             console.log("getVideoCorrelation返回的数据", req.data)
             let value = req.data
             this.setData(value)
@@ -270,41 +299,40 @@ export default {
             console.log(error.message)
           })
     },
+    // 判断点赞是否添加删除
     like(value, state) {
       console.log("like", value)
       getLike(value, state).then(req => {
-
         console.log("like", req)
       }, error => {
-        error.message
         console.log("error", error.message)
       })
     },
+    // 判断投币是否添加删除
     coins(value, state) {
       getCoins(value, state).then(req => {
         console.log("coins", req)
       }, error => {
-        error.message
         console.log("error", error.message)
       })
     },
+    // 判断收藏是否添加删除
     collect(value, state) {
       getCollect(value, state).then(req => {
         console.log("collect", req)
       }, error => {
-        error.message
         console.log("error", error.message)
       })
     },
+    // 判断分享是否添加删除
     share(value, state) {
       getShare(value, state).then(req => {
-        req.data
         console.log("share", req.data)
       }, error => {
-        error.message
         console.log("error", error.message)
       })
     },
+    // 切换样式，展开更多内容
     even_more() {
       if (!this.ifEvenMore) {
         this.ifEvenMore = true
@@ -314,6 +342,7 @@ export default {
         this.$refs.video_play_details_pre.style = "height:70px;"
       }
     },
+    // 对点赞做添加或修改
     ifLike() {
       if (getToken()) {
         let state = this.isLike = !this.isLike
@@ -333,8 +362,8 @@ export default {
         this.aIfLogin(false)
       }
     },
+    // 对硬币做添加或修改
     ifCoins() {
-
       if (getToken()) {
         let state = this.isCoins = !this.isCoins
         this.userMessage["userCoinTime"] = new Date()
@@ -353,6 +382,7 @@ export default {
         this.aIfLogin(false)
       }
     },
+    // 对收藏做添加或修改
     ifCollect() {
       if (getToken()) {
         let state = this.isCollect = !this.isCollect
@@ -372,6 +402,7 @@ export default {
         this.aIfLogin(false)
       }
     },
+    // 对分享做添加或修改
     ifShare() {
       console.log("token", getToken())
       if (getToken()) {

@@ -18,6 +18,8 @@
                 <span>首页</span>
               </span>
 
+              <span class="left_text" @click="$router.push('/userCentre')" >我的视频</span>
+
             </div>
 
           </el-col>
@@ -409,7 +411,7 @@
 import {mapState} from "vuex";
 import {javaUpload} from "@/api";
 import {getClassification} from "@/api/common";
-import {hintUploadFail, hintUploadSucceed} from "@/utility/messageHint";
+import {hintUploadFail, hintUploadSucceed, hintUploadUploading} from "@/utility/messageHint";
 import {getTokenValue} from "@/utility/manageDate";
 // import classification from "src/assets/classification.json"
 
@@ -551,6 +553,7 @@ export default {
       this.videoCoverImgUrl = file.raw
     },
     vue_upload(value) {
+      hintUploadUploading()
       console.log("接收的数据", value)
       console.log("token数据", this.token)
       console.log("解析的token数据", this.analysisToken)
@@ -763,5 +766,10 @@ body > .el-container {
 
 .text_size {
   font-size: 16px;
+}
+
+.left_text{
+  cursor: pointer;
+  margin-left: 30px;
 }
 </style>

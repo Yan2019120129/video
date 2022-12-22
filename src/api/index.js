@@ -45,7 +45,7 @@ export function userLogin(datas) {
 
 // 通过id查找指定用户信息
 export function getUserMessage(datas) {
-    console.log("发送的数据",datas)
+    console.log("发送的数据", datas)
     return Axios({
         url: "/nacos-video-admin/admin/findUserMessageById",
         method: "post",
@@ -57,15 +57,30 @@ export function getUserMessage(datas) {
     })
 }
 
+// 上传用户的头像
+export function setUserHeadImg(datas) {
+    console.log("发送的数据", datas)
+    return Axios({
+        url: "/nacos-video-admin/admin/saveUserHeadImg",
+        method: "post",
+        headers: {
+            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
+            'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
+        },
+        data: datas
+    })
+}
+
 // 保存和修改用户信息
 export function saveUserMessage(datas) {
-    console.log("发送的数据",datas)
+    console.log("发送的数据", datas)
     return Axios({
         url: "/nacos-video-admin/admin/saveUserMessage",
         method: "post",
         headers: {
             // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
-            'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
+            // 'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
+            'Content-Type': 'application/json', //设置请求头请求格式为json
         },
         data: datas
     })
@@ -81,6 +96,7 @@ export function verifyToken(datas) {
     })
 }
 
+// 用户上传视频文件
 export function javaUpload(data) {
     return Axios({
         url: "/nacos-video-upload/upload/uploading",
@@ -95,3 +111,4 @@ export function javaUpload(data) {
         // }
     },)
 }
+

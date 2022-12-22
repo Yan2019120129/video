@@ -73,6 +73,39 @@ export default {
     ...mapMutations("loginAbout", {ifLogin: "ifLogin"}),
     ...mapActions("loginAbout", {aPlaceToken: "aPlaceToken", aAnalysisToke: "aAnalysisToke"}),
     ...mapState("loginAbout", ["analysisToken"]),
+    ifPhoneOrId(value) {
+      const regex = new RegExp(/^[0-9]*$/);
+      /**
+       :代表正则表达式的开始。
+       $代表正则表达式的结尾。
+       *表示匹配0-无穷大。/^[0-9]{11}$/
+       []代表or。以上是vue.js如何判断输入是否为数字的细节。更多。
+       * */
+      // 如果满足是数值进入
+      if (regex.test(value)) {
+        // 如果手机手机号是11位则进入
+        if (value.length == 11) {
+          // 说明是手机号码将值赋值给手机号码
+          // this.userMessage.userPhone = value
+          console.log("是11位手机号码")
+          return true;
+        } else {
+          // 不符合11位的手机号码则提示用户
+          // this.$alert("请输入11为号码")
+          this.errorMessageStyle = "请输入11为号码"
+          this.ifErrorMessage = true
+          setTimeout(() => {
+            this.ifErrorMessage = false
+          }, 1500)
+          return false;
+        }
+      } else {
+        // 非数值则赋值为id
+        this.userMessage.userName = value
+        console.log("是id")
+        return true;
+      }
+    },
     vueRegister() {
       addUser(this.sendData).then(
           response => {
@@ -84,6 +117,7 @@ export default {
                 message: '登录成功',
                 type: 'success'
               });
+              location.reload() // 重新加载页面 否则会出现token不能实时更新，不能准确的判断登录状态的问题
               console.log("关闭登录界面")
               this.ifLoginInterface(false)
               console.log("返回的数据", response.data)
@@ -101,7 +135,9 @@ export default {
             console.log("请求失败：", error.message)
           }
       )
+
     }
+
   }
 }
 ;

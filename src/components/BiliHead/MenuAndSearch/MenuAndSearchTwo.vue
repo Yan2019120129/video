@@ -21,7 +21,7 @@
             <LiveMenu slot="menu"/>
           </Navigation>
         </div>
-        <div>
+        <div @click="sendTestData">
           <Navigation>
             <a slot="button_active">游戏中心</a>
             <GameMenu slot="menu"/>
@@ -40,14 +40,14 @@
         <!-- 头像-->
         <div>
           <LoginNavigation>
-            <el-avatar v-if="ifLogin"
-                       slot="button_active"
-                       :src="headImg">
+            <el-avatar
+                slot="button_active"
+                :src="headImg">
             </el-avatar>
-            <el-avatar v-if="!ifLogin"
-                       slot="button_active"
-                       icon="el-icon-user-solid">
-            </el-avatar>
+            <!--            <el-avatar v-if="!ifLogin"-->
+            <!--                       slot="button_active"-->
+            <!--                       icon="el-icon-user-solid">-->
+            <!--            </el-avatar>-->
             <NoLoginMenu v-if="!ifLogin" slot="menu"/>
             <LoginMenu v-if="ifLogin" slot="menu"/>
           </LoginNavigation>
@@ -110,6 +110,8 @@ import LoginMenu from '@/components/BiliHead/MenuAndSearch/cpns/LoginMenu.vue'
 
 import {mapState} from "vuex";
 import NavigationClassifyTwo from "@/components/BiliHead/MenuAndSearch/NavigationClassifyTwo";
+import {getTokenValue} from "@/utility/manageDate";
+import {testGetMapping, testMapping} from "../../../../test/api/testMapping";
 
 export default {
   name: "MenuAndSearchTwo",
@@ -133,9 +135,19 @@ export default {
   computed: {
     ...mapState("loginAbout", ['ifLogin'])
   },
+  mounted() {
+    let userUrl = getTokenValue("userUrl")
+    if (userUrl) {
+      this.headImg = '/pav' + userUrl
+    }
+  },
   methods: {
     openMenu() {
       this.ifShowMenu = !this.ifShowMenu
+    },
+    // 测试接口
+    sendTestData: function () {
+
     },
   }
 }
