@@ -50,14 +50,14 @@ const router = new VueRouter({
                         router_main: Video
                     },
                 },
-                {
-                    name: 'videoPlay',
-                    path: 'videoPlay',
-                    meta: {isAuth: false, jurisdiction: "common",},
-                    components: {
-                        router_main: VideoPlay
-                    },
-                },
+                // {
+                //     name: 'videoPlay',
+                //     path: 'videoPlay',
+                //     meta: {isAuth: false, jurisdiction: "common",},
+                //     components: {
+                //         router_main: VideoPlay
+                //     },
+                // },
                 {
                     name: 'myVideo',
                     path: 'myVideo',
@@ -67,6 +67,14 @@ const router = new VueRouter({
                     },
                 },
             ]
+        },
+        {
+            name: 'videoPlay',
+            path: '/videoPlay',
+            meta: {isAuth: false, jurisdiction: "common",},
+            components: {
+                router_app: VideoPlay
+            },
         },
         {
             name: 'userCentre',

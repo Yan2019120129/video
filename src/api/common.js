@@ -116,9 +116,9 @@ export function getUserRemark(datas) {
 // 添加用户评论数据
 export function addRemark(datas) {
     return Axios({
-        url: "/nacos-video-system/system/saveUserRemark",
+        url: "/nacos-video-system/system/insertUserRemark",
         method: "post",
-        data: qs.stringify(datas)
+        data: datas
     })
 }
 

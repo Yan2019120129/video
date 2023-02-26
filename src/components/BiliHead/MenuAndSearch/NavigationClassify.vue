@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="navigation_middle">
-        <div  v-for="(n,i) in videoSubarea" :key="n.video_subarea_id">
+        <div v-for="(n,i) in videoSubarea" :key="n.video_subarea_id">
           <SmallMenuBelow v-if="i<22">
             <a slot="menuButton" v-for="index in 6" :key="index">测试菜单</a>
             <button slot="button">{{ n.video_subarea }}</button>
@@ -130,7 +130,8 @@ export default {
 }
 
 .bili-head_end {
-  width: 100%;
+  width: 90%;
+  margin: 0 5% 0 5%;
 }
 
 .bili-head_navigation {

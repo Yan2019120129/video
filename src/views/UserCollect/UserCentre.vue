@@ -1,6 +1,6 @@
 <template>
   <div class="user_center_main">
-    <MenuAndSearchTwo></MenuAndSearchTwo>
+<!--    <MenuAndSearchTwo></MenuAndSearchTwo>-->
     <div class="user_center">
       <div class="user_center_top">
         <!--        <img class="user_center_top_img" alt="" src="@/assets/img/UserCenter/user_cneter.webp">-->

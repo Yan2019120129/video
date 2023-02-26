@@ -1,32 +1,14 @@
 <template>
   <div class="Main">
-    <el-backtop></el-backtop>
-    <el-backtop :bottom="100">
-      <div
-          style="{
-        height: 100%;
-        width: 100%;
-        background-color: #f2f5f6;
-        box-shadow: 0 0 6px rgba(0,0,0, .12);
-        text-align: center;
-        line-height: 40px;
-        color: #1989fa;
-      }"
-      >
-        UP
-      </div>
-    </el-backtop>
-    <transition name="el-zoom-in-top">
-      <MenuAndSearchTwo></MenuAndSearchTwo>
-    </transition>
-    <Login v-if="ifShowLogin"></Login>
     <div class="head">
-      <BiliHead></BiliHead>
+      <BiliHead/>
+      <NavigationClassify/>
     </div>
     <div class="main">
-      <keep-alive :include="['Home']">
-        <router-view name="router_main"></router-view>
-      </keep-alive>
+      <!--      <keep-alive :include="['Home']">-->
+      <!--        <router-view name="router_main"></router-view>-->
+      <!--      </keep-alive>-->
+      <Home></Home>
     </div>
     <div class="fool">
       <BiliFool/>
@@ -42,6 +24,7 @@ import BiliFool from "@/components/BiliFloot"
 import Login from "@/components/BiliHead/MenuAndSearch/loging/Login"
 import {mapState} from "vuex";
 import MenuAndSearchTwo from "@/components/BiliHead/MenuAndSearch/MenuAndSearchTwo";
+import NavigationClassify from "@/components/BiliHead/MenuAndSearch/NavigationClassify";
 
 export default {
   name: 'Main',
@@ -51,6 +34,8 @@ export default {
     BiliFool,
     Login,
     MenuAndSearchTwo,
+    NavigationClassify,
+    Home,
   },
   data() {
     return {
@@ -68,7 +53,7 @@ export default {
 
 <style scoped>
 .Main {
-  background-color: #fbeeee;
+  /*background-color: #fbeeee;*/
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -79,18 +64,18 @@ export default {
 }
 
 .head {
-  width: 80%;
+  width: 100%;
   /*background: #ffe0e0;*/
   padding: 0 10px;
-  border: 1px solid #d7d7d7;
+  /*border: 1px solid #d7d7d7;*/
   border-bottom: none;
 }
 
 .main {
-  width: 80%;
-  background: #ffffff;
+  width: 90%;
+  /*background: #ffffff;*/
   padding: 0 10px;
-  border: 1px solid #d7d7d7;
+  /*border: 1px solid #d7d7d7;*/
   border-top: none;
 }
 

@@ -132,13 +132,14 @@ export default {
   width: 100%;
   height: 100%;
   background: rgba(176, 174, 174, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .Login {
   position: absolute;
   top: 20%;
-  transform: translateY(50%);
-  transform: translateX(50%);
   width: 800px;
   height: 450px;
   background: #ffffff;

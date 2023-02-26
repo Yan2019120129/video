@@ -10,7 +10,7 @@
     </div>
     <i v-if="!isShow" class="el-icon-arrow-up img_button" @click="adjustStyle(false)"></i>
     <i v-if="isShow" class="el-icon-arrow-down img_button" @click="adjustStyle(true)"></i>
-    <NavigationClassify/>
+<!--    <NavigationClassify/>-->
   </div>
 </template>
 <script>
