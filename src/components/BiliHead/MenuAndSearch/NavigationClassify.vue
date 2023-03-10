@@ -2,13 +2,13 @@
   <div class="bili-head_end">
     <div class="bili-head_navigation">
       <div class="navigation_left">
-        <div class="icon">
+        <div class="icon" @click="$router.push('/cutPicture')">
           <div class="imgBackground background-color_bull">
             <img class="icon_img" src="@/assets/svg/head/state.svg" alt="">
           </div>
           <a>动态</a>
         </div>
-        <div class="icon">
+        <div class="icon" @click="$router.push('/VideoList')">
           <div class="imgBackground background-color_red">
             <img class="icon_img" src="@/assets/svg/head/hot.svg" alt="">
           </div>

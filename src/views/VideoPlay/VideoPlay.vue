@@ -92,19 +92,15 @@
                   :rows="2"
                   autosize
                   placeholder="发一条友善的评论"
-                  v-model="userRemark.remarkContent">
+                  v-model="remarkTxt">
               </el-input>
               <el-button type="primary" @click="sendRemark">发送</el-button>
               <!--              <el-button slot="reference">click 激活</el-button>-->
             </div>
-            <UserComment v-if="isSendRemarked" :userRemark="userRemark"/>
-            <!--          <UserComment>-->
-            <!--            <UserCommentTwo/>-->
-            <!--            <UserCommentTwo/>-->
-            <!--            <UserCommentTwo/>-->
-            <!--          </UserComment>-->
-            <!--          <UserComment/>-->
-            <!--          <UserComment/>-->
+            <UserComment v-for="(item,index) in userRemarkList" v-if="userRemarkList" :key="index" :userRemark="item"/>
+            <UserComment v-for="(item,index) in returnUserRemarkData" v-if="item['otherUserRemarkId']==null"
+                         :key="returnUserRemarkData['userRemarkId']" :userRemark="item"
+                         :returnUserRemarkData="returnUserRemarkData"/>
           </div>
         </div>
       </div>
@@ -170,6 +166,7 @@ import {
 import {clearVideo, getToken, getTokenValue, setVideo} from "@/utility/manageDate";
 import {mapActions} from "vuex";
 import {hintLogin} from "@/utility/messageHint";
+import moment from "moment";
 
 export default {
   name: 'VideoPlay',
@@ -192,13 +189,15 @@ export default {
       isCoins: false,
       isCollect: false,
       isShare: false,
-      isSendRemarked: false,
       videoValue: {},
       likeCount: "",
       coinsCount: "",
       collectCount: "",
       shareCount: "",
       userMessage: {},
+      remarkTxt: "",
+      returnUserRemarkData: "",
+      userRemarkList: [],
       userRemark: {
         userId: "",
         videoId: "",
@@ -228,6 +227,7 @@ export default {
     ...mapActions("layoutAbout", {aIfLoginInterface: "aIfLoginInterface",}),
     ...mapActions("loginAbout", {aIfLogin: "aIfLogin"}),
     init() {
+
       this.getData() // 获取个人点赞投币收藏分享的数据
       findAllInteract(this.userMessage).then( // 初始化获取视频数据，修改点赞投币收藏分享样式状态
           req => {
@@ -258,19 +258,25 @@ export default {
       getUserRemark(videoId).then(
           rep => {
             console.log("getUserRemark返回的数据", rep.data)
+            this.returnUserRemarkData = rep.data
           },
           error => {
             console.log("getUserRemark错误信息", error)
           }
       )
     },
+    // 发送评论数据以及将数据
     sendRemark() {
       let userId = getTokenValue("userId")
-      this.userRemark["remarkTime"] = new Date()
+      this.userRemark["remarkTime"] = moment().format('YYYY-MM-DD HH:mm:ss')
       if (userId) {
         this.userRemark["userId"] = userId
-        if (!this.userRemark.remarkContent) {
+        this.userRemark["remarkContent"] = this.remarkTxt
+        if (!this.userRemark["remarkContent"]) {
           return
+        } else {
+          this.userRemarkList.unshift(this.userRemark)
+          this.remarkTxt = ""
         }
       } else {
         return hintLogin()
@@ -278,8 +284,8 @@ export default {
       addRemark(this.userRemark).then(
           rep => {
             console.log("返回的数据", rep.data)
-            // 如果发送成功则显示发送的信息
-            this.isSendRemarked = true
+
+            this.userRemark = {}
           },
           error => {
             console.log("错误信息", error)
@@ -442,28 +448,26 @@ export default {
 </script>
 <style scoped>
 .VideoPlayOut {
-  width: 100%;
-  height: 100%;
   padding: 0 5% 0 5%;
+  overflow-y: hidden;
 }
 
 .VideoPlay {
   margin-top: 10px;
-  overflow-y: scroll;
 }
 
 .play_video_show_left {
   float: left;
-  width: 65%;
-  height: 100%;
+  width: 80%;
+  /*height: 100%;*/
   /*background: #e3e3e3;*/
 }
 
 .play_video_show_right {
   float: right;
-  width: 35%;
+  width: 20%;
   /*padding-right: 10%;*/
-  height: 100%;
+  /*height: 100%;*/
   /*background: #cbcbcb;*/
 }
 

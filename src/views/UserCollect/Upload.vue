@@ -18,7 +18,7 @@
                 <span>首页</span>
               </span>
 
-              <span class="left_text" @click="$router.push('/userCentre')" >我的视频</span>
+              <span class="left_text" @click="$router.push('/userCentre')">我的视频</span>
 
             </div>
 
@@ -91,6 +91,8 @@
                   <!--                  :headers="{'token':token}"-->
                   <!--                  :auto-upload="false"-->
 
+
+<!--                  原始能用-->
                   <el-upload
                       drag
                       ref="uploadVideo"
@@ -105,6 +107,8 @@
                     <div class="el-upload__tip" slot="tip">上传视频</div>
                   </el-upload>
 
+
+                  <video :src="videoSrc"></video>
                   <el-row type="flex" class="row-bg">
                     <el-col :span="2">
                       <div class="grid-content bg-purple">
@@ -417,6 +421,8 @@ import {getTokenValue} from "@/utility/manageDate";
 
 export default {
   name: "Upload",
+  components: {},
+
   data() {
     return {
       fileList: [],
@@ -439,6 +445,7 @@ export default {
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
       optionsTest: [],
       input: '',
+      videoSrc: "",
       on_off: false,
       activeNames: ['1'],
       rate_of_progress: '',
@@ -496,14 +503,14 @@ export default {
             //   }
             // }
 
-            for (const reqKey in a) {
-              console.log(a[reqKey].videoSubareaType)
-              for (const reqKeyKey in a[reqKey].videoSubareaType) {
-                console.log(a[reqKey].videoSubareaType[reqKeyKey].videoSubareaType)
-              }
-            }
+            // for (const reqKey in a) {
+            //   console.log(a[reqKey].videoSubareaType)
+            //   for (const reqKeyKey in a[reqKey].videoSubareaType) {
+            //     console.log(a[reqKey].videoSubareaType[reqKeyKey].videoSubareaType)
+            //   }
+            // }
 
-            console.log("data", req.data)
+            // console.log("data", req.data)
           },
           error => {
             error.message
@@ -525,6 +532,12 @@ export default {
       this.tags.push(a) // 向数组中添加元素
     },
     fileDate(file) { // 获取标题
+      console.log("file", file)
+      this.videoSrc = file["name"]
+      console.log(URL.createObjectURL(file.raw));
+      // 本地电脑路径
+      this.videoSrc = document.getElementsByClassName("el-upload__input")[0].value
+      // console.log(document.getElementsByClassName("el-upload__input")[0].value);
       let separator = file.name.lastIndexOf(".") // 使用.做分割符，分成任意段
       this.videoTitle = file.name.substring(0, separator) // 获取分割的前部分
     },
@@ -549,6 +562,7 @@ export default {
     },
     handleChange(file) {
       this.fileList.push(file)
+
       // this.videoCoverImgUrl = file
       this.videoCoverImgUrl = file.raw
     },
@@ -768,7 +782,7 @@ body > .el-container {
   font-size: 16px;
 }
 
-.left_text{
+.left_text {
   cursor: pointer;
   margin-left: 30px;
 }

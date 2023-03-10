@@ -91,7 +91,7 @@ export default {
   width: 100%;
   display: grid;
   height: 250px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   grid-template-rows: repeat(1, minmax(200px, 1fr));
   gap: 20px 20px;
 }

@@ -16,10 +16,10 @@
       <p>
         <!--                        <span class="comment_on_top">置顶</span>-->
         <i class="top-icon">置顶</i>
-        {{ userRemark.remarkContent }}
+        {{ userRemark['remarkContent'] }}
       </p>
       <div class="Align_Horizontal_Centers user_comment_time_count">
-        <span>{{ userRemark.remarkTime.toLocaleString().replace(/\//g, '-') }}</span>
+        <span>{{ userRemark.remarkTime }}</span>
         <div class="Align_Horizontal_Centers ">
           <svg @click="remarkClick"
                t="1636093575017" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -40,26 +40,64 @@
                   p-id="3934">
             </path>
           </svg>
-          <span>{{ userRemark.remarkTrampleCount }}</span>
+          <span>{{ userRemark['remarkTrampleCount'] }}</span>
         </div>
-        <span class="icon">回复</span>
+        <span class="icon" @click="isRevert=true">回复</span>
       </div>
-      <slot></slot>
+      <UserCommentTwo v-for="(iten,index) in returnUserRemarkData" :key="index" v-if="iten['otherUserRemarkId']==userRemark['userRemarkId']" :userRemark="iten"/>
+      <UserCommentTwo v-if="userRemarkTowList" v-for="(iten,index) in userRemarkTowList" :key="index" :userRemark="iten">
+      </UserCommentTwo>
+      <div v-if="isRevert" class="user_comment_main_first_comment">
+<!---->
+
+        <el-avatar slot="button_active"
+                   src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"></el-avatar>
+        <el-input
+            type="textarea"
+            :rows="2"
+            autosize
+            placeholder="发一条友善的评论"
+            v-model="remarkTxt">
+        </el-input>
+        <el-button type="primary" @click="sendRemark()">发送</el-button>
+        <!--              <el-button slot="reference">click 激活</el-button>-->
+      </div>
       <el-divider></el-divider>
     </div>
   </div>
 </template>
 
 <script>
+import UserCommentTwo from "@/views/VideoPlay/cpns/UserCommentTwo";
+import {getTokenValue} from "@/utility/manageDate";
+import moment from "moment/moment";
+import {hintLogin} from "@/utility/messageHint";
+import {addRemark} from "@/api/common";
+
 export default {
   name: "UserComment",
-  components: {},
+  components: {
+    UserCommentTwo
+  },
   props: [
-    'userRemark'
+    'userRemark','returnUserRemarkData'
   ],
   data() {
     return {
+      remarkTxt: "",
+      isRevert: false,
       activateState: 0,
+      isSend: false,
+      userRemarkTowList: [],
+      userRemarkTow: {
+        userId: "",
+        videoId: "",
+        remarkContent: "",
+        remarkTime: "",
+        remarkClickCount: 0,
+        remarkTrampleCount: 0,
+        otherUserRemarkId: 0,
+      },
     }
   },
   methods: {
@@ -95,6 +133,34 @@ export default {
         this.userRemark.remarkTrampleCount = this.userRemark.remarkTrampleCount - 1
         this.activateState = 0
       }
+    },
+    sendRemark() {
+      let userId = getTokenValue("userId")
+      this.userRemarkTow["remarkTime"] = moment().format('YYYY-MM-DD HH:mm:ss')
+      if (userId) {
+        this.userRemarkTow["userId"] = userId
+        this.userRemarkTow["videoId"] = this.userRemark["videoId"]
+        this.userRemarkTow["remarkContent"] = this.remarkTxt
+        this.userRemarkTow["otherUserRemarkId"] = this.userRemark["userRemarkId"]
+        if (!this.userRemarkTow["remarkContent"]) {
+          return
+        } else {
+          this.userRemarkTowList.unshift(this.userRemarkTow)
+          this.remarkTxt = ""
+        }
+      } else {
+        return hintLogin()
+      }
+      this.isSend = !this.isSend
+      addRemark(this.userRemarkTow).then(
+          rep => {
+            console.log("返回的数据", rep.data)
+            this.userRemarkTow = {}
+          },
+          error => {
+            console.log("错误信息", error)
+          }
+      )
     }
   }
 }
@@ -141,5 +207,16 @@ export default {
 
 .activate {
   fill: #006cff;
+}
+
+.user_comment_main_first_comment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.user_comment_main_first_comment > span {
+  margin: 10px;
 }
 </style>

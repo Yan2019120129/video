@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="20">
-    <el-col :span="10">
+    <el-col :span="7">
       <div class="grid-content bg-purple ">
         <div class="slideshow">
           <!--          轮播图-->
@@ -37,7 +37,7 @@
         </div>
       </div>
     </el-col>
-    <el-col :span="14">
+    <el-col :span="17">
       <div class="grid-content bg-purple-light">
         <div class="grid-container" ref="tph">
           <div v-for="n in videoMain"

@@ -242,7 +242,7 @@ export default {
   width: 100%;
   background: white;
   color: #000000;
-  box-shadow: 1px 1px 1px #f5f5f5;
+  box-shadow: 3px 3px 3px #f5f5f5;
 }
 
 .bili-head_banner {

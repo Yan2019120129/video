@@ -1,273 +1,81 @@
 <template>
-  <div class="App">
-    <br>
-    <button @click="sendGetMapping">测试get请求,不带参数</button>
-    <br>
-    <br>
-    <button @click="sendGetMappingData">测试get请求，携带参数</button>
-    <input type="text" v-model="id" placeholder="输入一个id获取参数">
-    <br>
-    <br>
-    <button @click="sendPostMapping">测试post请求</button>
-    <input type="text" v-model="name" placeholder="输入你的名字">
-    <input type="text" v-model="age" placeholder="输入你的年龄">
-    <br>
-    <br>
-    <button @click="sendPostMapping">测试post请求</button>
-    <input type="text" v-model="name" placeholder="输入你的名字">
-    <input type="text" v-model="age" placeholder="输入你的年龄">
-    <br>
-    <br>
-    <button @click="sendPutMapping">测试put请求</button>
-    <input type="text" v-model="id" placeholder="输入id">
-    <br>
-    <br>
-    <button @click="sendDeleteMapping">测试delete请求</button>
-    <input type="text" v-model="id" placeholder="输入id">
-
+  <div class="grid-container">
+    <div v-for="(item, index) in gridItems" :key="index" class="grid-item">{{ item }}</div>
   </div>
 </template>
+
 <script>
-
-
-import axios from "@/api/axios";
-import qs from "qs";
-
 export default {
-  name: 'App',
-  components: {},
+  name: "App",
   data() {
     return {
-      activeName: 'second',
-      id: 45,
-      psw: "",
-      name: "晏家杰",
-      age: 18,
-    };
+      gridItems: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 8', 'Item 9', 'Item 10'],
+      itemWidth: 100, // 每个网格项的宽度
+      numColumns: 3 // 每行默认显示的网格数量
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.updateGridItems)
+    this.updateGridItems()
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.updateGridItems)
+  },
+  computed: {
+    // 根据窗口大小动态计算每行可以显示的网格数量
+    numColumns() {
+      const screenWidth = window.innerWidth
+      if (screenWidth < 768) {
+        return 1
+      } else if (screenWidth < 1024) {
+        return 2
+      } else {
+        return 3
+      }
+    },
+    // 计算每行可以容纳的网格数量
+    itemsPerRow() {
+      const containerWidth = this.$el.clientWidth
+      return Math.floor(containerWidth / this.itemWidth)
+    },
+    // 根据每行可以容纳的网格数量重新计算网格数据
+    visibleGridItems() {
+      const itemsPerRow = this.itemsPerRow
+      const numItems = this.gridItems.length
+      const visibleItems = []
+      for (let i = 0; i < numItems; i += itemsPerRow) {
+        visibleItems.push(this.gridItems.slice(i, i + itemsPerRow))
+      }
+      return visibleItems
+    }
   },
   methods: {
-    async sendGetMapping() {
-      // 测试get请求不带参数, 精简版
-      const result = await axios.get("/nacos-video-admin/testGetMapping")
-      console.log("返回的数据", result)
-
-      // 测试get请求不带参数,精简版
-      axios.get("/nacos-video-admin/testGetMapping").then(
-          response => {
-            console.log("返回得数据", response.data)
-          },
-          error => {
-            console.log("错误信息", error)
-          }
-      )
-
-    },
-    sendGetMappingData() {
-      let datas = {
-        id: this.id
+    // 更新网格数据
+    updateGridItems() {
+      const itemsPerRow = this.itemsPerRow
+      if (itemsPerRow !== this.numColumns) {
+        this.numColumns = itemsPerRow
       }
-      // 测试get请求带query参数,使用params放置query参数,完整版
-      axios({
-        url: "/nacos-video-admin/testGetMappingData",
-        method: "get",
-        params: datas,
-      }).then(
-          response => {
-            console.log("返回得数据", response.data)
-          },
-          error => {
-            console.log("错误信息", error)
-          }
-      )
-
-      // get 携带query参数使用params 精简版
-      axios.get("/nacos-video-admin/testGetMappingData", {params: {id: this.id}}).then(
-          response => {
-            console.log("返回得数据", response.data)
-          },
-          error => {
-            console.log("错误信息", error)
-          }
-      )
-    },
-    sendPostMapping() {
-      // 使用params发送query方式的数据可以直接封装,默认发送的是json编码的数据
-      const data = {
-        "name": this.name,
-        "age": this.age,
-      }
-
-      // 发送的是urlencoded编码数据
-      const data1 = `name=${this.name}&age=${this.age}`
-
-      // 发送请求体数据需要使用表单提交的方式，完整版
-      axios({
-        url: "/nacos-video-admin/testPostMappingData",
-        method: "post",
-        data: qs.stringify(data)
-      }).then(
-          response => {
-            console.log("返回得数据1", response.data)
-          },
-          error => {
-            console.log("错误信息1", error)
-          }
-      )
-
-      // 发送请求体数据需要使用表单提交的方式,精简版
-      axios.post("/nacos-video-admin/testPostMappingData", qs.stringify(data)).then(
-          response => {
-            console.log("返回得数据1", response.data)
-          },
-          error => {
-            console.log("错误信息1", error)
-          }
-      )
-
-      // 使用请求体发送urlencoded类型数据，完整版
-      axios({
-        url: "/nacos-video-admin/testPostMappingData",
-        method: "post",
-        data: data1,
-      }).then(
-          response => {
-            console.log("返回得数据3", response.data)
-          },
-          error => {
-            console.log("错误信息3", error)
-          }
-      )
-
-      // 使用请求体发送urlencoded类型数据，精简版
-      axios.post("/nacos-video-admin/testPostMappingData", data1).then(
-          response => {
-            console.log("返回得数据3", response.data)
-          },
-          error => {
-            console.log("错误信息3", error)
-          }
-      )
-
-      // 发送query数据,不建议，不符合规范，完整版
-      axios({
-        url: "/nacos-video-admin/testPostMappingData",
-        method: "post",
-        params: data
-      }).then(
-          response => {
-            console.log("返回得数据2", response.data)
-          },
-          error => {
-            console.log("错误信息2", error)
-          }
-      )
-
-      // 发送query数据,不建议，精简版
-      axios.post("/nacos-video-admin/testPostMappingData", data1).then(
-          response => {
-            console.log("返回得数据2", response.data)
-          },
-          error => {
-            console.log("错误信息2", error)
-          }
-      )
-
-    },
-    sendPutMapping() {
-      // 发送query方式的数据可以直接封装,发送的是json数据
-      const datas = {
-        "id": this.id,
-      }
-
-      // 发送的是urlencoded数据
-      const data1 = `id=${this.id}`
-
-      // 发送query数据
-      axios({
-        url: "/nacos-video-admin/testPutMappingData",
-        method: "put",
-        params: datas,
-      }).then(
-          response => {
-            console.log("返回得数据1", response["data"])
-          },
-          error => {
-            console.log("错误信息1", error)
-          }
-      )
-
-      // 发送urlencoded编码格式代码，精简版
-      axios.put("/nacos-video-admin/testPutMappingData", data1).then(
-          response => {
-            console.log("返回得数据21", response["data"])
-          },
-          error => {
-            console.log("错误信息21", error)
-          },
-      )
-      // 发送body数据,urlencoded编码数据，完整版
-      axios({
-        url: "/nacos-video-admin/testPutMappingData",
-        method: "put",
-        data: data1,
-      }).then(
-          response => {
-            console.log("返回得数据22", response["data"])
-          },
-          error => {
-            console.log("错误信息22", error)
-          }
-      )
-      //  发送body数据,json编码数据，完整版
-      axios({
-        url: "/nacos-video-admin/testPutMappingData",
-        method: "put",
-        data: qs.stringify(datas),
-      }).then(
-          response => {
-            console.log("返回得数据3", response["data"])
-          },
-          error => {
-            console.log("错误信息3", error)
-          }
-      )
-    },
-    sendDeleteMapping() {
-      // 发送query方式的数据可以直接封装,发送的是json数据
-      const datas = {
-        "id": this.id,
-      }
-
-      // 发送的是urlencoded数据
-      const data1 = `id=${this.id}`
-
-      //  发送delete请求，query数据类型，完整版
-      axios({
-        url: "/nacos-video-admin/testDeleteMappingData",
-        method: "delete",
-        params: datas,
-      }).then(
-          response => {
-            console.log("返回得数据1", response["data"])
-          },
-          error => {
-            console.log("错误信息1", error)
-          }
-      )
-
-      //  发送delete请求，query数据类型, 精简版
-      axios.delete("/nacos-video-admin/testDeleteMappingData", {params: datas}).then(
-          response => {
-            console.log("返回得数据3", response["data"])
-          },
-          error => {
-            console.log("错误信息3", error)
-          }
-      )
-
-    },
-  },
+    }
+  }
 }
 </script>
-<style scoped>
+
+<style>
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.grid-item {
+  width: 100px;
+  height: 100px;
+  background-color: #f5f5f5;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
 </style>

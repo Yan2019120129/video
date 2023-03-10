@@ -42,7 +42,7 @@ export default {
       toHome: 'Home',
       toVideo: 'VideoPlay',
       toView: 'VideoView',
-      videoSrc: require("@/assets/video/test.mp4"),
+      videoSrc: require("@/assets/video/oceans.mp4"),
     }
   },
   computed: {

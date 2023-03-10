@@ -107,7 +107,7 @@ export function getShare(datas, state) {
 // 获取用户评论数据
 export function getUserRemark(datas) {
     return Axios({
-        url: "/nacos-video-system/system/findAllRemarkByVideo",
+        url: "/nacos-video-system/system/findAllRemarkByVideoId",
         method: "get",
         params: datas
     })

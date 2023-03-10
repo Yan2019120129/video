@@ -6,7 +6,8 @@
         <picture class="box-picture" ref="pic">
           <slot name="img"></slot>
         </picture>
-        <video ref="vid" class="box-video" muted="muted" preload="auto">
+<!--        <video ref="vid" class="box-video" muted="muted" preload="none">-->
+        <video ref="vid" class="box-video" muted="muted" preload="none">
           <slot name="video"></slot>
         </video>
       </div>

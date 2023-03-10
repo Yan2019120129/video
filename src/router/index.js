@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '@/views/Home/Home.vue'
 import Video from '@/views/VideoPlay/Video'
 import VideoPlay from "@/views/VideoPlay/VideoPlay";
+import cutPicture from "@/views/VideoPlay/cutPicture.vue";
 import MyVideo from "@/views/VideoPlay/MyVideo";
 import UserCentre from "@/views/UserCollect/UserCentre";
 import UserMessage from "@/views/UserCentre/UserMessage";
@@ -17,6 +18,7 @@ import MyMessage from "@/views/UserCentre/particular/MyMessage";
 import {getToken} from "@/utility/manageDate";
 import Navigation from "@/views/Home/Navigation";
 import UserHead from "@/views/UserCentre/particular/UserHead";
+import VideoList from "@/views/VideoPlay/VideoList";
 
 const router = new VueRouter({
     routes: [
@@ -50,14 +52,6 @@ const router = new VueRouter({
                         router_main: Video
                     },
                 },
-                // {
-                //     name: 'videoPlay',
-                //     path: 'videoPlay',
-                //     meta: {isAuth: false, jurisdiction: "common",},
-                //     components: {
-                //         router_main: VideoPlay
-                //     },
-                // },
                 {
                     name: 'myVideo',
                     path: 'myVideo',
@@ -74,6 +68,21 @@ const router = new VueRouter({
             meta: {isAuth: false, jurisdiction: "common",},
             components: {
                 router_app: VideoPlay
+            },
+        },
+        {
+            name: 'cutPicture',
+            path: '/cutPicture',
+            meta: {isAuth: false, jurisdiction: "common",},
+            components: {
+                router_app: cutPicture
+            },
+        },        {
+            name: 'VideoList',
+            path: '/VideoList',
+            meta: {isAuth: false, jurisdiction: "common",},
+            components: {
+                router_app: VideoList
             },
         },
         {
