@@ -13,8 +13,8 @@
       </div>
     </div>
     <div class="foot">
-      <slot name="describe"></slot>
       <slot name="tile"></slot>
+      <slot name="describe"></slot>
     </div>
   </div>
 </template>
@@ -67,9 +67,11 @@ export default {
 .box {
   width: 100%;
   height: 100%;
+  min-height: 220px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
+
 }
 
 .head {
@@ -115,6 +117,7 @@ source {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
 }
 
 .foot_head {
@@ -128,13 +131,28 @@ source {
   /* 盒子模型 */
   display: -webkit-box;
   /* 显示的文本行数 */
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   /* 子元素的垂直排列方式 */
   -webkit-box-orient: vertical;
 }
 
-.foot_end {
+.foot-end {
   margin-top: 5px;
   width: 100%;
 }
+.foot-end >a{
+  display:-webkit-box;
+  overflow: hidden; /*超出隐藏*/
+  text-overflow: ellipsis;/*隐藏后添加省略号*/
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2; /*想显示多少行*/
+}
+.foot-end >div{
+  display:-webkit-box;
+  overflow: hidden; /*超出隐藏*/
+  text-overflow: ellipsis;/*隐藏后添加省略号*/
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:1; /*想显示多少行*/
+}
+
 </style>

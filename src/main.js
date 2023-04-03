@@ -17,6 +17,7 @@ import axios from 'axios';
 
 import VueVideoPlayer from 'vue-video-player'
 
+
 // 将axios挂在到原型上
 Vue.prototype.axios = axios;
 Vue.prototype.axios = axios;

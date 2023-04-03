@@ -45,7 +45,6 @@ export function getTokenValue(key) {
             }
         }
     }
-
 }
 
 // 获取全部的解析信息

@@ -17,7 +17,7 @@ export function getClassification(datas) {
 // 获取大分类
 export function getSubarea(datas) {
     return Axios({
-        url: "/nacos-video-system/system/findSubarea",
+        url: "/nacos-video-system/system/findSubareaAll",
         method: "get",
         headers: {
             // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
@@ -122,69 +122,61 @@ export function addRemark(datas) {
     })
 }
 
-
-// 获取ToPromoteHead模块数据
-export function getVideoMain(datas) {
+// 根据关键字查找类似的视频资源。
+export function getLikeVideo(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/resource",
+        url: "/nacos-video-upload/upload/findLikeVideoByName",
         method: "get",
         headers: {
-            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
             'Content-Type': 'application/json' //设置请求头请求格式为json
         },
-        data: datas
+        params: datas
     })
 }
 
-// 获取扩展模块数据
-export function getVideoExtension(datas) {
+// 获取视频分页数据
+export function getVideoPage(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/resource1",
+        url: "/nacos-video-upload/upload/findVideoPage",
         method: "get",
         headers: {
-            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
             'Content-Type': 'application/json' //设置请求头请求格式为json
         },
-        data: datas
+        params: datas
+    })
+}
+// 获取随机分类视频分页数据
+export function getRandomFindVideoPage(datas) {
+    return Axios({
+        url: "/nacos-video-upload/upload/randomFindVideoPage",
+        method: "get",
+        headers: {
+            'Content-Type': 'application/json' //设置请求头请求格式为json
+        },
+        params: datas
     })
 }
 
-// 获取国创模块数据
-export function getVideoAimtron(datas) {
+// 获取推广内容
+export function getPopularizeVideoPage(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/resource2",
+        url: "/nacos-video-upload/upload/randomFindPopularizeVideoPage",
         method: "get",
         headers: {
-            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
             'Content-Type': 'application/json' //设置请求头请求格式为json
         },
-        data: datas
+        params: datas
     })
 }
-
-// 获取竞赛模块数据
-export function getVideoCompetition(datas) {
+// 获取主分区推荐内容
+export function getRandomMainFindVideoPage(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/resource3",
+        url: "/nacos-video-upload/upload/randomMainFindVideoPage",
         method: "get",
         headers: {
-            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
             'Content-Type': 'application/json' //设置请求头请求格式为json
         },
-        data: datas
-    })
-}
-
-// 获取直播模块数据
-export function getVideoLiveStreaming(datas) {
-    return Axios({
-        url: "/nacos-video-upload/upload/resource4",
-        method: "get",
-        headers: {
-            // 'Content-Type': 'application/x-www-form-urlencoded' //设置请求头请求格式form
-            'Content-Type': 'application/json' //设置请求头请求格式为json
-        },
-        data: datas
+        params: datas
     })
 }
 
@@ -254,4 +246,8 @@ export function findAllInteract(datas) {
         data: datas
     })
 }
+
+
+
+
 

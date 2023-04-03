@@ -18,7 +18,7 @@
                 <span>首页</span>
               </span>
 
-              <span class="left_text" @click="$router.push('/userCentre')">我的视频</span>
+              <span class="left_text" @click="backUserCentre">我的视频</span>
 
             </div>
 
@@ -73,7 +73,6 @@
                 <el-menu-item index="4-2">选项2</el-menu-item>
                 <el-menu-item index="4-3">选项3</el-menu-item>
               </el-submenu>
-
             </el-menu>
           </el-col>
         </el-aside>
@@ -84,31 +83,23 @@
               <el-tabs type="border-card">
                 <el-tab-pane>
                   <span slot="label"><i class="el-icon-date"></i>视频管理</span>
-                  <!--                  :http-request="vue_upload"-->
-                  <!--                  :data="{'id':analysisToken.userIdOrPhone[0],'phone':analysisToken.userIdOrPhone[1]}"-->
-                  <!--                  action="http://localhost:9527/nacos-video-upload/upload/uploading"-->
-                  <!--                  :data="sendData"-->
-                  <!--                  :headers="{'token':token}"-->
-                  <!--                  :auto-upload="false"-->
-
-
-<!--                  原始能用-->
-                  <el-upload
-                      drag
-                      ref="uploadVideo"
-                      :on-change="fileDate"
-                      :http-request="vue_upload"
-                      :limit="1"
-                      :auto-upload="false"
-                      action=""
-                      multiple>
-                    <i class="el-icon-upload"></i>
-                    <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-                    <div class="el-upload__tip" slot="tip">上传视频</div>
-                  </el-upload>
-
-
-                  <video :src="videoSrc"></video>
+                  <el-row type="flex" class="row-bg">
+                    <el-col :span="24" :offset="2">
+                      <el-upload v-if="!imageData.length"
+                                 drag
+                                 ref="uploadVideo"
+                                 accept="video/*"
+                                 :on-success="returnImage"
+                                 :headers="{'token':token}"
+                                 action="api/nacos-video-upload/upload/uploadVideoFile"
+                                 multiple>
+                        <i class="el-icon-upload"></i>
+                        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+                        <div class="el-upload__tip" slot="tip">上传视频</div>
+                      </el-upload>
+                      <ImgPreview ref="ImgPreviewDate" v-if="imageData.length" :imageData="imageData"/>
+                    </el-col>
+                  </el-row>
                   <el-row type="flex" class="row-bg">
                     <el-col :span="2">
                       <div class="grid-content bg-purple">
@@ -124,48 +115,23 @@
                   <el-row type="flex" class="row-bg">
                     <el-col :span="2">
                       <div class="grid-content bg-purple">
-                        封面
+                        自定义封面
                       </div>
                     </el-col>
                     <el-col :span="15" :offset="2">
                       <div class="grid-content bg-purple">
-                        <!--                        action="http://localhost:9527/nacos-video-upload/upload/uploadImg"-->
-                        <el-upload
-                            list-type="picture-card"
-                            action=""
-                            :limit="1"
-                            :http-request="vue_upload"
-                            :headers="{'token':token}"
-                            :on-change="handleChange"
-                            :file-list="fileList"
-                            :auto-upload="false">
-                          <i slot="default" class="el-icon-plus"></i>
-                          <div slot="file" slot-scope="{file}">
-                            <!--                          <div>-->
-                            <img
-                                class="el-upload-list__item-thumbnail"
-                                :src="file.url" alt=""
-                            >
-                            <span class="el-upload-list__item-actions">
-                              <span
-                                  class="el-upload-list__item-preview"
-                                  @click="handlePictureCardPreview(file)"
-                              >
-                                <i class="el-icon-zoom-in"></i>
-                              </span>
-                              <span
-                                  v-if="!disabled"
-                                  class="el-upload-list__item-delete"
-                                  @click="handleRemove(file)"
-                              >
-                                <i class="el-icon-delete"></i>
-                              </span>
-                            </span>
+                        <div class="upload-container">
+                          <label for="file-upload" class="upload-label">
+                            <i class="fa fa-cloud-upload"></i> 上传封面
+                          </label>
+                          <input id="file-upload" type="file" accept="image/*" ref="fileInput"
+                                 @change="handleFileChange"
+                                 style="display:none">
+                          <div class="preview-container">
+                            <img class="preview-image" v-show="imageUrl" :src="imageUrl" alt="uploaded image">
+                            <button class="remove-button" v-show="imageUrl" @click="removeImage">Remove</button>
                           </div>
-                        </el-upload>
-                        <el-dialog :visible.sync="dialogVisible">
-                          <img width="100%" :src="dialogImageUrl" alt="">
-                        </el-dialog>
+                        </div>
                       </div>
                     </el-col>
                   </el-row>
@@ -183,12 +149,11 @@
                             v-model="videoTitle">
                         </el-input>
                       </div>
-
                     </el-col>
                   </el-row>
                   <el-row type="flex" class="row-bg">
                     <el-col :span="2">
-                      <div class="grid-content bg-purple">
+                      <div class="grid-content bg-purple" style="height: 40px">
                         类型
                       </div>
                     </el-col>
@@ -200,7 +165,7 @@
                         </template>
                       </div>
                     </el-col>
-                    <el-col :span="14" v-if="videoIsTransshipment=='1'">
+                    <el-col :span="10" v-if="videoIsTransshipment=='1'">
                       <div class="grid-content bg-purple-light">
                         <el-input
                             autosize
@@ -218,19 +183,22 @@
                     </el-col>
                     <el-col :span="5" :offset="2">
                       <div class="grid-content bg-purple-light">
-                        <el-select v-model="videoSubareaValue" placeholder="请选择">
+                        <el-select v-model="selectedOption" placeholder="请选择">
                           <el-option-group
                               v-for="group in optionsTest"
                               :key="group.videoSubareaId"
-                              :label="group.videoSubarea">
+                              :label="group.videoSubarea"
+                          >
                             <el-option
-                                v-for="item in group.videoSubareaType"
+                                v-for="item in group['videoSubareaType']"
                                 :key="item.videoSubareaTypeId"
-                                :label="item.videoSubareaType"
-                                :value="item.videoSubareaTypeId">
+                                :label="item['videoSubareaType']"
+                                :value="[item.videoSubareaTypeId,group.videoSubareaId]"
+                            >
                             </el-option>
                           </el-option-group>
                         </el-select>
+                        <!--                        <select></select>-->
                       </div>
                     </el-col>
                   </el-row>
@@ -393,7 +361,7 @@
                   <el-row type="flex" class="row-bg">
                     <el-col :span="8" :offset="2">
                       <el-button type="success" @click="contribute(true)">立即投稿</el-button>
-                      <el-button type="primary" @click="contribute(true)">保存投稿</el-button>
+                      <el-button type="primary" @click="contribute(false)">保存投稿</el-button>
                     </el-col>
                   </el-row>
                 </el-tab-pane>
@@ -413,25 +381,38 @@
 
 <script>
 import {mapState} from "vuex";
-import {javaUpload} from "@/api";
 import {getClassification} from "@/api/common";
 import {hintUploadFail, hintUploadSucceed, hintUploadUploading} from "@/utility/messageHint";
 import {getTokenValue} from "@/utility/manageDate";
-// import classification from "src/assets/classification.json"
+import ImgPreview from "@/views/UserCollect/ImgPreview";
+import Select from "@/views/UserCollect/Select";
+import {deleteVideo, javaUpload} from "@/api";
+
+let ifClosePage = false;
 
 export default {
   name: "Upload",
-  components: {},
+  components: {
+    ImgPreview, Select
+  },
 
   data() {
     return {
+      ifSubmitVideo: false, // 判断是否提交视频文件
+      ifSubmit: false, // 判断是否提交用于返回主机面是否上传了
+      imgDate: null, // 子组件返回的图片地址
+      imageData: [], // 存储返回的视频3张封面数据
       fileList: [],
+      fileList2: [],
+      fileName: '', // 视频文件名
+      imageUrl: '', // 自定义图片二进制数据
       // ---------------------------------发送的数据
-      videoCoverImgUrl: '',
+      videoId: null,
+      videoCoverImgUrl: null,
       videoTitle: '',
       videoIsTransshipmentUrl: '',
       videoIsTransshipment: '0',
-      videoSubareaValue: '',
+      selectedOption: [],
       videoCreation: false,
       videoBriefIntroduction: '',
       videoPublishTime: '',
@@ -443,7 +424,7 @@ export default {
       disabled: false,
       isCollapse: true,
       src: 'https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg',
-      optionsTest: [],
+      optionsTest: [],// 存储分区数据
       input: '',
       videoSrc: "",
       on_off: false,
@@ -489,34 +470,39 @@ export default {
     }
   },
   mounted() {
+    window.addEventListener('beforeunload', this.handleBeforeUnload)
     this.init()
   },
   methods: {
+
     init() {
       getClassification().then(
           req => {
-            let a = this.optionsTest = req.data
-            // for (let i = 0; i < this.optionsTest.length; i++) {
-            //   console.log(this.optionsTest[i].videoSubareaType)
-            //   for (let j = 0; j < this.optionsTest[i].videoSubareaType.length; j++) {
-            //     console.log(this.optionsTest[i].videoSubareaType[j].videoSubareaType)
-            //   }
-            // }
-
-            // for (const reqKey in a) {
-            //   console.log(a[reqKey].videoSubareaType)
-            //   for (const reqKeyKey in a[reqKey].videoSubareaType) {
-            //     console.log(a[reqKey].videoSubareaType[reqKeyKey].videoSubareaType)
-            //   }
-            // }
-
-            // console.log("data", req.data)
+            this.optionsTest = req.data
           },
           error => {
             error.message
             console.log("error", error.message)
           }
       )
+    },
+    handleFileChange(event) {
+      this.videoCoverImgUrl = ''
+      const file = event.target.files[0]
+      this.fileName = file.name
+      this.imgDate = file
+      // 使用FileReader读取文件内容
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = e => {
+        this.imageUrl = e.target.result
+      }
+      // 在这里处理文件上传逻辑
+    },
+    removeImage() {
+      this.videoCoverImgUrl = this.$refs.ImgPreviewDate?.selectedImage // 获取上传视频子组件的视频封面路径数据
+      this.fileName = '';
+      this.imageUrl = '';
     },
     choiceLabel(value) {
       let a = this.tags.find(item => item.name == value) // 获取指定的对象
@@ -532,7 +518,6 @@ export default {
       this.tags.push(a) // 向数组中添加元素
     },
     fileDate(file) { // 获取标题
-      console.log("file", file)
       this.videoSrc = file["name"]
       console.log(URL.createObjectURL(file.raw));
       // 本地电脑路径
@@ -542,8 +527,16 @@ export default {
       this.videoTitle = file.name.substring(0, separator) // 获取分割的前部分
     },
     backHome() {
-      this.$router.push("/Main")
+      if (this.ifDeleteVideo()) {
+        this.$router.push("/Main")
+      }
     },
+    backUserCentre() {
+      if (this.ifDeleteVideo()) {
+        this.$router.push('/userCentre')
+      }
+    },
+
     handleRemove(file) { // 移除预选的视图
       this.fileList = this.fileList.filter(item => item.uid != file.uid) // 获取除指定对象之外的元素
     },
@@ -560,62 +553,96 @@ export default {
     handleChange1(val) {
       console.log("val", val);
     },
-    handleChange(file) {
-      this.fileList.push(file)
-
-      // this.videoCoverImgUrl = file
-      this.videoCoverImgUrl = file.raw
+    // 视频传输方法回调
+    returnImage(response, file) {
+      this.ifSubmitVideo = true
+      let data = response.data
+      this.imageData = data  // 获取返回的三张封面数据
+      this.videoId = data[0]["videoId"]
+      this.fileDate(file)
     },
-    vue_upload(value) {
+
+    vue_upload() {
       hintUploadUploading()
-      console.log("接收的数据", value)
-      console.log("token数据", this.token)
-      console.log("解析的token数据", this.analysisToken)
-      // 后端接收的是表单类型'Content-Type': 'multipart/form-data'，必须要使用FormData()类格式化数据才能传输成功
-      const form = new FormData();
-      form.append("file", value.file);
-      form.append("userName", getTokenValue("userName"));
-      form.append("userPhone", getTokenValue("userPhone"));
-      form.append("userId", getTokenValue("userId"));
-      form.append("videoCoverImgUrl", this.videoCoverImgUrl)
-      form.append("videoTitle", this.videoTitle)
-      form.append("videoIsTransshipmentUrl", this.videoIsTransshipmentUrl)
-      form.append("videoIsTransshipment", this.videoIsTransshipment)
-      form.append("videoSubarea", this.videoSubareaValue)
-      form.append("videoCreation", this.videoCreation)
-      form.append("videoBriefIntroduction", this.videoBriefIntroduction)
-      form.append("videoPublishTime", this.videoPublishTime)
-      console.log("videoPublishTime", this.videoPublishTime)
       let videoLabel = []
       for (let i = 0; i < this.videoLabel.length; i++) {
         videoLabel[i] = this.videoLabel[i].name
       }
-      console.log("videoLabel", videoLabel)
+      const form = new FormData();
+      form.append("file", this.imgDate);
+      form.append("userName", getTokenValue("userName"));
+      form.append("userPhone", getTokenValue("userPhone"));
+      form.append("userId", getTokenValue("userId"));
+      form.append("videoId", this.videoId);
+      form.append("videoCoverImgUrl", this.videoCoverImgUrl)
+      form.append("videoTitle", this.videoTitle)
+      form.append("videoIsTransshipmentUrl", this.videoIsTransshipmentUrl)
+      form.append("videoIsTransshipment", this.videoIsTransshipment)
+      form.append("videoSubareaId", this.selectedOption[1])
+      form.append("videoSubareaTypeId", this.selectedOption[0])
+      form.append("videoCreation", this.videoCreation)
+      form.append("videoBriefIntroduction", this.videoBriefIntroduction)
+      form.append("videoPublishTime", this.videoPublishTime)
       form.append("videoLabel", videoLabel)
       form.append("videoPublish", this.videoPublish)
-
       javaUpload(form).then(
           response => {
-            console.log("返回成功")
-            console.log("返回的数据", response.data)
+            this.ifSubmit = true // 记录是否提交，未提交返回主页则提示
             hintUploadSucceed()
+            this.$router.push('/userCentre')
           }, error => {
-            console.log(error.response?.data);
-            console.log(error.response?.status);
-            console.log("错误信息", error)
             hintUploadFail()
           })
     },
+    // 提交视频数据到后端
     contribute(value) {
-      console.log("contribute")
-      this.videoPublish = value
-      this.$refs.uploadVideo.submit()
+      this.videoPublish = value  // 记录用户是否立即发布视频
+      console.log('this.imageUrl', this.imageUrl)
+      console.log('this.imageUrl', !this.imageUrl)
+      if (!this.imageUrl) {
+        this.videoCoverImgUrl = this.$refs.ImgPreviewDate?.selectedImage // 获取上传视频子组件的视频封面路径数据
+      }
+      this.vue_upload()
     },
+    // 删除视频文件
+    ifDeleteVideo() {
+      if (this.ifSubmitVideo && !this.ifSubmit) {
+        // alert("是否保存你的视频")
+        let isAffirm = confirm("是否保存你的视频")
+        if (isAffirm) {
+          console.log("删除视频")
+          ifClosePage = true
+          // 删除视频文件
+          deleteVideo(this.videoId).then(
+              response => {
+                console.log(response?.data)
+              },
+              error => {
+                console.log(error?.message)
+              }
+          )
+          return true
+        } else {
+          console.log("取消删除")
+          ifClosePage = false
+          return false
+        }
+      } else {
+        return true
+      }
+    },
+    handleBeforeUnload(event) {
+      event.preventDefault()
+    }
   },
   computed: {
     ...mapState("loginAbout", ["token", "analysisToken"]),
-  }
+  },
+  beforeDestroy() {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload)
+  },
 }
+
 </script>
 
 <style scoped>
@@ -715,6 +742,7 @@ body > .el-container {
 }
 
 .bg-purple-light {
+
   /*background: #e5e9f2;*/
 }
 
@@ -722,7 +750,6 @@ body > .el-container {
   border-radius: 4px;
   min-height: 36px;
   height: 100%;
-
 }
 
 .tag_grid {
@@ -785,5 +812,61 @@ body > .el-container {
 .left_text {
   cursor: pointer;
   margin-left: 30px;
+}
+
+/*-------------------------------------------------------------*/
+.upload-container {
+  display: flex;
+  flex-direction: row;
+  align-items: end;
+  font-family: sans-serif;
+  /*height: 300px;*/
+}
+
+.upload-label {
+  display: inline-block;
+  margin-left: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.upload-label:hover {
+  background-color: #ddd;
+}
+
+.preview-container {
+  border-radius: 5px;
+  overflow: hidden;
+  position: relative; /* 设置相对定位 */
+  margin-left: 20px;
+}
+
+.preview-image {
+  display: block;
+  max-width: 100%;
+  height: 30%;
+  border: 2px solid #ddd;
+}
+
+.remove-button {
+  position: absolute; /* 设置绝对定位 */
+  top: 10px; /* 距离上边界的距离 */
+  right: 10px; /* 距离右边界的距离 */
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.remove-button:hover {
+  background-color: #fff;
+  color: #333;
 }
 </style>

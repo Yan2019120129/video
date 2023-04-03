@@ -47,7 +47,7 @@
                     </el-col>
                   </el-row>
                   <el-row>
-                    <el-col :span="20" :offset="1">
+                    <el-col :span="22" :offset="1">
                       <MyGrid @myGridStateBack="myGridState"></MyGrid>
                     </el-col>
                   </el-row>
@@ -151,7 +151,7 @@
                             </el-row>
                             <el-divider></el-divider>
                             <el-row>
-                              <el-col :span="23" :offset="1">
+                              <el-col :span="24" :offset="0">
                                 <div class="grid-content bg-purple-dark">
                                   <LikeGrid>
                                   </LikeGrid>

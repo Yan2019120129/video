@@ -29,36 +29,9 @@ export default {
     }
   },
   mounted() {
-    const debounce = (fn, delay) => {
-      let timer;
-      return function () {
-        if (timer) {
-          clearTimeout(timer);
-        }
-        timer = setTimeout(() => {
-          fn();
-          clearTimeout(timer);
-        }, delay);
-      }
-    };
-    const cancalDebounce = debounce(this.ifShowHeadBackgroundMethod, 100);
-    window.addEventListener("scroll", cancalDebounce)
   },
   methods: {
     ...mapActions("layoutAbout", {aIfNavigationBars: "aIfNavigationBars"}),
-    ifShowHeadBackgroundMethod() {
-      // 滚动条距文档顶部的距离
-      let scrollTop = document.querySelector("html").scrollTop || 0
-      if (scrollTop > 80) {
-        console.log("显示")
-        this.aIfNavigationBars(true)
-        // this.ifShowHeadBackground = true
-      } else {
-        console.log("隐藏")
-        this.aIfNavigationBars(false)
-        // this.ifShowHeadBackground = false
-      }
-    },
     adjustStyle(value) {
       if (value) {
         this.$refs.img_style.style = "height: 300px;"

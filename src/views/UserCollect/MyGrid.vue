@@ -37,7 +37,6 @@ export default {
     }
   },
   mounted() {
-    console.log("getVideoMy")
     let formData = new FormData();
     formData.append("userId", getTokenValue("userId"))
     // 获取用户收藏视频的信息
@@ -88,8 +87,8 @@ export default {
 .grid-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 250px));
-  grid-template-rows: repeat(auto-fit, minmax(250px, 250px));
+  grid-template-columns: repeat(auto-fit, minmax(18%, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(18%, 1fr));
   grid-gap: 30px 30px;
 }
 

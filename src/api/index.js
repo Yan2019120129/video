@@ -1,4 +1,5 @@
 import Axios from "./axios"
+import qs from "qs";
 
 // 生成二维码
 export function getQRCode(datas) {
@@ -99,16 +100,25 @@ export function verifyToken(datas) {
 // 用户上传视频文件
 export function javaUpload(data) {
     return Axios({
-        url: "/nacos-video-upload/upload/uploading",
+        url: "/nacos-video-upload/upload/uploadVideoOther",
+        // url: "/nacos-video-upload/upload/uploading",
         method: "post",
         headers: {
             'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
         },
-        data: data,
-        // onUploadProgress: (progressEvent) => { // 获取上传的进度
-        //     let processState = (((progressEvent.loaded / progressEvent.total) * 100) | 0)
-        //     console.log(processState)
-        // }
+        data: data
+    },)
+}
+// 用户上传视频文件
+export function deleteVideo(data) {
+    return Axios({
+        url: "/nacos-video-upload/upload/deleteVideoById",
+        // url: "/nacos-video-upload/upload/uploading",
+        method: "delete",
+        headers: {
+            'Content-Type': 'application/json', //设置请求头请求格式为json
+        },
+        data: data
     },)
 }
 

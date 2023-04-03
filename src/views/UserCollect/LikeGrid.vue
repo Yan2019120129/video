@@ -41,7 +41,7 @@ export default {
     formData.append("userId", getTokenValue("userId"))
     // 获取用户收藏视频的信息
     getVideoLike(formData).then(req => {
-          console.log("返回数据", req.data)
+          console.log("getVideoLike", req.data)
           this.videoCollect=req.data
         },
         error => {
@@ -86,8 +86,8 @@ export default {
 .grid-container {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 250px));
-  grid-template-rows: repeat(auto-fit, minmax(250px, 250px));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+  grid-template-rows: repeat(auto-fit, minmax(220px, 260px));
   grid-gap: 30px 30px;
 }
 

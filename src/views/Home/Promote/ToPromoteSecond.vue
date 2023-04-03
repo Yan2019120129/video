@@ -17,6 +17,7 @@
             </div>
           </VideoView>
         </div>
+
       </div>
     </div>
     <div class="ToPromoteSecond-rigth" v-show="ToPromoteSecondRigthHeadIsShow">
@@ -40,8 +41,7 @@
 <script>
 import VideoView from '@/views/Home/Promote/cpns/VideoView'
 import {mapState} from "vuex";
-import {getVideoAimtron} from "@/api/common";
-import {getVideo, setVideo} from "@/utility/manageDate";
+import {getRandomFindVideoPage, getVideoPage} from "@/api/common";
 
 export default {
   name: 'ToPromoteSecond',
@@ -60,24 +60,25 @@ export default {
   },
   methods: {
     init() {
-      let value = getVideo("videoAimtron")
-      if (value) { // 判断本地缓存是否有数据，没有数据则从新获取
-        this.videoAimtron = value
-      } else {
-        this.getData()
-      }
+      this.getData()
     },
     getData() {
+      // "dataCount": 10,
       // 获取国创模块数据
-      getVideoAimtron().then(req => {
-            let video = req.data["records"]
+      let data = {
+        "limit": 1,
+        "showDataContentId": 2
+      }
+      // 获取国创内容模块数据
+        getRandomFindVideoPage(data).then(req => {
+            let video = req.data['data']
             this.videoAimtron = video
-            setVideo("videoAimtron", video)
           },
           error => {
             console.log("错误信息", error.message)
           }
       )
+
     },
     toVideoPlay(value) {
       this.$router.push({
@@ -111,13 +112,21 @@ export default {
   border-radius: 3px;
 }
 
+
 .grid-container {
-  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-template-rows: repeat(2, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(18%, 1fr));
+  /*grid-template-rows: repeat(2, minmax(15%, 1fr));*/
   grid-gap: 20px 20px;
 }
+
+/*!* 默认情况下，显示所有12个网格 *!*/
+/*.grid-container {*/
+/*  display: grid;*/
+/*  grid-template-columns: repeat(12, 1fr);*/
+/*  grid-gap: 10px;*/
+/*}*/
+
 
 .ToPromoteSecond-rigth {
   width: 25%;

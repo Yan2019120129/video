@@ -70,9 +70,9 @@
 <script>
 import UserCommentTwo from "@/views/VideoPlay/cpns/UserCommentTwo";
 import {getTokenValue} from "@/utility/manageDate";
-import moment from "moment/moment";
 import {hintLogin} from "@/utility/messageHint";
 import {addRemark} from "@/api/common";
+import {getDate} from "@/utility/returnData";
 
 export default {
   name: "UserComment",
@@ -136,7 +136,7 @@ export default {
     },
     sendRemark() {
       let userId = getTokenValue("userId")
-      this.userRemarkTow["remarkTime"] = moment().format('YYYY-MM-DD HH:mm:ss')
+      this.userRemarkTow["remarkTime"] =getDate()
       if (userId) {
         this.userRemarkTow["userId"] = userId
         this.userRemarkTow["videoId"] = this.userRemark["videoId"]

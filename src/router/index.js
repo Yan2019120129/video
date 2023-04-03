@@ -19,6 +19,8 @@ import {getToken} from "@/utility/manageDate";
 import Navigation from "@/views/Home/Navigation";
 import UserHead from "@/views/UserCentre/particular/UserHead";
 import VideoList from "@/views/VideoPlay/VideoList";
+import FilterContent from "@/views/Home/FilterContent";
+import SearchContent from "@/views/Home/SearchContent";
 
 const router = new VueRouter({
     routes: [
@@ -77,7 +79,7 @@ const router = new VueRouter({
             components: {
                 router_app: cutPicture
             },
-        },        {
+        }, {
             name: 'VideoList',
             path: '/VideoList',
             meta: {isAuth: false, jurisdiction: "common",},
@@ -188,18 +190,36 @@ const router = new VueRouter({
                 router_app: Navigation
             }
         },
+        {
+            name: "filterContent",
+            path: '/filterContent',
+            meta: {isAuth: false, jurisdiction: "common"},
+            components: {
+                router_app: FilterContent
+            }
+        },
+        {
+            name: "searchContent",
+            path: '/searchContent',
+            meta: {isAuth: false, jurisdiction: "common"},
+            components: {
+                router_app: SearchContent
+            }
+        },
     ]
 })
 let token = getToken()
 // 全局前置路由守卫————初始化的时候被调用、每次路由切换之前被调用
 router.beforeEach(async (to, from, next) => {
-    console.log("路由token验证", token)
+    console.log("to", to)
     // 判断是什么用户，能使用什么权限
     switch (to.meta["jurisdiction"]) {
         case "common": // 公用模块
+            console.log("common")
             next()
             break
         case "commonUser": // 允许访问用户中心
+            console.log("commonUser")
             if (token) {
                 if (await verify(token)) {
                     next()
@@ -210,6 +230,7 @@ router.beforeEach(async (to, from, next) => {
             }
             break
         case "commonUserVIP": // 允许访问vip
+            console.log("commonUserVIP")
             next()
             break
     }

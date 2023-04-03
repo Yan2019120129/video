@@ -1,11 +1,8 @@
 <template>
-    <div class="ToPromoteThird">
-        <div class="ToPromoteThird-left">
-            <div class="ToPromote-title">
-                <slot>推广</slot>
-            </div>
+    <div class="ToPromoteSecond">
+        <div class="ToPromoteSecond-left">
             <div class="grid-container">
-                <div ref="VVI" @click="toVideoPlay(n)" class="item" v-for="n in videoCompetition" :key="n.videoId">
+                <div ref="VVI" @click="toVideoPlay(n)" class="item" v-for="n in videoCollect" :key="n.videoId">
                     <VideoView :videoData="n">
                         <img slot="img" :src="`pav/${n.videoCoverImgUrl}`">
                         <source slot="video" :src="`pav/${n.videoUrl}`">
@@ -19,65 +16,31 @@
                 </div>
             </div>
         </div>
-        <div class="ToPromoteThird-rigth" v-show="ToPromoteThirdRigthHeadIsShow">
-            <div class="ToPromoteThird-rigth-head">
-                <a>直播排行</a>
-                <a>关注主播</a>
-                <a>为你推荐</a>
-            </div>
-            <div class="TopromoteThird-right-main">
-                <ul class="right-main-ul">
-                    <li class="right-main-ul-li" v-for="index in 5">
-                        <div>
-                            <img src="@/assets/img/001.jpg" alt="">
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
     </div>
 </template>
 <script>
 import VideoView from '@/views/Home/Promote/cpns/VideoView'
 import {mapState} from "vuex";
-import {getRandomFindVideoPage} from "@/api/common";
 
 export default {
-    name: 'ToPromoteThird',
+    name: 'LikeGrid',
     components: {
         VideoView
     },
+    props: {
+        videoData: {}
+    },
     data() {
         return {
-            ToPromoteThirdRigthHeadIsShow: true,
-            ToPromoteThirdLeftItems: 21,
-            videoCompetition: {}
+            videoCollect: {}
         }
     },
     mounted() {
-        this.init()
+
     },
     methods: {
-        init() {
-            this.getData()
-        },
-        // "showDataContentId": 5
-        getData() {
-            let data = {
-                "limit": 1,
-                "showDataContentId": 15
-            }
-            // 获取推广模块数据
-            getRandomFindVideoPage(data).then(req => {
-                    let video = req.data['data']
-                    this.videoCompetition = video
-                },
-                error => {
-                    console.log("错误信息", error.message)
-                }
-            )
-        },
         toVideoPlay(value) {
+            console.log("运行")
             this.$router.push({
                 name: "videoPlay",
                 query: {
@@ -87,46 +50,51 @@ export default {
             })
         },
     },
-    computed: { // 计算属性
-        ...
-            mapState("loginAbout", ["TPHCitems", "TPCitems"])
+    watch: {
+        videoData(newVal) {
+            this.videoCollect = newVal
+        }
+    },
+    computed: {
+        ...mapState('layoutAbout', ["TPHCitems", "TPCitems"]),
     }
 }
 </script>
 <style scoped>
-.ToPromoteThird {
+.ToPromoteSecond {
     display: flex;
     column-gap: 10px;
     flex-direction: row;
 }
 
-.ToPromoteThird-left {
+.ToPromoteSecond-left {
     width: 100%;
 }
 
 .ToPromote-title {
-    background-color: #d1fffe;
+    background-color: #fffce0;
     padding: 10px 0 10px 10px;
     border-radius: 3px;
 }
 
 .grid-container {
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(18%, 1fr));
-    /*grid-template-rows: repeat(2, minmax(15%, 1fr));*/
-    grid-gap: 20px 20px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+    grid-template-rows: repeat(auto-fit, minmax(220px, 260px));
+    grid-gap: 30px 30px;
 }
 
-.ToPromoteThird-rigth {
+.ToPromoteSecond-rigth {
     width: 25%;
 }
 
-.ToPromoteThird-rigth-head {
+.ToPromoteSecond-rigth-head {
     display: flex;
     flex-direction: row;
 }
 
-.ToPromoteThird-rigth-head a {
+.ToPromoteSecond-rigth-head a {
     padding: 10px 10px 10px 0;
 
 }

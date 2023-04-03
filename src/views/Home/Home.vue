@@ -16,7 +16,7 @@
           <span>换一组</span>
         </button>
       </div>
-      <ToPromoteHead/>
+      <ToPromoteHead :videoData="videoData"/>
     </div>
     <el-divider></el-divider>
     <div class="toPromote">
@@ -41,6 +41,8 @@ import ToPromoteHead from './Promote/ToPromoteHead'
 import ToPromote from './Promote/ToPromote'
 import ToPromoteSecond from './Promote/ToPromoteSecond'
 import ToPromoteThird from './Promote/ToPromoteThird'
+import {getTokenValue} from "@/utility/manageDate";
+import {getRandomMainFindVideoPage} from "@/api/common";
 
 export default {
   name: 'Home',
@@ -51,11 +53,27 @@ export default {
     ToPromoteThird
   },
   data() {
-    return {}
+    return {
+      videoData:"",
+    }
   },
   methods: {
     reqDate() {
       this.$refs.svg_rotate.style = "animation: rotate 2s;"
+      let data = {
+        "dateCount": 8,
+        "showDataContentId": 28,
+        "userId": getTokenValue("userId")
+      }
+      // 获取头部内容模块数据
+      getRandomMainFindVideoPage(data).then(req => {
+            let video = req.data['data']
+            this.videoData = video
+          },
+          error => {
+            console.log("错误信息", error.message)
+          }
+      )
     },
     cleanStyle() {
       this.$refs.svg_rotate.style = "animation: ;"
