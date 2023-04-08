@@ -15,6 +15,12 @@
           </VideoView>
         </div>
       </div>
+
+        <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="1000">
+        </el-pagination>
     </div>
   </div>
 </template>
@@ -88,7 +94,7 @@ export default {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18%, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(18%, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(210px, 220px));
   grid-gap: 30px 30px;
 }
 

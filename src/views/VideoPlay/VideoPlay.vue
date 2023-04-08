@@ -259,8 +259,6 @@ export default {
         setData(value) { //将获取来的视频数据赋值给vue
             this.videoData = value.video[0]
             this.videoUrl = 'pav' + this.videoData['videoUrl']
-            // this.videoUrl = '/api' + this.videoData['videoUrl']
-            // this.videoUrl = this.videoData['videoUrl']
             this.videoAbout = value.videoAbout[0]
             this.likeCount = parseInt(value.videoAbout[0]['userPraiseCount'])
             this.coinsCount = parseInt(value.videoAbout[0]['userCoinCount'])
