@@ -24,7 +24,7 @@
                         <el-tag
                                 size="medium"
                                 v-for="(item,i) in items"
-                                @click="toggleTag1(i,item.name)"
+                                @click="toggleTag1(i,item.type)"
                                 :class="{ active: item.active }"
                                 :key="i"
                                 effect="plain">
@@ -75,13 +75,13 @@ export default {
                 "limit": 1,
                 "dataCount": 5,
                 "showDataContentId": null,
-                "otherSort": "",
+                "otherSort": null,
                 "videoSubareaTypeId": null,
             },
-            items: [{name: '最新发布', active: false},
-                {name: '最多弹幕', active: false},
-                {name: '最多收藏', active: false},
-                {name: '分享最多', active: false},],
+            items: [{name: '最新发布', active: false, type: 1},
+                {name: '最多弹幕', active: false, type: 2},
+                {name: '最多收藏', active: false, type: 3},
+                {name: '分享最多', active: false, type: 4},],
             items1: [],
             pageData: {}
         }
@@ -147,8 +147,8 @@ export default {
                     this.items[i].active = true
                 }
             }
-            console.log("value", value1)
-            this.getdata.videoSubareaType = value1
+            this.getdata.videoSubareaType = value
+            this.getdata.otherSort = value1
             this.getVideoPageDate(this.getdata)
         },
     }
