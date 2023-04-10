@@ -1,6 +1,6 @@
 <template>
     <div class="ToPromote">
-        <div class="ToPromote-title">推广</div>
+        <div class="ToPromote-title">{{ title }}</div>
         <div class="grid-container" ref="tp">
             <div class="item" @click="toVideoPlay(n)" v-for="n in videoExtension" :key="n.videoId">
                 <VideoView :videoData="n">
@@ -30,6 +30,7 @@ export default {
     },
     data() {
         return {
+            title:"推广",
             gridEle: null,
             videoExtension: {}
         }

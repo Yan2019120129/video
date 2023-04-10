@@ -1,26 +1,6 @@
 <template>
     <div class="bili-head_end">
         <div class="bili-head_navigation">
-            <div class="navigation_left">
-                <div class="icon" @click="$router.push('/cutPicture')">
-                    <div class="imgBackground background-color_bull">
-                        <img class="icon_img" src="@/assets/svg/head/state.svg" alt="">
-                    </div>
-                    <a>动态</a>
-                </div>
-                <div class="icon" @click="$router.push('/VideoList')">
-                    <div class="imgBackground background-color_red">
-                        <img class="icon_img" src="@/assets/svg/head/hot.svg" alt="">
-                    </div>
-                    <a>热门</a>
-                </div>
-                <div class="icon">
-                    <div class="imgBackground background-color-cyan">
-                        <img class="icon_img" src="@/assets/svg/head/channel.svg" alt="">
-                    </div>
-                    <a>频道</a>
-                </div>
-            </div>
             <div class="navigation_middle">
                 <div v-for="n in videoSubarea" :key="n['videoSubareaId']" @click="goFilter(n['videoSubareaType'],n['videoSubareaId'])">
                     <SmallMenuBelow>
@@ -29,43 +9,7 @@
                             <a v-for="item in n['videoSubareaType']"
                                :key="item['videoSubareaTypeId']">{{ item['videoSubareaType'] }}</a>
                         </div>
-
                     </SmallMenuBelow>
-                </div>
-
-                <!--        <SmallMenuUp v-for="(p, index) in myData.slice(0,11)" :key="p.id">-->
-                <!--          <a slot="menuButton" v-for="index in 6" :key="index">测试菜单</a>-->
-                <!--          <button slot="button">{{ p.name }}</button>-->
-                <!--        </SmallMenuUp>-->
-                <!--        <SmallMenuBelow v-for="(p, index) in myData.slice(11,22)" :key="p.id">-->
-                <!--          <a slot="menuButton" v-for="index in 6" :key="index">测试菜单</a>-->
-                <!--          <button slot="button">{{ p.name }}</button>-->
-                <!--        </SmallMenuBelow>-->
-            </div>
-            <div class="navigation_right">
-                <div>
-                    <i class="el-icon-s-order"></i>
-                    <a>专栏</a>
-                </div>
-                <div>
-                    <i class="el-icon-wind-power"></i>
-                    <a>活动</a>
-                </div>
-                <div>
-                    <img src="@/assets/svg/head/activity.svg"/>
-                    <a>社区中心</a>
-                </div>
-                <div>
-                    <i class="el-icon-video-camera-solid"></i>
-                    <a>直播</a>
-                </div>
-                <div>
-                    <i class="el-icon-school"></i>
-                    <a>课堂</a>
-                </div>
-                <div>
-                    <img src="@/assets/svg/head/music.svg"/>
-                    <a>新歌热榜</a>
                 </div>
             </div>
         </div>
@@ -197,7 +141,7 @@ export default {
 
 
 .navigation_middle {
-    border-right: 1px solid black;
+    /*border-right: 1px solid black;*/
     width: 100%;
     height: 100%;
     /* overflow: hidden; */

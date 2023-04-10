@@ -82,10 +82,10 @@
               <img slot="img" :src="`pav${n.videoCoverImgUrl}`">
               <source slot="video" :src="`pav${n.videoUrl}`">
               <div slot="describe" class="foot_head" style="text-overflow:ellipsis;">
-                {{ n.videoTitle }}
+                {{ n.videoBriefIntroduction }}
               </div>
               <div slot="tile" class="foot-end">
-                <a>{{ n.videoBriefIntroduction }}</a>
+                <a>{{ n.videoTitle }}</a>
               </div>
             </VideoView>
           </div>

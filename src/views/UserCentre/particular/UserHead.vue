@@ -70,6 +70,7 @@ export default {
             this.headImg = "/pav" + req.data["userUrl"]
           }
         }
+
       }, error => {
         console.log(error.message)
       })
@@ -88,6 +89,8 @@ export default {
           req => {
             console.log("setUserHeadImg", req.data)
             this.headImg = "/pav" + req.data["imgUrl"]
+              let userUrl= getTokenValue("userUrl")
+              console.log("图片信息:",userUrl)
           },
           error => {
             console.log("setUserHeadImg", error.message)

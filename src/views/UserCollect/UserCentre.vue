@@ -60,33 +60,6 @@
                 </div>
                 <div class="play_video_show_right"></div>
               </el-tab-pane>
-              <el-tab-pane name="second">
-              <span slot="label">
-                <a class="n-inner">
-                  <img src="@/assets/svg/home.svg" alt="">
-                  <span class="n-text">动态</span>
-                </a>
-              </span>
-                动态
-              </el-tab-pane>
-              <el-tab-pane name="third">
-              <span slot="label">
-                <a class="n-inner">
-                  <img src="@/assets/svg/home.svg" alt="">
-                  <span class="n-text">投稿</span>
-                </a>
-              </span>
-                投稿
-              </el-tab-pane>
-              <el-tab-pane name="fourth">
-              <span slot="label">
-                <a class="n-inner">
-                  <img src="@/assets/svg/home.svg" alt="">
-                  <span class="n-text">集合和列表</span>
-                </a>
-              </span>
-                集合和列表
-              </el-tab-pane>
               <el-tab-pane name="fifth">
               <span slot="label">
                 <a class="n-inner">
@@ -139,7 +112,6 @@
                                   <img src="@/assets/img/003.jpg" alt="">
                                 </div>
                               </el-col>
-
                               <el-col :span="14">
                                 <div class="grid-content bg-purple-light">
                                   <p>默认收藏夹</p>
@@ -184,7 +156,7 @@ export default {
   data() {
     return {
       drawer: false,
-      activeName: 'first',
+      activeName: 'fifth',
       uploadData: "",
       isShow: true,
     };

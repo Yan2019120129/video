@@ -125,7 +125,7 @@ export function addRemark(datas) {
 // 根据关键字查找类似的视频资源。
 export function getLikeVideo(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/findLikeVideoByName",
+        url: "/nacos-video-system/system/findLikeVideoByName",
         method: "get",
         headers: {
             'Content-Type': 'application/json' //设置请求头请求格式为json
@@ -137,7 +137,7 @@ export function getLikeVideo(datas) {
 // 获取视频分页数据
 export function getVideoPage(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/findVideoPage",
+        url: "/nacos-video-system/system/findVideoPage",
         method: "get",
         headers: {
             'Content-Type': 'application/json' //设置请求头请求格式为json
@@ -145,10 +145,11 @@ export function getVideoPage(datas) {
         params: datas
     })
 }
+
 // 获取随机分类视频分页数据
 export function getRandomFindVideoPage(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/randomFindVideoPage",
+        url: "/nacos-video-system/system/randomFindVideoPage",
         method: "get",
         headers: {
             'Content-Type': 'application/json' //设置请求头请求格式为json
@@ -160,7 +161,7 @@ export function getRandomFindVideoPage(datas) {
 // 获取推广内容
 export function getPopularizeVideoPage(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/randomFindPopularizeVideoPage",
+        url: "/nacos-video-system/system/randomFindPopularizeVideoPage",
         method: "get",
         headers: {
             'Content-Type': 'application/json' //设置请求头请求格式为json
@@ -171,7 +172,7 @@ export function getPopularizeVideoPage(datas) {
 // 获取主分区推荐内容
 export function getRandomMainFindVideoPage(datas) {
     return Axios({
-        url: "/nacos-video-upload/upload/randomMainFindVideoPage",
+        url: "/nacos-video-system/system/randomMainFindVideoPage",
         method: "get",
         headers: {
             'Content-Type': 'application/json' //设置请求头请求格式为json
@@ -200,7 +201,7 @@ export function getVideoLike(datas) {
             // 'Content-Type': 'application/json' //设置请求头请求格式为json
             'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
         },
-        data: datas
+        params: datas
     })
 }
 
@@ -215,7 +216,7 @@ export function getVideoMy(datas) {
             // 'Content-Type': 'application/json' //设置请求头请求格式为json
             'Content-Type': 'multipart/form-data' // 修改发送的类型一定要是form-data类型否则后端接收不成功
         },
-        data: datas
+        params: datas
     })
 }
 

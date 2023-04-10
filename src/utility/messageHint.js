@@ -2,6 +2,21 @@ import {Message} from "element-ui";
 import {verifyToken} from "@/api";
 import store from "@/store";
 
+
+
+export function hintLoginR() {
+// 跳出登录成功的弹窗
+    Message.success('注册成功！！！');
+}
+export function hintLoginS() {
+// 跳出登录成功的弹窗
+    Message.success('登录成功！！！');
+}
+export function hintLoginE() {
+// 跳出登录成功的弹窗
+    Message.error('登录失败！！！');
+}
+
 export function hintLogin() {
     Message({
         message: '请先登录！！！',

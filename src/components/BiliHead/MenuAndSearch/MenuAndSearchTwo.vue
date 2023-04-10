@@ -9,24 +9,6 @@
                         <router-link slot="button_active" to="/main">首页</router-link>
                     </Navigation>
                 </div>
-                <div>
-                    <Navigation>
-                        <router-link slot="button_active" to="/videoPlay">番剧</router-link>
-                        <LiveMenu slot="menu"/>
-                    </Navigation>
-                </div>
-                <div @click="$router.push('/BackgroundAnimation')">
-                    <Navigation>
-                        <a slot="button_active">直播</a>
-                        <LiveMenu slot="menu"/>
-                    </Navigation>
-                </div>
-                <div>
-                    <Navigation>
-                        <a slot="button_active">游戏中心</a>
-                        <GameMenu slot="menu"/>
-                    </Navigation>
-                </div>
             </div>
             <!--                        <form action="" class="head_search">-->
             <!--                            <input type="text"><button>搜素</button>-->
@@ -62,24 +44,6 @@
                         <LoginMenu v-if="ifLogin" slot="menu"/>
                     </LoginNavigation>
                 </div>
-                <div>
-                    <Navigation>
-                        <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
-                        <a slot="button_text">大会员</a>
-                    </Navigation>
-                </div>
-                <div>
-                    <Navigation>
-                        <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
-                        <a slot="button_text">消息</a>
-                    </Navigation>
-                </div>
-                <div>
-                    <Navigation>
-                        <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
-                        <a slot="button_text">动态</a>
-                    </Navigation>
-                </div>
                 <div @click="$router.push('/UserCentre')">
                     <Navigation>
                         <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
@@ -92,20 +56,8 @@
                         <a slot="button_text">历史</a>
                     </Navigation>
                 </div>
-                <div>
-                    <Navigation>
-                        <img src="@/assets/svg/bigVIPTwo.svg" slot="button_active" alt="">
-                        <a slot="button_text">创作中心</a>
-                    </Navigation>
-                </div>
             </div>
         </div>
-        <!--    <div class="unfold_menu">-->
-        <!--      <img class="menu_button" @click="openMenu" src="@/assets/svg/navigationArrows.svg" alt="">-->
-        <!--      <div class="navigation_menu" v-if="ifShowMenu">-->
-        <!--        <NavigationClassifyTwo/>-->
-        <!--      </div>-->
-        <!--    </div>-->
     </div>
 
 </template>
@@ -295,7 +247,8 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
+    gap: 20px; /* 设置间隔 */
 }
 
 .bili-head_banner_right-ul div {

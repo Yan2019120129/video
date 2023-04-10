@@ -1,22 +1,33 @@
 <template>
-  <div class="ToPromoteSecond">
-    <div class="ToPromoteSecond-left">
-      <div class="grid-container">
-        <div ref="VVI" @click="toVideoPlay(n)" class="item" v-for="n in videoCollect" :key="n.videoId">
-          <VideoView :videoData="n">
-            <img slot="img" :src="`pav/${n.videoCoverImgUrl}`">
-            <source slot="video" :src="`pav/${n.videoUrl}`">
-            <div slot="describe" class="foot_head" style="text-overflow:ellipsis;">
-              {{ n.videoBriefIntroduction }}
+    <div class="ToPromoteSecond">
+        <div class="ToPromoteSecond-left">
+            <div class="grid-container">
+                <div ref="VVI" @click="toVideoPlay(n)" class="item" v-for="n in videoCollect" :key="n.videoId">
+                    <VideoView :videoData="n">
+                        <img slot="img" :src="`pav/${n.videoCoverImgUrl}`">
+                        <source slot="video" :src="`pav/${n.videoUrl}`">
+                        <div slot="describe" class="foot_head" style="text-overflow:ellipsis;">
+                            {{ n.videoBriefIntroduction }}
+                        </div>
+                        <div slot="tile" class="foot-end">
+                            <a>{{ n.videoTitle }}</a>
+                        </div>
+                    </VideoView>
+                </div>
             </div>
-            <div slot="tile" class="foot-end">
-              <a>{{ n.videoTitle }}</a>
-            </div>
-          </VideoView>
+            <el-row type="flex" class="row-bg" justify="center">
+                <div class="page-css">
+                    <el-pagination
+                            @current-change="handleSizeChange"
+                            :page-size="pageData.size"
+                            layout="prev, pager, next"
+                            :total="pageData.total"
+                    >
+                    </el-pagination>
+                </div>
+            </el-row>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 <script>
 import VideoView from '@/views/Home/Promote/cpns/VideoView'
@@ -25,128 +36,144 @@ import {getVideoLike} from "@/api/common";
 import {getTokenValue} from "@/utility/manageDate";
 
 export default {
-  name: 'LikeGrid',
-  components: {
-    VideoView
-  },
-  data() {
-    return {
-      ToPromoteSecondRigthHeadIsShow: true,
-      ToPromoteSecondLeftItems: 14,
-      videoCollect: {}
-    }
-  },
-  mounted() {
-    let formData = new FormData();
-    formData.append("userId", getTokenValue("userId"))
-    // 获取用户收藏视频的信息
-    getVideoLike(formData).then(req => {
-          console.log("getVideoLike", req.data)
-          this.videoCollect=req.data
-        },
-        error => {
-          console.log("错误信息", error.message)
-        }
-    )
-  },
-  methods:{
-    toVideoPlay(value) {
-      console.log("运行")
-      this.$router.push({
-        name: "videoPlay",
-        query: {
-          userId: value.userId,
-          videoId: value.videoId,
-        }
-      })
+    name: 'LikeGrid',
+    components: {
+        VideoView
     },
-  },
-  computed: {
-    ...mapState('layoutAbout', ["TPHCitems", "TPCitems"]),
-  }
+    data() {
+        return {
+            ToPromoteSecondRigthHeadIsShow: true,
+            ToPromoteSecondLeftItems: 14,
+            videoCollect: {},
+            getData: {
+                "userId": getTokenValue("userId"),
+                "limit": 1,
+                "dataCount": null,
+                "showDataContentId": 34,
+            },
+            pageData: {}
+
+        }
+    },
+    mounted() {
+        // 获取用户收藏视频的信息
+        this.getVideoPageDate(this.getData)
+    },
+    methods: {
+        toVideoPlay(value) {
+            console.log("运行")
+            this.$router.push({
+                name: "videoPlay",
+                query: {
+                    userId: value.userId,
+                    videoId: value.videoId,
+                }
+            })
+        },
+        getVideoPageDate(value){
+            getVideoLike(value).then(req => {
+                    let data = req.data['data']
+                    console.log("getVideoLike", data)
+                    this.videoCollect = data['records']
+                    this.pageData = data
+                },
+                error => {
+                    console.log("错误信息", error.message)
+                }
+            )
+        },
+        handleSizeChange(value) {
+            console.log("value", value)
+            this.getData.limit = value
+            this.getVideoPageDate(this.getData)
+        },
+    },
+    computed: {
+        ...mapState('layoutAbout', ["TPHCitems", "TPCitems"]),
+    }
 }
 </script>
 <style scoped>
 .ToPromoteSecond {
-  display: flex;
-  column-gap: 10px;
-  flex-direction: row;
+    display: flex;
+    column-gap: 10px;
+    flex-direction: row;
 }
 
 .ToPromoteSecond-left {
-  width: 100%;
+    width: 100%;
 }
 
 .ToPromote-title {
-  background-color: #fffce0;
-  padding: 10px 0 10px 10px;
-  border-radius: 3px;
+    background-color: #fffce0;
+    padding: 10px 0 10px 10px;
+    border-radius: 3px;
 }
 
 .grid-container {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
-  grid-template-rows: repeat(auto-fit, minmax(220px, 260px));
-  grid-gap: 30px 30px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+    grid-template-rows: repeat(auto-fit, minmax(220px, 260px));
+    grid-gap: 30px 30px;
 }
 
 .ToPromoteSecond-rigth {
-  width: 25%;
+    width: 25%;
 }
 
 .ToPromoteSecond-rigth-head {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 }
 
 .ToPromoteSecond-rigth-head a {
-  padding: 10px 10px 10px 0;
+    padding: 10px 10px 10px 0;
 
 }
 
 .right-main-ul {
-  counter-reset: section;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  border: 1px solid rgb(170, 170, 170);
-  border-radius: 10px;
+    counter-reset: section;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border: 1px solid rgb(170, 170, 170);
+    border-radius: 10px;
 }
 
 .right-main-ul-li:last-child {
-  border-bottom: transparent;
+    border-bottom: transparent;
 }
 
 .right-main-ul-li {
-  height: 60px;
-  width: 100%;
-  margin: 0 auto;
-  border-bottom: 1px solid rgb(170, 170, 170);
-  list-style-type: none;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    height: 60px;
+    width: 100%;
+    margin: 0 auto;
+    border-bottom: 1px solid rgb(170, 170, 170);
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .right-main-ul-li::before {
-  margin-left: 10px;
-  counter-increment: section;
-  content: counter(section);
-  font-size: 25px;
-  font-style: italic;
+    margin-left: 10px;
+    counter-increment: section;
+    content: counter(section);
+    font-size: 25px;
+    font-style: italic;
 }
 
 
 .right-main-ul-li div {
-  margin-left: 20px;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  overflow: hidden;
+    margin-left: 20px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .right-main-ul-li img {
-  height: 100%;
+    height: 100%;
 }
 </style>

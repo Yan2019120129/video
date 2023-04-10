@@ -115,6 +115,7 @@ export default {
                     this.ifGetData = false
                 },
                 error => {
+                    this.ifGetData = false
                     console.log("错误信息", error.message)
                 }
             )

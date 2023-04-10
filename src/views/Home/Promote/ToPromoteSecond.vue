@@ -2,7 +2,7 @@
   <div class="ToPromoteSecond">
     <div class="ToPromoteSecond-left">
       <div class="ToPromote-title">
-        <slot>推广</slot>
+        <slot>{{title}}</slot>
       </div>
       <div class="grid-container">
         <div ref="VVI" @click="toVideoPlay(n)" class="item" v-for="n in videoAimtron" :key="n.videoId">
@@ -18,22 +18,6 @@
           </VideoView>
         </div>
 
-      </div>
-    </div>
-    <div class="ToPromoteSecond-rigth" v-show="ToPromoteSecondRigthHeadIsShow">
-      <div class="ToPromoteSecond-rigth-head">
-        <a>直播排行</a>
-        <a>关注主播</a>
-        <a>为你推荐</a>
-      </div>
-      <div class="TopromoteSecond-right-main">
-        <ul class="right-main-ul">
-          <li class="right-main-ul-li" v-for="index in 5">
-            <div>
-              <img src="@/assets/img/001.jpg" alt="">
-            </div>
-          </li>
-        </ul>
       </div>
     </div>
   </div>
@@ -52,7 +36,8 @@ export default {
     return {
       ToPromoteSecondRigthHeadIsShow: true,
       ToPromoteSecondLeftItems: 14,
-      videoAimtron: {}
+      videoAimtron: {},
+      title: '国创',
     }
   },
   mounted() {
@@ -115,7 +100,7 @@ export default {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(18%, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(14%, 1fr));
   /*grid-template-rows: repeat(2, minmax(15%, 1fr));*/
   grid-gap: 20px 20px;
 }
