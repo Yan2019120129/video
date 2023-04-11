@@ -1,5 +1,4 @@
 import Axios from "./axios"
-import qs from "qs";
 
 //获取大小分类
 export function getClassification(datas) {
@@ -169,6 +168,7 @@ export function getPopularizeVideoPage(datas) {
         params: datas
     })
 }
+
 // 获取主分区推荐内容
 export function getRandomMainFindVideoPage(datas) {
     return Axios({

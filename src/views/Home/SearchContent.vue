@@ -8,7 +8,7 @@
                         <el-tag
                                 size="medium"
                                 v-for="(item,i) in items"
-                                @click="toggleTag(i,item.name)"
+                                @click="toggleTag(i,item.type)"
                                 :class="{ active: item.active }"
                                 :key="i"
                                 effect="plain">
@@ -60,12 +60,12 @@ export default {
                 "limit": 1,
                 "dataCount": 20,
                 "value": null,
-                "otherSort": "",
+                "otherSort": null,
             },
-            items: [{name: '最新发布', active: false},
-                {name: '最多弹幕', active: false},
-                {name: '最多收藏', active: false},
-                {name: '分享最多', active: false},],
+            items: [{name: '最新发布', active: false, type: 1},
+                {name: '最多播放', active: false, type: 2},
+                {name: '最多收藏', active: false, type: 3},
+                {name: '最多点赞', active: false, type: 4},],
             pageData: {}
         }
     },
@@ -103,7 +103,7 @@ export default {
                 }
             }
             console.log("value", value1)
-            this.getdata.videoSubareaType = value1
+            this.getdata.otherSort = value1
             this.getLikeVideo(this.getdata)
         },
     }

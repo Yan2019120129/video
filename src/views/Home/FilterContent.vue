@@ -79,9 +79,9 @@ export default {
                 "videoSubareaTypeId": null,
             },
             items: [{name: '最新发布', active: false, type: 1},
-                {name: '最多弹幕', active: false, type: 2},
+                {name: '最多播放', active: false, type: 2},
                 {name: '最多收藏', active: false, type: 3},
-                {name: '分享最多', active: false, type: 4},],
+                {name: '最多点赞', active: false, type: 4},],
             items1: [],
             pageData: {}
         }
