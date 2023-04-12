@@ -27,7 +27,8 @@
                     </div>
                 </div>
                 <div class="video_center">
-                    <Video :videoUrl="videoUrl"/>
+                    <Video :videoDate="videoData" :barrageDate="barrageDate" @submit="handleData"/>
+
                 </div>
                 <div class="title_message_end">
                     <!--        点赞-->
@@ -136,10 +137,11 @@
                     <transition name="el-zoom-in-top">
                         <div v-if="!isBarrage" class="barrage_text">
                             <div class="barrage_frame">
-                                <div v-for="i in 40" class=" barrage_text_item el-row--flex is-justify-space-between">
-                                    <span class="barrage_text_time">时间</span>
-                                    <span class="barrage_text_text">弹幕内容</span>
-                                    <span class="barrage_text_send_time">发送时间</span>
+                                <div v-for="item in barrageDate" :key="item.videoBarrageId"
+                                     class=" barrage_text_item el-row--flex is-justify-space-between">
+                                    <span class="barrage_text_time">{{ item.time }}</span>
+                                    <span class="barrage_text_text">{{ item.text }}</span>
+                                    <span class="barrage_text_send_time">{{ item.createdAt }}</span>
                                 </div>
                             </div>
                             <button class="button_width">点击查看历史弹幕</button>
@@ -157,6 +159,8 @@ import UserComment from "@/views/VideoPlay/cpns/UserComment";
 import {
     addRemark,
     findAllInteract,
+    findBarrageByVideoId,
+    findVideo,
     getCoins,
     getCollect,
     getLike,
@@ -164,7 +168,7 @@ import {
     getUserRemark,
     getVideoCorrelation
 } from "@/api/common";
-import {clearVideo, getToken, getTokenValue, getVideo, setVideo} from "@/utility/manageDate";
+import {clearVideo, getToken, getTokenValue, getVideo, setLocal, setVideo} from "@/utility/manageDate";
 import {mapActions} from "vuex";
 import {hintLogin} from "@/utility/messageHint";
 import CustomComponent from "@/views/VideoPlay/CustomComponent";
@@ -188,7 +192,6 @@ export default {
             psw: "",
             videoAbout: {},
             videoData: {},
-            videoUrl: "",
             videoPlay: {},
             isLike: false,
             isCoins: false,
@@ -211,6 +214,7 @@ export default {
                 remarkClickCount: 0,
                 remarkTrampleCount: 0,
             },
+            barrageDate: {},
         }
     },
     mounted() {
@@ -233,9 +237,42 @@ export default {
             let videoId = {
                 videoId: this.userRemark.videoId
             }
-            this.getData() // 获取个人点赞投币收藏分享的数据
+            this.getVideo(videoId) // 获取个人点赞投币收藏分享的数据
+            this.getData(videoId) // 获取个人点赞投币收藏分享的数据
             this.getUserVideoOther() // 初始化获取视频数据，修改点赞投币收藏分享样式状态
-            this.getUserRemark(videoId)
+            this.getUserRemark(videoId) // 查询评论数据
+            this.getVideoBarrage(videoId) // 查询弹幕数据
+        },
+
+        getVideo(value) {
+            findVideo(value).then(
+                res => {
+                    let video = res.data.data
+                    console.log("findVideo", video)
+                    this.videoData = video
+                },
+                err => {
+                    console.log("findVideo", err.message)
+                }
+            )
+
+        },
+        getVideoBarrage(value) {
+            findBarrageByVideoId(value).then(
+                res => {
+                    let data=res.data.data
+                    console.log("findBarrageByVideoId", data)
+                    this.barrageDate = data
+                    setLocal("Barrage",data)
+                },
+                err => {
+                    console.log("findBarrageByVideoId", err.message)
+                }
+            )
+        },
+        handleData(value) {
+            console.log('Received data from child component:', value);
+            this.barrageDate.push(value)
         },
         // 发送评论数据以及将数据
         sendRemark() {
@@ -257,17 +294,16 @@ export default {
             this.addRemark(this.userRemark)
         },
         setData(value) { //将获取来的视频数据赋值给vue
-            this.videoData = value.video[0]
-            this.videoUrl = 'pav' + this.videoData['videoUrl']
+            // this.videoDate.videoUrl = 'pav' + this.videoData['videoUrl']
             this.videoAbout = value.videoAbout[0]
             this.likeCount = parseInt(value.videoAbout[0]['userPraiseCount'])
             this.coinsCount = parseInt(value.videoAbout[0]['userCoinCount'])
             this.collectCount = parseInt(value.videoAbout[0]['userLikeCount'])
             this.shareCount = parseInt(value.videoAbout[0]['userShareCount'])
         },
-        getData() { // 获取个人点赞投币收藏分享的数据
-            let videoId = {videoId: this.videoValue.videoId}
-            getVideoCorrelation(videoId).then(req => {
+        getData(value) { // 获取个人点赞投币收藏分享的数据
+            // let videoId = {videoId: this.videoValue.videoId}
+            getVideoCorrelation(value).then(req => {
                     let value = req.data
                     this.setData(value)
                     setVideo("videoPlay", value)
@@ -303,10 +339,8 @@ export default {
                 })
         },
         getUserRemark(value) {
-            console.log(value)
             getUserRemark(value).then(
                 rep => {
-                    console.log("getUserRemark返回的数据", rep.data)
                     this.returnUserRemarkData = rep.data
                 },
                 error => {
@@ -506,6 +540,13 @@ export default {
     margin-left: 0;
 }
 
+.video_center {
+    border: 1px solid #eeeeee;
+    box-shadow: 1px 1px 2px #eeeeee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
 .bullet_hell_input img {
     width: 10px;
     height: 10px;
@@ -532,7 +573,7 @@ export default {
 /*  height: 1200px;*/
 /*}*/
 
-.videoLoading{
+.videoLoading {
     width: 100%;
     height: 700px;
     background: black;
@@ -730,4 +771,5 @@ export default {
         transform: translateY(0px);
     }
 }
+
 </style>

@@ -2,6 +2,25 @@ import jwtDecode from "jwt-decode";
 
 const token = localStorage.getItem("token")
 
+
+// 获取本地缓存数据
+export function getLocal(key) {
+    let video = localStorage.getItem(key)
+    video = JSON.parse(video)
+    return video;
+}
+
+// 放置数据到本地缓存
+export function setLocal(key, value) {
+    value = JSON.stringify(value)
+    localStorage.setItem(key, value)
+}
+
+// 清除本地缓存指定的键
+export function clearLocal(key) {
+    localStorage.removeItem(key)
+}
+
 // 获取本地缓存数据
 export function getVideo(key) {
     let video = localStorage.getItem(key)
@@ -19,6 +38,8 @@ export function setVideo(key, value) {
 export function clearVideo(key) {
     localStorage.removeItem(key)
 }
+
+
 
 // 获取token
 export function getToken() {

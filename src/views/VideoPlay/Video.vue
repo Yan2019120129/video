@@ -1,13 +1,21 @@
 <template>
     <div>
-        <div class="play_body" ref="vp" id="vp" v-loading="isVideoLoading">
-            <video id="video" ref="v" @loadedmetadata="onVideoLoaded" @timeupdate="handleTimeUpdate"  autoplay
+        <div class="play_body" ref="vp" id="vp"
+             @mouseover="handleMouseOver"
+             @mouseleave="handleMouseLeave"
+             v-loading="isVideoLoading">
+            <video id="video" ref="v"
+                   @loadedmetadata="onVideoLoaded"
+                   @timeupdate="handleTimeUpdate"
+                   autoplay
                    :src="videoUrl">
                 <!--                <source :src="videoUrl" type="video/mp4">-->
                 <!--                <slot></slot>-->
                 您的浏览器不支持 HTML5 video 标签。
             </video>
-            <!--                  <el-loading v-if="isVideoLoading" :fullscreen="true"></el-loading>-->
+            <div class="error-empty" v-if="isVideoError" >
+                <el-empty description="出错了！！！"></el-empty>
+            </div>
             <div id="play_menu">
                 <div class="play_menu_top" @click="menuPlay">
                     <div ref="container" class="barrage_shade">
@@ -15,100 +23,130 @@
                         <!--            @animationend动画完成时调用函数-->
                     </div>
                 </div>
-                <div class="play_menu_end">
-                    <div class="menu_bar">
-                        <div class="bar">
-                            <!--              <a></a>-->
-                            <div class="barInside" :style="{ width: progressWidth }"></div>
-                            <img src="@/assets/img/tv.png" alt="">
+                <transition name="el-zoom-in-bottom">
+                    <div v-show="isMouseIn" class="play_menu_end" ref="play_menu_end">
+                        <div class="menu_bar">
+                            <div class="bar">
+                                <!--              <a></a>-->
+                                <div class="barInside" :style="{ width: progressWidth }"></div>
+                                <img src="@/assets/img/tv.png" alt="">
+                            </div>
+                        </div>
+
+                        <div class="menu_bottom">
+                            <button class="menu_play " @click="menuPlay">
+                                <img v-show="isPlay" src="@/assets/img/startVideo.png">
+                                <img v-show="!isPlay" src="@/assets/img/stopVideo.png">
+                            </button>
+                            <button class="menu_time">{{ currentTime }}/{{ duration }}</button>
+                            <button class="menu_aut"><b>自动</b></button>
+                            <button class="menu_speed"><b>倍速</b></button>
+                            <button class="menu_srt">
+                                <b>字幕</b>
+                                <div class="barrage"></div>
+                            </button>
+                            <button class="menu_voice">
+                                <div class="slider-out">
+                                    <div ref="myDiv" @click="test" class="slider-inside">
+                                        <el-slider
+                                                v-model="value"
+                                                vertical
+                                                height="100px">
+                                        </el-slider>
+                                    </div>
+                                    <!--                                    <div ref="myDiv" @click="handleClick" class="slider-inside"></div>-->
+                                    <!--                                    <input type="range" min="0" max="100" value="50" class="slider-inside ">-->
+                                    <!--                                    <div class="slider-inside">50</div>-->
+
+                                    <!--                                    <el-slider-->
+                                    <!--                                            v-model="value"-->
+                                    <!--                                            vertical-->
+                                    <!--                                            height="100px">-->
+                                    <!--                                    </el-slider>-->
+                                </div>
+                                <!--                                <div class="slider">-->
+                                <!--                                    <input type="range" min="0" max="100" value="50" class="slider__range ">-->
+                                <!--                                    <div class="slider__value">50</div>-->
+                                <!--                                </div>-->
+
+
+                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="videoSvg"
+                                     viewBox="0 0 100 79">
+                                    <title>声音</title>
+                                    <path
+                                            d="m60.60481,10.6048a3.67691,3.67691 0 1 0 0,7.39752a31.99766,31.99766 0 0 1 0,64.03911a3.67691,3.67691 0 1 0 0,7.35374a39.39519,39.39519 0 0 0 0,-78.79037z"
+                                            id="svg_1" p-id="1367"/>
+                                    <path
+                                            d="m66.09556,73.13432zm-18.15176,-58.94894l-24.05538,15.99283l-17.18246,0a7.09325,7.09325 0 0 0 -6.69666,7.4457l0,24.80443a7.09325,7.09325 0 0 0 6.69658,7.40164l17.18254,0l24.09945,15.99291c3.17214,2.11471 5.77158,0.48457 5.77158,-3.6128l0,-64.41198c-0.04414,-4.14136 -2.6435,-5.72743 -5.81564,-3.61273z"
+                                            id="svg_2" p-id="1368"/>
+                                    <path
+                                            d="m61.75982,64.42554a3.40381,3.40381 0 1 0 0,6.84815a21.27369,21.27369 0 0 0 0,-42.54738a3.40381,3.40381 0 1 0 0,6.84815a14.42554,14.42554 0 0 1 0,28.89161l0,-0.04053z"
+                                            id="svg_3" p-id="1369"/>
+                                </svg>
+                            </button>
+                            <button class="menu_setting">
+                                <svg id="setting" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+                                     t="1658302397130"
+                                     class="icon" version="1.1" p-id="2406">
+                                    <g id="settingSvg_1">
+                                        <title>设置</title>
+                                        <path
+                                                d="m880.037,461.451c-2.896,-16.078 -18.396,-32.444 -34.473,-36.066l-12.021,-2.751c-28.244,-8.547 -53.302,-27.232 -69.234,-54.751c-15.933,-27.665 -19.701,-59.097 -12.748,-87.917l3.767,-11.299c4.779,-15.643 -1.45,-37.223 -14.049,-47.943c0,0 -11.299,-9.559 -43.164,-27.954c-31.866,-18.25 -45.626,-23.319 -45.626,-23.319c-15.499,-5.648 -37.224,-0.289 -48.522,11.733l-8.403,8.98c-21.436,20.278 -50.26,32.589 -82.123,32.589s-60.976,-12.454 -82.415,-32.878l-8.114,-8.692c-11.153,-12.021 -33.022,-17.378 -48.522,-11.732c0,0 -13.904,5.069 -45.77,23.318c-31.866,18.54 -43.018,28.099 -43.018,28.099c-12.6,10.574 -18.829,32.01 -14.049,47.798l3.479,11.442c6.807,28.822 3.185,60.11 -12.748,87.772s-41.273,46.497 -69.659,54.899l-11.587,2.606c-15.933,3.622 -31.577,19.844 -34.473,36.066c0,0 -2.606,14.483 -2.606,51.273s2.606,51.273 2.606,51.273c2.896,16.222 18.395,32.444 34.473,36.066l11.299,2.606c28.388,8.403 53.88,27.232 69.813,55.04c15.933,27.666 19.701,59.097 12.748,87.918l-3.33,11.153c-4.779,15.643 1.45,37.223 14.048,47.943c0,0 11.299,9.559 43.164,27.954s45.625,23.319 45.625,23.319c15.499,5.647 37.224,0.289 48.522,-11.733l7.966,-8.547c21.579,-20.423 50.549,-32.878 82.56,-32.878s61.121,12.6 82.56,33.022l7.966,8.547c11.153,12.021 33.022,17.383 48.522,11.732c0,0 13.904,-5.069 45.77,-23.318c31.866,-18.396 43.018,-27.954 43.018,-27.954c12.6,-10.574 18.829,-32.154 14.048,-47.943l-3.479,-11.588c-6.807,-28.677 -3.185,-59.964 12.748,-87.484c15.933,-27.666 41.424,-46.638 69.813,-55.04l11.299,-2.606c15.933,-3.622 31.577,-19.844 34.473,-36.066c0,0 2.606,-14.483 2.606,-51.273c-0.152,-36.937 -2.759,-51.421 -2.759,-51.421l-0.001,0.005zm-366.587,198.576c-81.256,0 -147.303,-65.901 -147.303,-147.303c0,-81.256 65.901,-147.159 147.303,-147.159c81.256,0 147.303,65.901 147.303,147.303c-0.148,81.256 -66.049,147.159 -147.303,147.159z"
+                                                p-id="2407" id="svg_1"/>
+                                        <ellipse cx="512" cy="512" id="svg_2" rx="88" ry="88"/>
+                                    </g>
+                                </svg>
+                            </button>
+                            <button class="menu_pip">
+                                <svg id="inPicture" viewBox="0 0 275 275" xmlns="http://www.w3.org/2000/svg"
+                                     p-id="1406"
+                                     version="1.1" class="icon" t="1658316973927">
+                                    <title>开启画中画</title>
+                                    <path stroke="null" id="inPictureSvg_1" p-id="1407"
+                                          d="m261.02121,0a13.73796,13.73796 0 0 1 13.73796,13.73796l0,96.16571l-27.47592,0l0,-82.42775l-219.80733,0l0,192.33142l82.42775,0l0,27.47592l-96.16571,0a13.73796,13.73796 0 0 1 -13.73796,-13.73796l0,-219.80733a13.73796,13.73796 0 0 1 13.73796,-13.73796l247.28325,0zm0,137.37958a13.73796,13.73796 0 0 1 13.73796,13.73796l0,82.42775a13.73796,13.73796 0 0 1 -13.73796,13.73796l-109.90367,0a13.73796,13.73796 0 0 1 -13.73796,-13.73796l0,-82.42775a13.73796,13.73796 0 0 1 13.73796,-13.73796l109.90367,0z"/>
+                                    <path stroke="null" id="inPictureSvg_2" p-id="1407"
+                                          d="m66.49267,47.7737l30.91041,30.91041l28.06665,-28.06665l0,75.55877l-75.55877,0l28.06665,-28.06665l-30.91041,-30.9104l19.42547,-19.42548z"/>
+                                </svg>
+                            </button>
+                            <button class="menu_wid ">
+                                <svg id="widescreen" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg"
+                                     t="1658316973927"
+                                     class="icon" version="1.1" p-id="1406">
+                                    <rect rx="50" id="svg_8" height="500" width="800" y="0" x="0"/>
+                                    <title>宽屏模式</title>
+                                    <path id="widescreenSvg_1"
+                                          d="m523,331.96376l96.42799,-81.65033l-96.42799,-81.65091l55.11348,-46.66252l151.55317,128.31343l-151.55317,128.35324l-55.11348,-46.70291z"
+                                          stroke="#000" fill="#000000"/>
+                                    <path stroke="#000" stroke-width="0" id="widescreenSvg_2"
+                                          d="m300.97375,167.89151l-107.78166,82.1134l107.78166,82.11333l-61.59609,46.95493l-169.37765,-129.06824l169.37765,-129.07811l61.59609,46.96469z"
+                                          fill="#000000"/>
+                                </svg>
+                            </button>
+                            <button class="menu_tmlfull" @click="toggleFullScreen">
+                                <svg id="fullScreen" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg"
+                                     p-id="2261"
+                                     version="1.1" class="icon" t="1658326893246">
+                                    <title>网页全屏</title>
+                                    <rect rx="100" id="svg_5" height="600" width="700" y="0" x="0"/>
+                                    <path stroke="#000" fill="#000000" id="fullScreenSvg_1" p-id="2262"
+                                          d="m234.48725,516.38469l-127.5898,0c-19.13847,0 -31.89745,-12.75898 -31.89745,-31.89745l0,-127.5898c0,-19.13847 12.75898,-31.89745 31.89745,-31.89745s31.89745,12.75898 31.89745,31.89745l0,95.69235l95.69235,0c19.13847,0 31.89745,12.75898 31.89745,31.89745s-12.75898,31.89745 -31.89745,31.89745z"/>
+                                    <path stroke="null" fill="#000000" id="fullScreenSvg_2" p-id="2265"
+                                          d="m108,271.00008c-19.60001,0 -33,-13.06668 -33,-32.66669l0,-130.66671c0,-19.60001 13.06667,-32.66668 32.66668,-32.66668l130.66671,0c19.60001,0 32.66669,13.06667 32.66669,32.66668s-13.06668,32.66668 -32.66669,32.66668l-98.00003,0l0,98.00003c0,19.60001 -12.73335,32.66669 -32.33336,32.66669z"/>
+                                    <path stroke="null" fill="#000000" id="fullScreenSvg_3" p-id="2263"
+                                          d="m590.89749,523.077l-132.71799,0c-19.9077,0 -33.1795,-13.2718 -33.1795,-33.1795s13.2718,-33.17949 33.1795,-33.17949l99.5385,0l0,-99.5385c0,-19.9077 13.27179,-33.1795 33.17949,-33.1795s33.1795,13.2718 33.1795,33.1795l0,132.71799c0,19.9077 -13.2718,33.1795 -33.1795,33.1795z"/>
+                                    <path stroke="#000000" fill="#000000" id="fullScreenSvg_4" p-id="2264"
+                                          d="m590.8975,274.077c-19.9077,0 -33.17949,-13.2718 -33.17949,-33.1795l0,-99.5385l-99.5385,0c-19.90771,0 -33.17951,-13.2718 -33.17951,-33.1795s13.2718,-33.1795 33.17951,-33.1795l132.71799,0c19.9077,0 33.1795,13.2718 33.1795,33.1795l0,132.718c0,19.9077 -13.2718,33.1795 -33.1795,33.1795z"/>
+                                </svg>
+                            </button>
+                            <button class="menu_full" @click="fullScreen(!ifFullScree)"><b>全屏</b></button>
                         </div>
                     </div>
-                    <div class="menu_bottom">
-                        <button class="menu_play" @click="menuPlay">
-                            <img v-show="isPlay" src="@/assets/img/startVideo.png">
-                            <img v-show="!isPlay" src="@/assets/img/stopVideo.png">
-                        </button>
-                        <button class="menu_time">{{ currentTime }}/{{ duration }}</button>
-                        <button class="menu_aut"><b>自动</b></button>
-                        <button class="menu_speed"><b>倍速</b></button>
-                        <button class="menu_srt">
-                            <b>字幕</b>
-                            <div class="barrage"></div>
-                        </button>
-                        <button class="menu_voice">
-                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="videoSvg" viewBox="0 0 100 79">
-                                <title>声音</title>
-                                <path
-                                        d="m60.60481,10.6048a3.67691,3.67691 0 1 0 0,7.39752a31.99766,31.99766 0 0 1 0,64.03911a3.67691,3.67691 0 1 0 0,7.35374a39.39519,39.39519 0 0 0 0,-78.79037z"
-                                        id="svg_1" p-id="1367"/>
-                                <path
-                                        d="m66.09556,73.13432zm-18.15176,-58.94894l-24.05538,15.99283l-17.18246,0a7.09325,7.09325 0 0 0 -6.69666,7.4457l0,24.80443a7.09325,7.09325 0 0 0 6.69658,7.40164l17.18254,0l24.09945,15.99291c3.17214,2.11471 5.77158,0.48457 5.77158,-3.6128l0,-64.41198c-0.04414,-4.14136 -2.6435,-5.72743 -5.81564,-3.61273z"
-                                        id="svg_2" p-id="1368"/>
-                                <path
-                                        d="m61.75982,64.42554a3.40381,3.40381 0 1 0 0,6.84815a21.27369,21.27369 0 0 0 0,-42.54738a3.40381,3.40381 0 1 0 0,6.84815a14.42554,14.42554 0 0 1 0,28.89161l0,-0.04053z"
-                                        id="svg_3" p-id="1369"/>
-                            </svg>
-                        </button>
-                        <button class="menu_setting">
-                            <svg id="setting" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
-                                 t="1658302397130"
-                                 class="icon" version="1.1" p-id="2406">
-                                <g id="settingSvg_1">
-                                    <title>设置</title>
-                                    <path
-                                            d="m880.037,461.451c-2.896,-16.078 -18.396,-32.444 -34.473,-36.066l-12.021,-2.751c-28.244,-8.547 -53.302,-27.232 -69.234,-54.751c-15.933,-27.665 -19.701,-59.097 -12.748,-87.917l3.767,-11.299c4.779,-15.643 -1.45,-37.223 -14.049,-47.943c0,0 -11.299,-9.559 -43.164,-27.954c-31.866,-18.25 -45.626,-23.319 -45.626,-23.319c-15.499,-5.648 -37.224,-0.289 -48.522,11.733l-8.403,8.98c-21.436,20.278 -50.26,32.589 -82.123,32.589s-60.976,-12.454 -82.415,-32.878l-8.114,-8.692c-11.153,-12.021 -33.022,-17.378 -48.522,-11.732c0,0 -13.904,5.069 -45.77,23.318c-31.866,18.54 -43.018,28.099 -43.018,28.099c-12.6,10.574 -18.829,32.01 -14.049,47.798l3.479,11.442c6.807,28.822 3.185,60.11 -12.748,87.772s-41.273,46.497 -69.659,54.899l-11.587,2.606c-15.933,3.622 -31.577,19.844 -34.473,36.066c0,0 -2.606,14.483 -2.606,51.273s2.606,51.273 2.606,51.273c2.896,16.222 18.395,32.444 34.473,36.066l11.299,2.606c28.388,8.403 53.88,27.232 69.813,55.04c15.933,27.666 19.701,59.097 12.748,87.918l-3.33,11.153c-4.779,15.643 1.45,37.223 14.048,47.943c0,0 11.299,9.559 43.164,27.954s45.625,23.319 45.625,23.319c15.499,5.647 37.224,0.289 48.522,-11.733l7.966,-8.547c21.579,-20.423 50.549,-32.878 82.56,-32.878s61.121,12.6 82.56,33.022l7.966,8.547c11.153,12.021 33.022,17.383 48.522,11.732c0,0 13.904,-5.069 45.77,-23.318c31.866,-18.396 43.018,-27.954 43.018,-27.954c12.6,-10.574 18.829,-32.154 14.048,-47.943l-3.479,-11.588c-6.807,-28.677 -3.185,-59.964 12.748,-87.484c15.933,-27.666 41.424,-46.638 69.813,-55.04l11.299,-2.606c15.933,-3.622 31.577,-19.844 34.473,-36.066c0,0 2.606,-14.483 2.606,-51.273c-0.152,-36.937 -2.759,-51.421 -2.759,-51.421l-0.001,0.005zm-366.587,198.576c-81.256,0 -147.303,-65.901 -147.303,-147.303c0,-81.256 65.901,-147.159 147.303,-147.159c81.256,0 147.303,65.901 147.303,147.303c-0.148,81.256 -66.049,147.159 -147.303,147.159z"
-                                            p-id="2407" id="svg_1"/>
-                                    <ellipse cx="512" cy="512" id="svg_2" rx="88" ry="88"/>
-                                </g>
-                            </svg>
-                        </button>
-                        <button class="menu_pip">
-                            <svg id="inPicture" viewBox="0 0 275 275" xmlns="http://www.w3.org/2000/svg" p-id="1406"
-                                 version="1.1" class="icon" t="1658316973927">
-                                <title>开启画中画</title>
-                                <path stroke="null" id="inPictureSvg_1" p-id="1407"
-                                      d="m261.02121,0a13.73796,13.73796 0 0 1 13.73796,13.73796l0,96.16571l-27.47592,0l0,-82.42775l-219.80733,0l0,192.33142l82.42775,0l0,27.47592l-96.16571,0a13.73796,13.73796 0 0 1 -13.73796,-13.73796l0,-219.80733a13.73796,13.73796 0 0 1 13.73796,-13.73796l247.28325,0zm0,137.37958a13.73796,13.73796 0 0 1 13.73796,13.73796l0,82.42775a13.73796,13.73796 0 0 1 -13.73796,13.73796l-109.90367,0a13.73796,13.73796 0 0 1 -13.73796,-13.73796l0,-82.42775a13.73796,13.73796 0 0 1 13.73796,-13.73796l109.90367,0z"/>
-                                <path stroke="null" id="inPictureSvg_2" p-id="1407"
-                                      d="m66.49267,47.7737l30.91041,30.91041l28.06665,-28.06665l0,75.55877l-75.55877,0l28.06665,-28.06665l-30.91041,-30.9104l19.42547,-19.42548z"/>
-                            </svg>
-                        </button>
-                        <button class="menu_wid">
-                            <svg id="widescreen" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg"
-                                 t="1658316973927"
-                                 class="icon" version="1.1" p-id="1406">
-                                <rect rx="50" id="svg_8" height="500" width="800" y="0" x="0"/>
-                                <title>宽屏模式</title>
-                                <path id="widescreenSvg_1"
-                                      d="m523,331.96376l96.42799,-81.65033l-96.42799,-81.65091l55.11348,-46.66252l151.55317,128.31343l-151.55317,128.35324l-55.11348,-46.70291z"
-                                      stroke="#000" fill="#000000"/>
-                                <path stroke="#000" stroke-width="0" id="widescreenSvg_2"
-                                      d="m300.97375,167.89151l-107.78166,82.1134l107.78166,82.11333l-61.59609,46.95493l-169.37765,-129.06824l169.37765,-129.07811l61.59609,46.96469z"
-                                      fill="#000000"/>
-                            </svg>
-                        </button>
-                        <button class="menu_tmlfull" @click="toggleFullScreen">
-                            <svg id="fullScreen" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" p-id="2261"
-                                 version="1.1" class="icon" t="1658326893246">
-                                <title>网页全屏</title>
-                                <rect rx="100" id="svg_5" height="600" width="700" y="0" x="0"/>
-                                <path stroke="#000" fill="#000000" id="fullScreenSvg_1" p-id="2262"
-                                      d="m234.48725,516.38469l-127.5898,0c-19.13847,0 -31.89745,-12.75898 -31.89745,-31.89745l0,-127.5898c0,-19.13847 12.75898,-31.89745 31.89745,-31.89745s31.89745,12.75898 31.89745,31.89745l0,95.69235l95.69235,0c19.13847,0 31.89745,12.75898 31.89745,31.89745s-12.75898,31.89745 -31.89745,31.89745z"/>
-                                <path stroke="null" fill="#000000" id="fullScreenSvg_2" p-id="2265"
-                                      d="m108,271.00008c-19.60001,0 -33,-13.06668 -33,-32.66669l0,-130.66671c0,-19.60001 13.06667,-32.66668 32.66668,-32.66668l130.66671,0c19.60001,0 32.66669,13.06667 32.66669,32.66668s-13.06668,32.66668 -32.66669,32.66668l-98.00003,0l0,98.00003c0,19.60001 -12.73335,32.66669 -32.33336,32.66669z"/>
-                                <path stroke="null" fill="#000000" id="fullScreenSvg_3" p-id="2263"
-                                      d="m590.89749,523.077l-132.71799,0c-19.9077,0 -33.1795,-13.2718 -33.1795,-33.1795s13.2718,-33.17949 33.1795,-33.17949l99.5385,0l0,-99.5385c0,-19.9077 13.27179,-33.1795 33.17949,-33.1795s33.1795,13.2718 33.1795,33.1795l0,132.71799c0,19.9077 -13.2718,33.1795 -33.1795,33.1795z"/>
-                                <path stroke="#000000" fill="#000000" id="fullScreenSvg_4" p-id="2264"
-                                      d="m590.8975,274.077c-19.9077,0 -33.17949,-13.2718 -33.17949,-33.1795l0,-99.5385l-99.5385,0c-19.90771,0 -33.17951,-13.2718 -33.17951,-33.1795s13.2718,-33.1795 33.17951,-33.1795l132.71799,0c19.9077,0 33.1795,13.2718 33.1795,33.1795l0,132.718c0,19.9077 -13.2718,33.1795 -33.1795,33.1795z"/>
-                            </svg>
-                        </button>
-                        <button class="menu_full" @click="fullScreen(!ifFullScree)"><b>全屏</b></button>
-                    </div>
-                </div>
+                </transition>
             </div>
             <!--            底层进度条-->
-            <!--            <div id="bar1">-->
-            <!--                <div class="bar1Inside"></div>-->
-            <!--            </div>-->
+            <div id="bar1">
+                <div v-show="!isMouseIn" class="bar1Inside" :style="{ width: progressWidth }"></div>
+            </div>
         </div>
         <div class="play_video_message play_video_message_center_horizontally">
             <span>791人在观看,已装配2011条弹幕</span>
@@ -175,9 +213,10 @@
                 <div class="bullet_hell_input">
                     <CustomComponent/>
                     <p v-if="ifLogin">请输入你的弹幕</p>
-                    <p v-if="!ifLogin">请先<a href="">登录</a> 或 <a href="">注册</a></p>
-                    <input v-if="ifLogin" type="text" v-model="danmaku.text">
-                    <input v-if="!ifLogin" type="text" readonly>
+                    <p v-if="!ifLogin">请先<a class="bullet_hell_input_a" @click="loginOrRegister">登录</a> 或 <a
+                            class="bullet_hell_input_a" @click="loginOrRegister">注册</a></p>
+                    <input v-if="ifLogin" type="text" v-model="danmaku.text" placeholder="发送一个友善的弹幕！！！">
+                    <input v-if="!ifLogin" type="text" readonly placeholder="请先登录才能发送弹幕哦！！！">
                     <span>弹幕礼仪</span>
                     <svg t="1667574164735" class="icon" viewBox="0 0 1024 1024" version="1.1"
                          xmlns="http://www.w3.org/2000/svg"
@@ -197,30 +236,36 @@
 </template>
 
 <script>
-import VueVideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
-import {mapState} from "vuex";
+import {mapActions, mapState} from "vuex";
 import Barrage from 'barrage-ui';
 import example from 'barrage-ui/example.json';
 import CustomComponent from "@/views/VideoPlay/CustomComponent";
+import {insertVideoBarrage} from "@/api/common";
+import {getLocal, getTokenValue} from "@/utility/manageDate";
+import {v4 as uuidv4} from 'uuid';
 
 export default {
     name: 'Video',
     components: {
         CustomComponent,
-        VueVideoPlayer
     },
     props: {
-        videoUrl: {}
+        videoDate: {},
+        barrageDate:{},
     },
     data() {
         return {
-            videoDate: "", // 视频播放路径
+            value: 0,
+            isMouseIn: false,
+            videoUrl: "",
+            videoId: null,
             currentTime: 0, // 当前播放时间
             currentTimeMSEL: 0,
             duration: 0, // 总时长
             progressWidth: '0%', // 播放进度
             isVideoLoading: true,
+            isVideoError: false,
             videoLable: null,
             isPlay: false,
             hello: "你好！！！",
@@ -230,15 +275,21 @@ export default {
             ifFullScree: false,
             CM: "",
             danmaku: {
-                key: 'fctc651a9pm2j2sfaf3450bia8j',
-                createdAt: new Date(),
-                time: 9000,
+                videoId: null,
+                userId: null,
+                barrageKey: "",
+                createdAt: "",
+                barrageTime: null,
                 text: "Hello World",
                 fontFamily: 'SimSun',
                 fontSize: 32,
                 color: '#ff9641',
+                avatar: "",
+                avatarSize: 32,
+                avatarMarginRight: 8,
+
             },
-            danmakuData: example,
+            danmakuData: getLocal("Barrage"),
         }
     },
     mounted() {
@@ -247,7 +298,8 @@ export default {
         // 加载弹幕
         this.CM = new Barrage({
             container: 'vp', // 父级容器或ID
-            data: this.danmakuData, // 弹幕数据
+            // data: this.danmakuData, // 弹幕数据
+            data: example, // 弹幕数据
             config: {
                 // 全局配置项
                 duration: -1, // 弹幕循环周期(单位：毫秒)，-1代表不循环
@@ -255,10 +307,15 @@ export default {
                 defaultColor: '#fff', // 弹幕默认颜色
             },
         });
-
+        // this.CM.setData(getLocal("Barrage"))
+        console.log("CM",this.CM)
         this.handleTimeUpdate()
     },
     methods: {
+        ...mapActions("layoutAbout", {
+            aIfLoginOrRegister: "aIfLoginOrRegister",
+            aIfLoginInterface: "aIfLoginInterface"
+        }),
         handleTimeUpdate() {
             const video = this.video;
             const currentTime = video.currentTime; // 当前播放时间，单位秒
@@ -270,20 +327,59 @@ export default {
             this.currentTimeMSEL = video.currentTime * 1000;
         },
         onVideoLoaded() {
-            this.isVideoLoading = false;
+            this.isVideoError = false // 加載失敗的狀態
+            this.isVideoLoading = false; // 去除加載中的状态
             const video = this.video;
             const duration = video.duration; // 视频总时长，单位秒
             this.duration = new Date(duration * 1000).toISOString().substr(11, 8);
         },
         addDanmakuList() {
-            console.log("开始发送弹幕");
-            console.log("弹幕状态", this.CM.animState)
-            this.CM.add(this.danmaku);
             // 新增一条弹幕
-            console.log("this", this.CM)
-            console.log("弹幕状态2", this.CM.animState)
-            console.log("弹幕进度", this.CM.progress)
-
+            if (!this.if_show_bullet) {
+                this.if_show_bullet = !this.if_show_bullet
+                console.log("开启弹幕", this.CM.animState)
+                if (this.isPlay) {
+                    // 跳转到指定进度
+                    this.CM.pause()
+                    this.CM.goto(this.currentTimeMSEL)
+                } else {
+                    this.CM.goto(this.currentTimeMSEL)
+                    // 播放弹幕
+                    this.CM.play();
+                }
+            }
+            console.log("danmaku", this.danmaku)
+            console.log("danmaku:progress", this.CM.progress)
+            this.danmaku.time = this.currentTimeMSEL
+            this.danmaku.key = uuidv4()
+            this.danmaku.createdAt = new Date()
+            this.danmaku.time = this.currentTimeMSEL
+            this.danmaku.avatar = getTokenValue("userUrl")
+            this.danmaku.userId = getTokenValue("userId")
+            this.danmaku.videoId = this.videoId
+            let ifSenddanmaku = this.CM.add(this.danmaku);
+            if (ifSenddanmaku) {
+                insertVideoBarrage(this.danmaku).then(
+                    rsp => {
+                        console.log(rsp.data)
+                        this.$emit('submit', this.danmaku);
+                    },
+                    err => {
+                        console.log(err.message)
+                    }
+                )
+                this.$notify({
+                    title: '发送成功！！！',
+                    message: '插入成功！！！',
+                    type: 'success'
+                });
+            } else {
+                this.$notify({
+                    title: '发送失败！！！',
+                    message: '弹幕拥挤请稍后重试！！！',
+                    type: 'error'
+                });
+            }
         },
         toggleFullScreen() {
             this.video_play = this.$refs.vp;
@@ -348,15 +444,34 @@ export default {
                 this.video_play.requestFullscreen()
             }
         },
+        handleMouseOver() {
+            this.isMouseIn = true;
+        },
+        handleMouseLeave() {
+            this.isMouseIn = false;
+        },
+        loginOrRegister(event) {
+            this.aIfLoginOrRegister(true)
+            this.aIfLoginInterface(true)
+        },
+        test() {
+
+        }
     },
     computed: {
-        ...mapState("loginAbout", ["ifLogin"])
+        ...mapState("loginAbout", ["ifLogin"]),
     },
     watch: {
-        videoUrl(newValue) {
-            this.videoDate = newValue;
+        videoDate(newValue) {
+            this.videoUrl = '/pav' + newValue.videoUrl
+            this.videoId = newValue.videoId
+            console.log(newValue)
             console.log("newValue", newValue)
-        }
+        },
+        // barrageDate(newValue){
+        //     console.log("barrageDate",this.barrageDate)
+        //   this.CM.setData(newValue)
+        // }
     }
 }
 </script>
@@ -409,9 +524,8 @@ body {
 }
 
 .play_video_message {
-
-    border: 1px solid #eeeeee;
-    box-shadow: 1px 1px 2px #eeeeee;
+    border-top: 1px solid #eeeeee;
+    /*box-shadow: 1px 1px 2px #eeeeee;*/
     white-space: nowrap;
     font-size: 13px;
     padding: 10px;
@@ -448,6 +562,16 @@ body {
     height: 40px;
     width: 500px;
     padding-left: 5px;
+}
+
+.bullet_hell_input_a {
+    color: #c12098; /* 设置链接文本颜色为蓝色 */
+    text-decoration: none; /* 去掉下划线 */
+    cursor: pointer;
+}
+
+.bullet_hell_input_a:hover {
+    text-decoration: underline; /* 鼠标悬浮时显示下划线 */
 }
 
 .bullet_hell_input img {
@@ -516,18 +640,20 @@ body {
 .play_menu_end {
     width: 100%;
     height: 12%;
-    transition: .2s .1s;
+    /*transition: .2s .1s;*/
     background: -webkit-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
     background: -o-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
     background: -moz-linear-gradient(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.3));
     /*background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(0, 0, 0, 0.2));*/
-    background: linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0));
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
 }
 
 .menu_bar {
     height: 20%;
     /*background-color: rgba(0, 0, 0, 0.1);*/
     position: relative;
+    cursor: pointer;
+
 }
 
 .bar {
@@ -598,6 +724,7 @@ div > button {
     width: 25px;
     height: 25px;
     transition: .5s .1s;
+    cursor: pointer;
 }
 
 .menu_time {
@@ -631,16 +758,50 @@ div > button {
 }
 
 .menu_voice {
+    position: relative;
     /* background-color: aqua; */
+    display: flex;
+    align-content: center;
+}
+
+.menu_voice:hover > .slider-out {
+    opacity: 100%;
+}
+
+.slider-out {
+    transition: .5s .1s;
+    opacity: 0;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    left: 50%;
+    bottom: 100%;
+    height: 100px;
+    width: 5px;
+    border-radius: 2px;
+    background: #bbbbbb;
+}
+
+.slider-inside {
+    height: 80px;
+    width: 3px;
+    border-radius: 2px;
+    background: #00aeec;
+    position: absolute;
+    bottom: 0;
 }
 
 .menu_voice img {
-    /* vertical-align: middle;
-        width: 17px;
-        margin: 0 auto;
-        height: 17px;
-        transition: .5s .1s; */
-    /* background-color: black; */
+    vertical-align: middle;
+    width: 17px;
+    margin: 0 auto;
+    height: 17px;
+    transition: .5s .1s;
+    background-color: black;
+}
+
+.el-slider {
+    position: absolute;
 }
 
 #videoSvg {
@@ -958,6 +1119,42 @@ div > button {
     cursor: pointer
 }
 
+.menu_tmlfull {
+    cursor: pointer
+}
+
+.menu_aut {
+    cursor: pointer;
+}
+
+.menu_speed {
+    cursor: pointer;
+}
+
+.menu_srt {
+    cursor: pointer;
+}
+
+.menu_voice {
+    cursor: pointer;
+}
+
+.menu_setting {
+    cursor: pointer;
+}
+
+.menu_pip {
+    cursor: pointer;
+}
+
+.menu_wid {
+    cursor: pointer;
+}
+
+.cursor-pointer {
+    cursor: pointer
+}
+
 #bar1 {
     position: absolute;
     bottom: 0px;
@@ -973,6 +1170,32 @@ div > button {
     height: 100%;
     background-color: aqua;
     transition: .1s .1s;
+}
+
+/*--------------------------------滑块-----------------------------------*/
+.el-slider__bar {
+    width: 3px;
+}
+
+.el-slider__button {
+    width: 4px;
+    height: 4px;
+    margin-left: -8px;
+    margin-top: -8px;
+}
+
+/*-------------------------------加载层降级----------------------------*/
+.el-loading-mask {
+    z-index: 20 !important;
+}
+.error-empty {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background: white;
+    /*padding-top: 200px;*/
 }
 
 </style>

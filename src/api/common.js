@@ -181,6 +181,15 @@ export function getRandomMainFindVideoPage(datas) {
     })
 }
 
+// 获取视频信息
+export function findVideo(datas) {
+    return Axios({
+        url: "/nacos-video-upload/upload/findOneVideoById",
+        method: "get",
+        params: datas
+    })
+}
+
 // 获取视频相关信息
 export function getVideoCorrelation(datas) {
     return Axios({
@@ -248,7 +257,28 @@ export function findAllInteract(datas) {
     })
 }
 
+//  根据视频id获取弹幕信息
+export function findBarrageByVideoId(datas) {
+    return Axios({
+        url: "/nacos-video-system/system/findBarrageByVideoId",
+        method: "get",
+        headers: {
+            'Content-Type': 'application/json' //设置请求头请求格式为json
+        },
+        params: datas
+    })
+}
 
-
+// 插入视频弹幕信息
+export function insertVideoBarrage(datas) {
+    return Axios({
+        url: "/nacos-video-system/system/insertVideoBarrage",
+        method: "post",
+        headers: {
+            'Content-Type': 'application/json' //设置请求头请求格式为json
+        },
+        data: JSON.stringify(datas)
+    })
+}
 
 
