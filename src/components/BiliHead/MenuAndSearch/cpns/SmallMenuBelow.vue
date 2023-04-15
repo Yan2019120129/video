@@ -52,7 +52,14 @@
     box-shadow: 0 0 10px #4a4a4a;
     background-color: white;
 }
-
+.buttonMenu >*{
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 2px 4px;
+}
+.buttonMenu >*:hover{
+background: #eaeaea;
+}
 .bt:hover > .BMOutSide {
     display: block;
     animation: menuShow .5s;

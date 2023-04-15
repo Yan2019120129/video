@@ -29,5 +29,12 @@ module.exports = {
                 ws: false, //用于支持websocket
             },
         }
+    },
+    configureWebpack: {
+        resolve: {
+            fallback: {
+                timers: require.resolve('timers-browserify')
+            }
+        }
     }
 }

@@ -172,7 +172,7 @@ import {clearVideo, getToken, getTokenValue, getVideo, setLocal, setVideo} from 
 import {mapActions} from "vuex";
 import {hintLogin} from "@/utility/messageHint";
 import CustomComponent from "@/views/VideoPlay/CustomComponent";
-import {getDate} from "@/utility/returnData";
+import {getDate, getDateTransitionMinutesSeconds} from "@/utility/returnData";
 
 export default {
     name: 'VideoPlay',
@@ -260,10 +260,20 @@ export default {
         getVideoBarrage(value) {
             findBarrageByVideoId(value).then(
                 res => {
-                    let data=res.data.data
+                    let data = res.data.data
                     console.log("findBarrageByVideoId", data)
                     this.barrageDate = data
-                    setLocal("Barrage",data)
+                    for (let i = 0; i < data.length; i++) {
+                        if (data[i]['avatar']) {
+                            data[i]['avatar'] = '/pav' + data[i]['avatar']
+                        }
+                    }
+                    setLocal("Barrage", data)
+                    for (let i = 0; i < this.barrageDate.length; i++) {
+                        if (this.barrageDate[i]['time']) {
+                            this.barrageDate[i]['time'] = getDateTransitionMinutesSeconds(this.barrageDate[i]['time'])
+                        }
+                    }
                 },
                 err => {
                     console.log("findBarrageByVideoId", err.message)
@@ -271,8 +281,10 @@ export default {
             )
         },
         handleData(value) {
-            console.log('Received data from child component:', value);
-            this.barrageDate.push(value)
+            console.log('Received data from child component:', value)
+            value['time'] = getDateTransitionMinutesSeconds(value['time'])
+            this.$set(this.barrageDate, this.barrageDate.length, value)
+            console.log("this.barrageDate",this.barrageDate)
         },
         // 发送评论数据以及将数据
         sendRemark() {
@@ -728,7 +740,11 @@ export default {
 }
 
 .barrage_text_item {
-    margin: 10px 20px;
+    margin: 10px 10px;
+}
+
+.barrage_text_item > * {
+    font-size: 12px;
 }
 
 .barrage_text_item span {
@@ -736,15 +752,22 @@ export default {
 }
 
 .barrage_text_time {
-    width: 15%;
+    width: 10%;
 }
 
 .barrage_text_text {
-    padding: 0 20px;
-    width: 65%;
+    /*不换行*/
+    white-space: nowrap;
+    overflow: hidden;
+    /* 文字超出用省略号 */
+    text-overflow: ellipsis;
+    padding: 0 10px;
+    width: 70%;
 }
 
 .barrage_text_send_time {
+    /*不换行*/
+    white-space: nowrap;
     width: 20%;
 }
 

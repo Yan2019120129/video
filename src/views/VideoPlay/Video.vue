@@ -13,14 +13,12 @@
                 <!--                <slot></slot>-->
                 您的浏览器不支持 HTML5 video 标签。
             </video>
-            <div class="error-empty" v-if="isVideoError" >
+            <div class="error-empty" v-if="isVideoError">
                 <el-empty description="出错了！！！"></el-empty>
             </div>
             <div id="play_menu">
-                <div class="play_menu_top" @click="menuPlay">
+                <div class="play_menu_top" ref="play_menu_top" @click="menuPlay">
                     <div ref="container" class="barrage_shade">
-                        <!--            <div v-for="track in tracks" style="height: 30px" class="track_property"></div>-->
-                        <!--            @animationend动画完成时调用函数-->
                     </div>
                 </div>
                 <transition name="el-zoom-in-bottom">
@@ -47,28 +45,15 @@
                             </button>
                             <button class="menu_voice">
                                 <div class="slider-out">
-                                    <div ref="myDiv" @click="test" class="slider-inside">
-                                        <el-slider
-                                                v-model="value"
-                                                vertical
-                                                height="100px">
-                                        </el-slider>
-                                    </div>
-                                    <!--                                    <div ref="myDiv" @click="handleClick" class="slider-inside"></div>-->
-                                    <!--                                    <input type="range" min="0" max="100" value="50" class="slider-inside ">-->
-                                    <!--                                    <div class="slider-inside">50</div>-->
-
-                                    <!--                                    <el-slider-->
-                                    <!--                                            v-model="value"-->
-                                    <!--                                            vertical-->
-                                    <!--                                            height="100px">-->
-                                    <!--                                    </el-slider>-->
+                                    <!--                                    <div ref="myDiv" @click="test" class="slider-inside">-->
+                                    <!--                                    </div>-->
+                                    <el-slider
+                                            :show-tooltip="false"
+                                            v-model="value"
+                                            vertical
+                                            height="100px">
+                                    </el-slider>
                                 </div>
-                                <!--                                <div class="slider">-->
-                                <!--                                    <input type="range" min="0" max="100" value="50" class="slider__range ">-->
-                                <!--                                    <div class="slider__value">50</div>-->
-                                <!--                                </div>-->
-
 
                                 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="videoSvg"
                                      viewBox="0 0 100 79">
@@ -239,11 +224,11 @@
 import 'video.js/dist/video-js.css'
 import {mapActions, mapState} from "vuex";
 import Barrage from 'barrage-ui';
-import example from 'barrage-ui/example.json';
 import CustomComponent from "@/views/VideoPlay/CustomComponent";
 import {insertVideoBarrage} from "@/api/common";
 import {getLocal, getTokenValue} from "@/utility/manageDate";
 import {v4 as uuidv4} from 'uuid';
+import {getDateFormat} from "@/utility/returnData";
 
 export default {
     name: 'Video',
@@ -252,7 +237,7 @@ export default {
     },
     props: {
         videoDate: {},
-        barrageDate:{},
+        barrageDate: {},
     },
     data() {
         return {
@@ -273,13 +258,17 @@ export default {
             video_play: "",
             if_show_bullet: false,
             ifFullScree: false,
+            videoWidth: '',
+            videoHeight: '',
+            windowWidth: window.innerWidth,
+            windowHeight: window.innerHeight,
             CM: "",
             danmaku: {
                 videoId: null,
                 userId: null,
-                barrageKey: "",
+                key: "",
                 createdAt: "",
-                barrageTime: null,
+                time: null,
                 text: "Hello World",
                 fontFamily: 'SimSun',
                 fontSize: 32,
@@ -287,35 +276,39 @@ export default {
                 avatar: "",
                 avatarSize: 32,
                 avatarMarginRight: 8,
-
             },
             danmakuData: getLocal("Barrage"),
         }
     },
     mounted() {
-        this.video = this.$refs.v;
-        this.video_play = this.$refs.vp
-        // 加载弹幕
-        this.CM = new Barrage({
-            container: 'vp', // 父级容器或ID
-            // data: this.danmakuData, // 弹幕数据
-            data: example, // 弹幕数据
-            config: {
-                // 全局配置项
-                duration: -1, // 弹幕循环周期(单位：毫秒)，-1代表不循环
-                fontFamily: 'Microsoft Yahei', // 弹幕默认字体
-                defaultColor: '#fff', // 弹幕默认颜色
-            },
-        });
-        // this.CM.setData(getLocal("Barrage"))
-        console.log("CM",this.CM)
-        this.handleTimeUpdate()
+        this.init()
     },
     methods: {
         ...mapActions("layoutAbout", {
             aIfLoginOrRegister: "aIfLoginOrRegister",
             aIfLoginInterface: "aIfLoginInterface"
         }),
+        init() {
+            this.videoWidth = this.$refs.vp.offsetWidth
+            this.videoHeight = this.$refs.vp.offsetHeight
+            this.video = this.$refs.v;
+            this.video_play = this.$refs.vp
+            // 加载弹幕
+            this.CM = new Barrage({
+                avoidOverlap: false,
+                container: "vp", // 父级容器或ID
+                data: this.danmakuData, // 弹幕数据
+                // data: example, // 弹幕数据
+                config: {
+                    // 全局配置项
+                    duration: -1, // 弹幕循环周期(单位：毫秒)，-1代表不循环
+                    fontFamily: 'Microsoft Yahei', // 弹幕默认字体
+                    defaultColor: '#fff', // 弹幕默认颜色
+                },
+            });
+            console.log("Barrage", this.danmakuData)
+            this.handleTimeUpdate()
+        },
         handleTimeUpdate() {
             const video = this.video;
             const currentTime = video.currentTime; // 当前播放时间，单位秒
@@ -352,13 +345,14 @@ export default {
             console.log("danmaku:progress", this.CM.progress)
             this.danmaku.time = this.currentTimeMSEL
             this.danmaku.key = uuidv4()
-            this.danmaku.createdAt = new Date()
-            this.danmaku.time = this.currentTimeMSEL
-            this.danmaku.avatar = getTokenValue("userUrl")
+            this.danmaku.createdAt = getDateFormat('MM-DD HH:mm')
+
+            this.danmaku.avatar = '/pav' + getTokenValue("userUrl")
             this.danmaku.userId = getTokenValue("userId")
             this.danmaku.videoId = this.videoId
             let ifSenddanmaku = this.CM.add(this.danmaku);
             if (ifSenddanmaku) {
+                this.danmaku.avatar = getTokenValue("userUrl")
                 insertVideoBarrage(this.danmaku).then(
                     rsp => {
                         console.log(rsp.data)
@@ -439,10 +433,16 @@ export default {
             if (document.fullscreenElement) {
                 console.log("退出全屏")
                 document.exitFullscreen()
+                this.CM.canvas.width = this.videoWidth
+                this.CM.canvas.height = this.videoHeight
+                console.log("长宽：", this.$refs.vp.offsetWidth, this.$refs.vp.offsetHeight)
             } else {
                 console.log("全屏")
                 this.video_play.requestFullscreen()
+                this.CM.canvas.width = this.windowWidth
+                this.CM.canvas.height = this.windowHeight
             }
+            // 跳转到指定进度
         },
         handleMouseOver() {
             this.isMouseIn = true;
@@ -468,10 +468,6 @@ export default {
             console.log(newValue)
             console.log("newValue", newValue)
         },
-        // barrageDate(newValue){
-        //     console.log("barrageDate",this.barrageDate)
-        //   this.CM.setData(newValue)
-        // }
     }
 }
 </script>
@@ -782,14 +778,6 @@ div > button {
     background: #bbbbbb;
 }
 
-.slider-inside {
-    height: 80px;
-    width: 3px;
-    border-radius: 2px;
-    background: #00aeec;
-    position: absolute;
-    bottom: 0;
-}
 
 .menu_voice img {
     vertical-align: middle;
@@ -1173,21 +1161,24 @@ div > button {
 }
 
 /*--------------------------------滑块-----------------------------------*/
-.el-slider__bar {
-    width: 3px;
+.el-slider.is-vertical > .el-slider__runway {
+    width: 3px !important;
+}
+
+.el-slider .is-vertical > .el-slider__bar {
+    width: 3px !important;
 }
 
 .el-slider__button {
-    width: 4px;
-    height: 4px;
-    margin-left: -8px;
-    margin-top: -8px;
+    width: 4px !important;
+    height: 4px !important;
 }
 
 /*-------------------------------加载层降级----------------------------*/
 .el-loading-mask {
     z-index: 20 !important;
 }
+
 .error-empty {
     display: flex;
     align-content: center;
